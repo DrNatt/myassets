@@ -1,0 +1,1950 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' blob: data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="theme-color" content="#13294B">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="MyAssets">
+<meta name="description" content="MyAssets — บริหารภาระค่าใช้จ่ายทรัพย์สินส่วนบุคคล">
+<title>MyAssets</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%2313294B'/%3E%3Ccircle cx='32' cy='32' r='21' fill='none' stroke='%23C9A24A' stroke-width='3' stroke-dasharray='3 3'/%3E%3Ctext x='32' y='40' font-size='22' text-anchor='middle' fill='%23fff' font-family='sans-serif' font-weight='700'%3EM%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#13294B; --navy2:#1F3A68; --gold:#B8892B; --gold-l:#C9A24A; --gold-s:#F5ECD7;
+  --paper:#F6F7FA; --white:#fff; --ink:#18213A; --muted:#667085; --line:#E3E7EF; --line2:#EEF1F6;
+  --red:#B42318; --red-s:#FDECEA; --green:#1E7B4F; --green-s:#E6F4EC; --blue:#2459A8; --blue-s:#E8EFFA; --grey:#98A2B3;
+  --r:12px; --font:"IBM Plex Sans Thai",-apple-system,"Segoe UI",Tahoma,sans-serif;
+  --sat:env(safe-area-inset-top,0px); --sab:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font-family:var(--font);color:var(--ink);background:var(--paper);font-size:15px;line-height:1.55;-webkit-text-size-adjust:100%}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--navy2)}
+svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.num{font-variant-numeric:tabular-nums}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+h1,h2,h3{margin:0;line-height:1.3;font-weight:600}
+h1{font-size:22px} h2{font-size:18px} h3{font-size:15px}
+.muted{color:var(--muted)} .small{font-size:13px}
+.hide{display:none!important}
+
+/* layout */
+.app{min-height:100%;display:flex}
+.side{display:none}
+.main{flex:1;min-width:0;display:flex;flex-direction:column;min-height:100vh}
+.top{position:sticky;top:0;z-index:20;background:var(--navy);color:#fff;padding:calc(10px + var(--sat)) 16px 10px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-mark{width:34px;height:34px}
+.brand-name{font-weight:700;letter-spacing:.2px;font-size:17px}
+.brand-owner{font-size:12px;opacity:.75;max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top-act{display:flex;gap:8px;align-items:center}
+.lang-btn{background:transparent;border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:3px 12px;font-size:13px;cursor:pointer}
+.icon-btn{background:transparent;border:0;color:inherit;width:36px;height:36px;border-radius:10px;display:inline-grid;place-items:center;cursor:pointer}
+.icon-btn:hover{background:rgba(127,127,127,.12)}
+.view{flex:1;width:100%;max-width:980px;margin:0 auto;padding:16px 16px 96px}
+.credit{text-align:center;font-size:11px;color:var(--grey);padding:10px 16px calc(84px + var(--sab))}
+.bnav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--white);border-top:1px solid var(--line);display:flex;padding-bottom:var(--sab)}
+.bnav a{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 2px 7px;font-size:11px;color:var(--muted);text-decoration:none}
+.bnav a.on{color:var(--navy)} .bnav a.on svg{stroke:var(--gold)}
+@media (min-width:900px){
+  .side{display:flex;flex-direction:column;width:232px;background:var(--navy);color:#fff;position:sticky;top:0;height:100vh;padding:22px 14px;gap:26px}
+  .nav{display:flex;flex-direction:column;gap:4px}
+  .nav-i{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;color:rgba(255,255,255,.78);text-decoration:none}
+  .nav-i:hover{background:rgba(255,255,255,.07)}
+  .nav-i.on{background:rgba(255,255,255,.1);color:#fff} .nav-i.on svg{stroke:var(--gold-l)}
+  .bnav,.m-only{display:none!important}
+  .top{background:transparent;color:var(--ink);position:static;justify-content:flex-end;padding:14px 24px 0}
+  .top .lang-btn{border-color:var(--line);color:var(--ink)}
+  .view{padding:8px 28px 40px}
+  .credit{padding:14px 16px 18px}
+}
+
+/* generic */
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin:4px 0 16px;flex-wrap:wrap}
+.page-head p{margin:2px 0 0}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border-radius:10px;padding:9px 16px;border:1px solid var(--line);background:var(--white);cursor:pointer;font-weight:500;white-space:nowrap;text-decoration:none;color:var(--ink)}
+.btn svg{width:18px;height:18px}
+.btn.primary{background:var(--navy);border-color:var(--navy);color:#fff}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:#fff}
+.btn.ghost{background:transparent}
+.btn.danger{background:var(--red);border-color:var(--red);color:#fff}
+.btn.sm{padding:5px 11px;font-size:13px;border-radius:8px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.card{background:var(--white);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.section{margin-top:22px}
+.section-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.section-h a,.link{font-size:13px;color:var(--navy2);cursor:pointer;background:none;border:0;padding:0;text-decoration:underline;text-underline-offset:3px}
+.empty{text-align:center;padding:34px 16px;color:var(--muted)}
+.empty .btn{margin-top:12px}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:12px;padding:2px 9px;border-radius:999px;font-weight:500;white-space:nowrap}
+.b-overdue{background:var(--red-s);color:var(--red)} .b-soon{background:var(--gold-s);color:#8A6418}
+.b-open{background:var(--blue-s);color:var(--blue)} .b-waiting{background:var(--line2);color:var(--muted)}
+.b-paid{background:var(--green-s);color:var(--green)} .b-skipped{background:var(--line2);color:var(--grey);text-decoration:line-through}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--white);border-radius:999px;padding:5px 13px;font-size:13px;cursor:pointer}
+.chip.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+/* banners */
+.banner{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:11px 14px;border-radius:10px;margin-bottom:10px;font-size:14px;flex-wrap:wrap}
+.banner.info{background:var(--blue-s);color:#183E77}
+.banner.warn{background:var(--gold-s);color:#6E4F12}
+.banner.bad{background:var(--red-s);color:var(--red)}
+
+/* summary strip */
+.strip{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat{background:var(--white);border:1px solid var(--line);border-radius:var(--r);padding:12px 12px 10px;cursor:pointer;text-align:left}
+.stat b{display:block;font-size:22px;line-height:1.2}
+.stat span{font-size:12px;color:var(--muted)}
+.stat small{display:block;font-size:12px;margin-top:2px}
+.stat.bad b{color:var(--red)} .stat.soon b{color:#8A6418}
+
+/* tax-disc carousel: the signature element */
+.discs{display:flex;gap:14px;overflow-x:auto;padding:4px 2px 12px;scroll-snap-type:x mandatory}
+.disc{flex:none;width:138px;scroll-snap-align:start;text-align:center;cursor:pointer;background:none;border:0;padding:0}
+.disc-ring{--c:var(--grey);width:118px;height:118px;margin:0 auto;border-radius:50%;padding:6px;background:conic-gradient(var(--c) calc(var(--p,0)*360deg),var(--line) 0)}
+.disc-face{width:100%;height:100%;border-radius:50%;background:var(--white);display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative}
+.disc-face::before{content:"";position:absolute;inset:6px;border-radius:50%;border:1.5px dashed var(--gold-l);opacity:.75}
+.disc-face b{font-size:30px;line-height:1;font-weight:700;color:var(--navy)}
+.disc-face span{font-size:11px;color:var(--muted);margin-top:3px}
+.disc-face i{font-style:normal;font-size:10px;color:var(--muted);margin-bottom:2px}
+.disc.s-overdue .disc-ring{--c:var(--red)} .disc.s-overdue .disc-face b{color:var(--red)}
+.disc.s-soon .disc-ring{--c:var(--gold)} .disc.s-open .disc-ring{--c:var(--blue)}
+.disc-cap{margin-top:8px;font-size:13px;font-weight:600;line-height:1.3}
+.disc-cap small{display:block;font-weight:400;color:var(--muted);font-size:12px}
+.disc-amt{font-size:13px;margin-top:2px}
+
+/* rows */
+.rows{background:var(--white);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.row{display:flex;align-items:center;gap:12px;padding:12px 14px;border-top:1px solid var(--line2);cursor:pointer;width:100%;background:none;border-left:0;border-right:0;border-bottom:0;text-align:left}
+.row:first-child{border-top:0}
+.row:hover{background:#FAFBFD}
+.row-ic{width:38px;height:38px;border-radius:10px;background:var(--line2);display:grid;place-items:center;color:var(--navy);flex:none}
+.row-main{flex:1;min-width:0}
+.row-t{font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row-s{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row-r{text-align:right;flex:none}
+.row-r .amt{font-weight:600}
+.month-h{font-size:13px;color:var(--muted);margin:16px 2px 6px;font-weight:500}
+
+/* assets */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.acard{background:var(--white);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;cursor:pointer;text-align:left;padding:0;display:flex;flex-direction:column}
+.acard:hover{border-color:#C9D1DF}
+.acover{height:92px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:var(--gold-l);display:grid;place-items:center;position:relative}
+.acover svg{width:40px;height:40px;stroke-width:1.4}
+.acover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.acard-b{padding:12px 14px}
+.acard-b .row-s{white-space:normal}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:14px}
+.kv dt{color:var(--muted)} .kv dd{margin:0}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:16px 0 14px;overflow-x:auto}
+.tab{background:none;border:0;padding:9px 12px;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap}
+.tab.on{color:var(--navy);border-color:var(--gold);font-weight:600}
+.hero{display:flex;gap:16px;align-items:center}
+.hero .acover{width:84px;height:84px;border-radius:14px;flex:none}
+.tl{position:relative;padding-left:22px}
+.tl::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.tl-i{position:relative;margin-bottom:12px}
+.tl-i::before{content:"";position:absolute;left:-20px;top:16px;width:12px;height:12px;border-radius:50%;background:var(--white);border:2px solid var(--gold)}
+.thumbs{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.thumb{width:64px;height:64px;border-radius:8px;object-fit:cover;background:var(--line2);border:1px solid var(--line);cursor:pointer}
+.add-thumb{width:64px;height:64px;border-radius:8px;border:1.5px dashed #C3CBD8;display:grid;place-items:center;color:var(--muted);cursor:pointer;background:none}
+
+/* calendar */
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal-dow{text-align:center;font-size:12px;color:var(--muted);padding:4px 0}
+.cal-d{aspect-ratio:1/1;max-height:84px;background:var(--white);border:1px solid var(--line2);border-radius:9px;padding:5px;cursor:pointer;display:flex;flex-direction:column;align-items:flex-start;font-size:13px;text-align:left}
+.cal-d.out{opacity:.35}
+.cal-d.today{border-color:var(--gold);box-shadow:inset 0 0 0 1px var(--gold)}
+.cal-d.sel{background:var(--navy);color:#fff;border-color:var(--navy)}
+.dots{display:flex;gap:3px;flex-wrap:wrap;margin-top:auto}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--grey)}
+.dot.overdue{background:var(--red)} .dot.soon{background:var(--gold)} .dot.open{background:var(--blue)} .dot.paid{background:var(--green)}
+
+/* reports */
+.bars{display:flex;align-items:flex-end;gap:6px;height:190px;padding-top:10px}
+.bar{flex:1;display:flex;flex-direction:column;justify-content:flex-end;height:100%;min-width:0}
+.bar-stack{display:flex;flex-direction:column-reverse;border-radius:6px 6px 2px 2px;overflow:hidden;min-height:2px;background:var(--line2)}
+.bar-lbl{font-size:11px;color:var(--muted);text-align:center;margin-top:5px;white-space:nowrap}
+.bar-val{font-size:10px;color:var(--muted);text-align:center;margin-bottom:3px;white-space:nowrap}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--muted);margin-top:12px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.hbar{display:grid;grid-template-columns:minmax(90px,170px) 1fr auto;gap:10px;align-items:center;font-size:14px;margin:8px 0}
+.hbar-t{height:10px;border-radius:5px;background:var(--line2);overflow:hidden}
+.hbar-t i{display:block;height:100%;background:var(--navy)}
+table.t{width:100%;border-collapse:collapse;font-size:14px}
+table.t th,table.t td{padding:9px 10px;border-bottom:1px solid var(--line2);text-align:left}
+table.t th{font-weight:500;color:var(--muted);font-size:13px}
+table.t td.r,table.t th.r{text-align:right;white-space:nowrap}
+table.t td:first-child{min-width:110px}
+.tw{overflow-x:auto}
+
+/* forms & sheets */
+.sheet-wrap{position:fixed;inset:0;z-index:100;background:rgba(15,23,42,.45);display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--white);width:100%;max-width:560px;max-height:92vh;border-radius:18px 18px 0 0;display:flex;flex-direction:column;animation:up .2s ease-out}
+.sheet.wide{max-width:720px}
+.sheet-form{display:flex;flex-direction:column;min-height:0;flex:1}
+@keyframes up{from{transform:translateY(24px);opacity:.6}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.sheet{animation:none}}
+@media (min-width:700px){.sheet-wrap{align-items:center}.sheet{border-radius:16px}}
+.sheet-head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px 10px;border-bottom:1px solid var(--line2)}
+.sheet-body{padding:14px 18px;overflow-y:auto}
+.sheet-foot{display:flex;justify-content:flex-end;gap:8px;padding:12px 18px calc(12px + var(--sab));border-top:1px solid var(--line2)}
+.f{display:flex;flex-direction:column;gap:5px;margin-bottom:13px}
+.f>label,.flabel{font-size:13px;color:var(--muted);font-weight:500}
+.f input:not([type=checkbox]):not([type=radio]),.f select,.f textarea{width:100%;border:1px solid var(--line);border-radius:9px;padding:9px 11px;background:var(--white);min-height:42px}
+.f textarea{min-height:70px;resize:vertical}
+.f input:focus,.f select:focus,.f textarea:focus{outline:none;border-color:var(--navy2);box-shadow:0 0 0 3px rgba(31,58,104,.12)}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+.f3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0 10px}
+.hint{font-size:12px;color:var(--muted)}
+.check{display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:14px;margin:6px 0}
+.check input{width:18px;height:18px;margin-top:2px;accent-color:var(--navy);flex:none}
+.tpl{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px}
+.tpl .f2{margin-top:8px}
+.tpl .f{margin-bottom:0}
+.items .irow{display:grid;grid-template-columns:1fr 110px 34px;gap:6px;margin-bottom:6px}
+.items input{border:1px solid var(--line);border-radius:8px;padding:7px 9px;min-width:0}
+.danger-zone{border:1px solid #F4C7C3;border-radius:var(--r);padding:14px;margin-top:10px}
+
+
+/* data bar (auto-save status + backup buttons) */
+.databar{display:flex;align-items:center;gap:8px;padding:8px 16px;background:var(--white);border-bottom:1px solid var(--line);font-size:13px}
+.save-chip{display:inline-flex;align-items:center;gap:8px;background:none;border:0;padding:4px 0;cursor:pointer;color:var(--ink);flex:1;min-width:0;text-align:left;font-size:13px}
+.save-chip .sd{width:9px;height:9px;border-radius:50%;background:var(--green);flex:none;box-shadow:0 0 0 3px var(--green-s)}
+.save-chip .sd.warn{background:var(--gold);box-shadow:0 0 0 3px var(--gold-s)}
+.save-chip span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:520px){.databar{flex-wrap:wrap}.save-chip{flex-basis:100%}.databar .btn{flex:1}}
+@media (min-width:900px){.databar{margin:10px 28px 0;border:1px solid var(--line);border-radius:10px;max-width:980px;align-self:center;width:calc(100% - 56px)}}
+details.more{border:1px solid var(--line);border-radius:10px;margin-bottom:8px;background:var(--white)}
+details.more summary{cursor:pointer;padding:11px 14px;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:10px}
+details.more summary::after{content:"+";color:var(--gold);font-weight:700;font-size:18px;line-height:1}
+details.more[open] summary::after{content:"–"}
+details.more summary::-webkit-details-marker{display:none}
+details.more>div{padding:0 14px 12px;font-size:14px}
+.keypts{display:grid;gap:10px;margin:16px 0}
+.keypt{display:flex;gap:10px;align-items:flex-start;font-size:14px;background:var(--paper);border-radius:10px;padding:10px 12px}
+.keypt svg{color:var(--gold);margin-top:2px}
+.row-ic{overflow:hidden}
+.row-ic img{width:100%;height:100%;object-fit:cover}
+.acover.pick{cursor:pointer}
+.acover .pick-hint{position:absolute;bottom:5px;left:50%;transform:translateX(-50%);background:rgba(19,41,75,.78);color:#fff;border-radius:6px;padding:1px 7px;font-size:10px;z-index:1;white-space:nowrap}
+.top .icon-btn svg{width:21px;height:21px}
+
+
+/* dashboard */
+.kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+@media (min-width:760px){.kpis{grid-template-columns:repeat(4,1fr)}}
+a.stat{text-decoration:none;color:inherit;display:block}
+.stat.bad b{color:var(--red)} .stat.soon b{color:#8A6418}
+.filterbar{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin:16px 0 0}
+.filterbar .chips{flex-wrap:nowrap;overflow-x:auto;padding-bottom:2px}
+.chip{white-space:nowrap}
+.dimsel{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.dimsel select{padding:5px 10px}
+.tm{position:relative;width:100%;border-radius:10px;overflow:hidden;background:var(--line2)}
+.tm-t{position:absolute;border:1.5px solid var(--white);color:#fff;padding:6px 8px;text-align:left;cursor:pointer;display:flex;flex-direction:column;justify-content:flex-start;overflow:hidden;font-size:13px;line-height:1.3}
+.tm-t:hover{filter:brightness(1.08)}
+.tm-l{font-weight:600;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tm-v{font-size:12px;opacity:.9;margin-top:2px}
+.tm-legs{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:2px 16px;margin-top:12px}
+.tm-leg{display:grid;grid-template-columns:12px 1fr auto 46px;gap:8px;align-items:center;background:none;border:0;padding:5px 0;text-align:left;font-size:13px;cursor:pointer;border-bottom:1px solid var(--line2)}
+.tm-leg i{width:12px;height:12px;border-radius:3px}
+.tm-leg span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tm-leg em{font-style:normal;color:var(--muted);text-align:right}
+.crumbs{font-size:14px;margin-bottom:8px}
+.tlx{overflow-x:auto;margin:0 -16px;padding:0 16px 4px;scroll-behavior:smooth}
+.tlx-in{position:relative;height:260px;min-width:100%}
+.tlx-line{position:absolute;left:0;right:0;top:129px;height:3px;border-radius:2px;background:var(--navy2);opacity:.85}
+.tl-ev{position:absolute;top:0;width:132px;height:260px;background:none;border:0;padding:0;cursor:pointer;color:inherit}
+.tl-dot{position:absolute;left:58px;top:123px;width:15px;height:15px;border-radius:50%;background:var(--white);border:3px solid var(--grey);z-index:1}
+.tl-ev.s-overdue .tl-dot{border-color:var(--red);background:var(--red)}
+.tl-ev.s-soon .tl-dot{border-color:var(--gold)} .tl-ev.s-open .tl-dot{border-color:var(--blue)}
+.tl-ev.s-paid .tl-dot{border-color:var(--green);background:var(--green)}
+.tl-card{position:absolute;left:5px;right:5px;display:flex;flex-direction:column;gap:1px;background:var(--white);border:1px solid var(--line);border-radius:10px;padding:7px 9px;text-align:left;font-size:12px;line-height:1.35;box-shadow:0 1px 3px rgba(16,24,40,.06)}
+.tl-ev.up .tl-card{bottom:146px} .tl-ev.down .tl-card{top:146px}
+.tl-card::after{content:"";position:absolute;left:calc(50% - .5px);width:1px;height:14px;background:#C5CCD8}
+.tl-ev.up .tl-card::after{top:100%} .tl-ev.down .tl-card::after{bottom:100%}
+.tl-card b{font-size:11px;color:var(--muted);font-weight:500}
+.tl-card span{font-weight:600;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tl-card small{color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tl-card em{font-style:normal;font-weight:600}
+.tl-ev.s-overdue .tl-card{border-color:#F1B5AE;background:#FFF8F7}
+.tl-ev.s-paid .tl-card{opacity:.7}
+.tl-ev:hover .tl-card{border-color:var(--navy2)}
+.tl-ev.today{cursor:default}
+.tl-ev.today::before{content:"";position:absolute;left:65px;top:30px;bottom:30px;border-left:2px dashed var(--gold)}
+.tl-today{position:absolute;left:36px;top:6px;background:var(--gold);color:#fff;font-size:11px;padding:2px 9px;border-radius:999px;font-weight:600}
+/* expandable rows */
+.drow{border-top:1px solid var(--line2)} .drow:first-child{border-top:0}
+.drow>summary{list-style:none} .drow>summary::-webkit-details-marker{display:none}
+.drow>summary.row{border-top:0}
+.chev{width:16px;flex:none;color:var(--muted);transition:transform .15s;align-self:center}
+.chev::before{content:"";display:block;width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);margin:0 auto 3px}
+.drow[open] .chev{transform:rotate(180deg)}
+.drow[open]>summary{background:#F8F9FC}
+.drow-b{padding:4px 16px 14px 64px;background:#F8F9FC;font-size:14px}
+@media (max-width:560px){.drow-b{padding-left:16px}}
+@media (prefers-reduced-motion:reduce){.chev{transition:none}}
+/* reports */
+.repctl{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:0 12px}
+.repctl .f{margin-bottom:10px}
+.repctl select,.repctl input{width:100%;border:1px solid var(--line);border-radius:9px;padding:8px 10px;background:var(--white);min-height:40px}
+.rep-h{margin-bottom:12px}
+.rkpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-bottom:12px}
+.rkpis div{background:var(--paper);border-radius:10px;padding:9px 12px}
+.rkpis span{display:block;font-size:12px;color:var(--muted)} .rkpis b{font-size:17px}
+.mbar{display:inline-block;width:56px;height:7px;border-radius:4px;background:var(--line2);vertical-align:middle;margin-left:6px;overflow:hidden}
+.mbar i{display:block;height:100%}
+.rgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:0 20px}
+.rh{margin:18px 0 6px;font-size:15px}
+table.t tfoot th{color:var(--ink);font-weight:600;border-top:2px solid var(--line)}
+table.t td.ck,table.t th.ck{width:22px;color:var(--muted)}
+.qa>div{border-bottom:1px solid var(--line2);padding:8px 0}
+.qa p{margin:3px 0}
+.qa .tip{color:var(--green);font-size:14px}
+/* print (PDF A4) */
+#printArea{display:none}
+@media print{
+  @page{size:A4;margin:14mm 12mm}
+  body.printing>*:not(#printArea){display:none!important}
+  body.printing #printArea{display:block}
+  body.printing{background:#fff}
+  #printArea{font-size:11px;color:#111;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #printArea .p-head{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #13294B;padding-bottom:8px;margin-bottom:12px;gap:16px}
+  #printArea .p-brand{display:flex;gap:8px;align-items:center;font-size:11px}
+  #printArea .p-brand .brand-mark{width:30px;height:30px}
+  #printArea .p-title{text-align:right}
+  #printArea h1{font-size:17px;margin:0 0 3px}
+  #printArea .tw{overflow:visible}
+  #printArea table.t{font-size:10.5px;page-break-inside:auto}
+  #printArea table.t th,#printArea table.t td{padding:4px 5px;border-bottom:1px solid #ddd}
+  #printArea thead{display:table-header-group} #printArea tfoot{display:table-row-group}
+  #printArea tr{page-break-inside:avoid}
+  #printArea td.num{white-space:nowrap}
+  #printArea .rkpis div{background:#F2F4F8}
+  #printArea .bars{height:150px}
+  #printArea .p-foot{margin-top:16px;font-size:9px;color:#777;text-align:center}
+  #printArea .hint{color:#555}
+}
+
+/* toast */
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + var(--sab));z-index:200;background:var(--ink);color:#fff;border-radius:12px;padding:10px 14px;display:flex;gap:14px;align-items:center;font-size:14px;max-width:92vw;box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.toast button{background:none;border:0;color:var(--gold-l);font-weight:600;cursor:pointer}
+@media (min-width:900px){.toast{bottom:28px}}
+
+/* welcome + lock */
+.welcome{min-height:100vh;background:var(--navy);color:#fff;display:flex;flex-direction:column;align-items:center;padding:calc(24px + var(--sat)) 16px calc(24px + var(--sab))}
+.w-top{width:100%;max-width:640px;display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.w-card{width:100%;max-width:640px;background:var(--white);color:var(--ink);border-radius:18px;padding:22px 20px;flex:1;display:flex;flex-direction:column}
+.w-steps{display:flex;gap:6px;margin-bottom:18px}
+.w-steps i{flex:1;height:4px;border-radius:2px;background:var(--line)}
+.w-steps i.on{background:var(--gold)}
+.w-body{flex:1}
+.w-body h1{margin-bottom:12px}
+.w-body ul,.w-body ol{padding-left:20px;margin:8px 0}
+.w-body li{margin-bottom:7px}
+.w-nav{display:flex;justify-content:space-between;gap:10px;margin-top:18px}
+.w-foot{font-size:11px;opacity:.65;margin-top:14px;text-align:center}
+.w-hero{display:flex;justify-content:center;margin:6px 0 16px}
+.w-hero svg{width:116px;height:116px;stroke:none}
+.lock{position:fixed;inset:0;z-index:300;background:var(--navy);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:18px}
+.pin-dots{display:flex;gap:12px;height:16px}
+.pin-dots i{width:14px;height:14px;border-radius:50%;border:2px solid var(--gold-l)}
+.pin-dots i.f{background:var(--gold-l)}
+.keypad{display:grid;grid-template-columns:repeat(3,72px);gap:12px}
+.key{height:60px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.06);color:#fff;font-size:22px;cursor:pointer}
+.key.plain{border:0;background:none;font-size:14px}
+.shake{animation:sh .35s}
+@keyframes sh{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.viewer img{width:100%;border-radius:10px;display:block}
+@media print{.bnav,.side,.top,.credit,.btn{display:none!important}.view{padding:0}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<div id="printArea"></div>
+<noscript>MyAssets ต้องเปิด JavaScript เพื่อใช้งาน / MyAssets needs JavaScript.</noscript>
+<script>
+'use strict';
+/* ===== MyAssets — Create by Nattapol P. @2026 ===== */
+const VERSION = '1.03';
+const TERMS_VERSION = 1;
+// ใส่ลิงก์ทางการหลังเปิด GitHub Pages แล้ว เช่น 'https://username.github.io/myassets/'
+const OFFICIAL_URL = 'https://drnatt.github.io/myassets/';
+
+let lang = 'th';
+const L = (th, en) => (lang === 'en' ? en : th);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const uid = () => (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : 'id' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+
+/* ---------- dates (ISO yyyy-mm-dd, local) ---------- */
+const pad = n => String(n).padStart(2, '0');
+const iso = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const pd = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
+const todayISO = () => iso(new Date());
+const diffDays = (a, b) => Math.round((pd(b) - pd(a)) / 864e5);
+const addDaysISO = (s, n) => { const d = pd(s); d.setDate(d.getDate() + n); return iso(d); };
+function addMonthsISO(s, n, anchor) {
+  const d = pd(s); const day = anchor || d.getDate();
+  const y = d.getFullYear(), m = d.getMonth() + n;
+  const last = new Date(y, m + 1, 0).getDate();
+  return iso(new Date(y, m, Math.min(day, last)));
+}
+function nextApr30() { const t = todayISO(); const y = new Date().getFullYear(); const d = `${y}-04-30`; return d >= t ? d : `${y + 1}-04-30`; }
+const locale = () => (lang === 'en' ? 'en-GB' : 'th-TH');
+const fmtDate = (s, long) => s ? pd(s).toLocaleDateString(locale(), long ? { day: 'numeric', month: 'long', year: 'numeric' } : { day: 'numeric', month: 'short', year: 'numeric' }) : '–';
+const fmtMonthY = (y, m, short) => new Date(y, m, 1).toLocaleDateString(locale(), short ? { month: 'short' } : { month: 'long', year: 'numeric' });
+const fmtMoney = n => '฿' + Number(n || 0).toLocaleString('en-US', { maximumFractionDigits: 2 });
+const fmtShort = n => { n = Number(n || 0); if (n >= 1e6) return (n / 1e6).toFixed(1).replace(/\.0$/, '') + 'M'; if (n >= 1e3) return (n / 1e3).toFixed(n >= 1e4 ? 0 : 1).replace(/\.0$/, '') + 'k'; return String(Math.round(n)); };
+const fmtStamp = ms => ms ? new Date(ms).toLocaleString(locale(), { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : L('ยังไม่เคย', 'Never');
+
+/* ---------- reference data ---------- */
+const CATS = { tax: ['ภาษี', 'Tax'], insurance: ['ประกันภัย', 'Insurance'], fee: ['ค่าส่วนกลาง/ค่าธรรมเนียม', 'Fees'], loan: ['ค่างวด/สินเชื่อ', 'Loan'], maintenance: ['บำรุงรักษา', 'Maintenance'], other: ['อื่น ๆ', 'Other'] };
+const CAT_COLOR = { tax: '#13294B', insurance: '#B8892B', fee: '#5B7BB5', loan: '#8C96A8', maintenance: '#2E7D5B', other: '#C5CCD8' };
+const catName = c => L(...(CATS[c] || CATS.other));
+const TYPES = { car: ['รถยนต์', 'Car'], moto: ['รถจักรยานยนต์', 'Motorcycle'], condo: ['คอนโด', 'Condo'], house: ['บ้าน/ทาวน์โฮม', 'House'], land: ['ที่ดิน', 'Land'], policy: ['กรมธรรม์ประกัน', 'Insurance policy'], other: ['อื่น ๆ', 'Other'] };
+const typeName = t => L(...(TYPES[t] || TYPES.other));
+const ACC_KINDS = { savings: ['ออมทรัพย์', 'Savings'], current: ['กระแสรายวัน', 'Current'], credit: ['บัตรเครดิต', 'Credit card'], cash: ['เงินสด', 'Cash'], ewallet: ['e-Wallet', 'e-Wallet'] };
+const MKINDS = { periodic: ['บำรุงรักษาตามระยะ', 'Scheduled service'], repair: ['ซ่อม', 'Repair'], parts: ['เปลี่ยนอะไหล่/อุปกรณ์', 'Parts replaced'], check: ['ตรวจเช็ก', 'Inspection'], improve: ['ปรับปรุง/ตกแต่ง', 'Improvement'] };
+const STATUS = { overdue: ['เกินกำหนด', 'Overdue'], soon: ['ใกล้ครบ', 'Due soon'], open: ['เปิดให้จ่าย', 'Payable now'], waiting: ['รอ', 'Upcoming'], paid: ['จ่ายแล้ว', 'Paid'], skipped: ['ข้าม', 'Skipped'] };
+const stName = s => L(...STATUS[s]);
+const FIELDS = {
+  car: [['plate', 'ทะเบียน', 'Plate no.'], ['province', 'จังหวัด', 'Province'], ['model', 'ยี่ห้อ/รุ่น', 'Make / model'], ['year', 'ปีจดทะเบียน', 'Registration year'], ['odometer', 'เลขไมล์ล่าสุด (กม.)', 'Odometer (km)', 'number']],
+  moto: [['plate', 'ทะเบียน', 'Plate no.'], ['province', 'จังหวัด', 'Province'], ['model', 'ยี่ห้อ/รุ่น', 'Make / model'], ['year', 'ปีจดทะเบียน', 'Registration year'], ['odometer', 'เลขไมล์ล่าสุด (กม.)', 'Odometer (km)', 'number']],
+  condo: [['project', 'โครงการ', 'Project'], ['unit', 'เลขห้อง', 'Unit no.'], ['size', 'ขนาด (ตร.ม.)', 'Size (sq.m.)', 'number']],
+  house: [['address', 'ที่อยู่', 'Address'], ['deed', 'เลขโฉนด', 'Title deed no.']],
+  land: [['deed', 'เลขโฉนด', 'Title deed no.'], ['area', 'เนื้อที่', 'Area']],
+  policy: [['insurer', 'บริษัทประกัน', 'Insurer'], ['policyNo', 'เลขกรมธรรม์', 'Policy no.'], ['coverage', 'ความคุ้มครอง', 'Coverage']],
+  other: [['desc', 'รายละเอียด', 'Description']]
+};
+// key, th, en, category, recurType, interval, reminders, payAhead, defaultOn, suggest
+const T_LTAX = ['ltax', 'ภาษีที่ดินและสิ่งปลูกสร้าง', 'Land & building tax', 'tax', 'yearly', 1, [30, 7], 0, true, 'apr30'];
+const T_FIRE = ['fire', 'ประกันอัคคีภัย', 'Fire insurance', 'insurance', 'yearly', 1, [30, 7], 0, true];
+const T_LOAN = ['loan', 'ค่างวดสินเชื่อ', 'Loan installment', 'loan', 'monthly', 1, [5, 1], 0, false];
+const TPL = {
+  car: [['tax', 'ต่อภาษีรถประจำปี', 'Annual vehicle tax', 'tax', 'yearly', 1, [30, 7, 1], 90, true], ['cmi', 'พ.ร.บ.', 'Compulsory insurance (CMI)', 'insurance', 'yearly', 1, [30, 7], 0, true], ['ins', 'ประกันภาคสมัครใจ', 'Voluntary insurance', 'insurance', 'yearly', 1, [45, 14, 3], 0, true], ['insp', 'ตรวจสภาพรถ ตรอ.', 'Vehicle inspection', 'other', 'yearly', 1, [30, 7], 0, false], ['svc', 'เช็กระยะ', 'Scheduled service', 'maintenance', 'monthly', 6, [14, 3], 0, true], ['carloan', 'ค่างวดรถ', 'Car loan', 'loan', 'monthly', 1, [5, 1], 0, false]],
+  moto: [['tax', 'ต่อภาษีรถประจำปี', 'Annual vehicle tax', 'tax', 'yearly', 1, [30, 7, 1], 90, true], ['cmi', 'พ.ร.บ.', 'Compulsory insurance (CMI)', 'insurance', 'yearly', 1, [30, 7], 0, true], ['svc', 'เช็กระยะ', 'Scheduled service', 'maintenance', 'monthly', 6, [14], 0, false]],
+  condo: [['fee', 'ค่าส่วนกลาง', 'Common area fee', 'fee', 'yearly', 1, [30, 7], 0, true], T_LTAX, ['fire', 'ประกันห้องชุด/อัคคีภัย', 'Unit / fire insurance', 'insurance', 'yearly', 1, [30, 7], 0, true], T_LOAN],
+  house: [T_LTAX, ['vfee', 'ค่าส่วนกลางหมู่บ้าน', 'Village fee', 'fee', 'yearly', 1, [30, 7], 0, true], T_FIRE, ['ac', 'ล้างแอร์', 'Air-con cleaning', 'maintenance', 'monthly', 6, [14], 0, false], T_LOAN],
+  land: [T_LTAX],
+  policy: [['prem', 'เบี้ยประกัน', 'Premium', 'insurance', 'yearly', 1, [30, 7, 1], 0, true]],
+  other: []
+};
+
+/* ---------- IndexedDB ---------- */
+const STORES = ['assets', 'obligations', 'dues', 'payments', 'maintenance', 'accounts', 'attachments', 'kv'];
+const DATA_STORES = ['assets', 'obligations', 'dues', 'payments', 'maintenance', 'accounts'];
+let db;
+function openDB() {
+  return new Promise((res, rej) => {
+    if (!window.indexedDB) return rej(new Error('no-idb'));
+    const r = indexedDB.open('myassets', 1);
+    r.onupgradeneeded = () => { const d = r.result; STORES.forEach(s => { if (!d.objectStoreNames.contains(s)) d.createObjectStore(s, { keyPath: s === 'kv' ? 'k' : 'id' }); }); };
+    r.onsuccess = () => res(r.result);
+    r.onerror = () => rej(r.error);
+  });
+}
+function tx(store, mode, fn) {
+  return new Promise((res, rej) => {
+    const t = db.transaction(store, mode); const st = t.objectStore(store); let out;
+    const r = fn(st); if (r) r.onsuccess = () => { out = r.result; };
+    t.oncomplete = () => res(out); t.onerror = () => rej(t.error); t.onabort = () => rej(t.error);
+  });
+}
+const dbAll = s => tx(s, 'readonly', st => st.getAll());
+const dbGet = (s, id) => tx(s, 'readonly', st => st.get(id));
+const dbPut = (s, v) => tx(s, 'readwrite', st => st.put(v));
+const dbDel = (s, id) => tx(s, 'readwrite', st => st.delete(id));
+const dbClear = s => tx(s, 'readwrite', st => st.clear());
+
+/* ---------- state ---------- */
+const S = { assets: [], obligations: [], dues: [], payments: [], maintenance: [], accounts: [], set: {} };
+let lastChangeAt = 0; // last time any data record changed (saved to IndexedDB instantly)
+async function loadAll() {
+  for (const s of DATA_STORES) S[s] = await dbAll(s);
+  S.set = {}; (await dbAll('kv')).forEach(r => { S.set[r.k] = r.v; });
+}
+async function save(store, obj, keepStamp) {
+  const now = Date.now();
+  if (!keepStamp) obj.updatedAt = now;
+  if (!obj.createdAt) obj.createdAt = now;
+  const arr = S[store]; const i = arr.findIndex(x => x.id === obj.id);
+  if (i >= 0) arr[i] = obj; else arr.push(obj);
+  await dbPut(store, obj); lastChangeAt = Date.now();
+  return obj;
+}
+async function removeRec(store, id) { S[store] = S[store].filter(x => x.id !== id); await dbDel(store, id); lastChangeAt = Date.now(); }
+async function setKV(k, v) { S.set[k] = v; await dbPut('kv', { k, v }); }
+
+const byId = (store, id) => S[store].find(x => x.id === id);
+const assetOf = ob => ob && byId('assets', ob.assetId);
+const obOf = d => d && byId('obligations', d.obligationId);
+const liveDues = () => S.dues.filter(d => !d.removed && obOf(d));
+
+/* ---------- dues engine ---------- */
+function genDates(ob) {
+  const a = byId('assets', ob.assetId);
+  if (!ob.active || ob.archived || !ob.firstDue || (a && a.status !== 'active')) return [];
+  const horizon = addMonthsISO(todayISO(), 18);
+  const step = ob.recurType === 'yearly' ? 12 * (ob.interval || 1) : (ob.interval || 1);
+  const anchor = pd(ob.firstDue).getDate();
+  const out = []; let n = 0; let d = ob.firstDue;
+  while (d <= horizon && n < 600) {
+    if (ob.endType === 'date' && ob.endDate && d > ob.endDate) break;
+    if (ob.endType === 'count' && ob.endCount && n >= +ob.endCount) break;
+    out.push(d); n++;
+    if (ob.recurType === 'once') break;
+    d = addMonthsISO(ob.firstDue, step * n, anchor);
+  }
+  return out;
+}
+async function syncDues(ob) {
+  for (const date of genDates(ob)) {
+    const id = ob.id + '_' + date;
+    const ex = byId('dues', id);
+    if (!ex) await save('dues', { id, obligationId: ob.id, dueDate: date, expectedAmount: +ob.amount || 0, skipped: false, paymentId: null, isSample: !!ob.isSample });
+    else if (ex.removed) { ex.removed = false; ex.expectedAmount = +ob.amount || 0; await save('dues', ex); }
+  }
+}
+// remove future unpaid dues that are not manually edited, then regenerate
+async function regenDues(ob) {
+  const t = todayISO();
+  for (const d of S.dues.filter(x => x.obligationId === ob.id && !x.paymentId && !x.skipped && !x.overridden && !x.removed && x.dueDate >= t)) {
+    await dropDue(d);
+  }
+  await syncDues(ob);
+}
+async function dropDue(d) {
+  if (d.icsExportedAt) { d.removed = true; await save('dues', d); } else await removeRec('dues', d.id);
+}
+function dueStatus(d) {
+  if (d.paymentId) return 'paid';
+  if (d.skipped) return 'skipped';
+  const ob = obOf(d); const left = diffDays(todayISO(), d.dueDate);
+  if (left < 0) return 'overdue';
+  const maxR = Math.max(0, ...((ob && ob.reminders) || []));
+  if (left <= maxR) return 'soon';
+  if (ob && ob.payAhead && left <= ob.payAhead) return 'open';
+  return 'waiting';
+}
+const dueAmount = d => { if (d.paymentId) { const p = byId('payments', d.paymentId); if (p) return +p.amount || 0; } return +d.expectedAmount || 0; };
+function annualized(ob) {
+  if (!ob.active || ob.archived) return 0; const a = +ob.amount || 0;
+  if (ob.recurType === 'monthly') return a * 12 / (ob.interval || 1);
+  if (ob.recurType === 'yearly') return a / (ob.interval || 1);
+  return 0;
+}
+const openDues = () => liveDues().filter(d => !d.paymentId && !d.skipped).sort((a, b) => a.dueDate.localeCompare(b.dueDate));
+function nextDueOfAsset(aid) { return openDues().find(d => { const o = obOf(d); return o && o.assetId === aid; }); }
+const accName = id => { const a = byId('accounts', id); return a ? `${a.name}${a.last4 ? ' •' + a.last4 : ''}` : L('ไม่ระบุบัญชี', 'No account'); };
+const recurText = ob => {
+  if (ob.recurType === 'once') return L('ครั้งเดียว', 'One-time');
+  const n = ob.interval || 1;
+  if (ob.recurType === 'yearly') return n === 1 ? L('ทุกปี', 'Yearly') : L(`ทุก ${n} ปี`, `Every ${n} years`);
+  return n === 1 ? L('ทุกเดือน', 'Monthly') : L(`ทุก ${n} เดือน`, `Every ${n} months`);
+};
+
+/* ---------- attachments ---------- */
+async function compressImage(file) {
+  const url = URL.createObjectURL(file);
+  try {
+    const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = url; });
+    const max = 1600; let w = img.naturalWidth, h = img.naturalHeight;
+    const k = Math.min(1, max / Math.max(w, h)); w = Math.round(w * k); h = Math.round(h * k);
+    const c = document.createElement('canvas'); c.width = w; c.height = h;
+    c.getContext('2d').drawImage(img, 0, 0, w, h);
+    return await new Promise(res => c.toBlob(b => res(b || file), 'image/jpeg', 0.82));
+  } finally { URL.revokeObjectURL(url); }
+}
+async function addAttachment(file, isSample) {
+  const blob = await compressImage(file);
+  const rec = { id: uid(), blob, mime: blob.type || 'image/jpeg', size: blob.size, createdAt: Date.now(), isSample: !!isSample };
+  await dbPut('attachments', rec); return rec.id;
+}
+const urlCache = {};
+async function attUrl(id) {
+  if (urlCache[id]) return urlCache[id];
+  const r = await dbGet('attachments', id); if (!r) return '';
+  return (urlCache[id] = URL.createObjectURL(r.blob));
+}
+async function hydrateImgs(root = document) {
+  for (const img of $$('img[data-att]', root)) { if (!img.src) { const u = await attUrl(img.dataset.att); if (u) img.src = u; else img.remove(); } }
+}
+async function deleteAttachments(ids) { for (const id of ids || []) { await dbDel('attachments', id); if (urlCache[id]) { URL.revokeObjectURL(urlCache[id]); delete urlCache[id]; } } }
+
+/* ---------- PIN ---------- */
+async function hashPin(pin, salt) {
+  const data = new TextEncoder().encode(salt + ':' + pin);
+  if (window.crypto && crypto.subtle) {
+    const h = await crypto.subtle.digest('SHA-256', data);
+    return [...new Uint8Array(h)].map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+  let h = 5381; for (const b of data) h = ((h << 5) + h + b) >>> 0; return 'f' + h.toString(16);
+}
+
+/* ---------- sample data ---------- */
+async function loadSample() {
+  const t = todayISO(), D = n => addDaysISO(t, n), Y = s => addMonthsISO(s, -12);
+  const mk = o => Object.assign({ id: uid(), isSample: true }, o);
+  const a1 = mk({ name: L('ออมทรัพย์หลัก', 'Main savings'), kind: 'savings', bank: 'KBank', last4: '1234', active: true });
+  const a2 = mk({ name: L('บัตรเครดิต', 'Credit card'), kind: 'credit', bank: 'SCB', last4: '5678', active: true });
+  for (const a of [a1, a2]) await save('accounts', a);
+  const car = mk({ type: 'car', name: 'Honda City', ownerName: '', status: 'active', details: { plate: 'กข 1234', province: L('กรุงเทพมหานคร', 'Bangkok'), model: 'Honda City 1.0 Turbo', year: '2021', odometer: '58200' }, attachmentIds: [] });
+  const condo = mk({ type: 'condo', name: L('คอนโดสุขุมวิท', 'Sukhumvit condo'), ownerName: '', status: 'active', details: { project: 'The Line Sukhumvit 71', unit: '1205', size: '32' }, attachmentIds: [] });
+  const land = mk({ type: 'land', name: L('ที่ดินเชียงใหม่', 'Chiang Mai land'), ownerName: L('คุณแม่', 'Mother'), status: 'active', details: { deed: '12345', area: L('1 ไร่ 2 งาน', '1 rai 2 ngan') }, attachmentIds: [] });
+  const pol = mk({ type: 'policy', name: L('ประกันสุขภาพ', 'Health insurance'), ownerName: '', status: 'active', details: { insurer: L('บริษัทประกันตัวอย่าง', 'Sample Insurance Co.'), policyNo: 'P-000123', coverage: L('ผู้ป่วยใน 1 ล้านบาท', 'Inpatient ฿1M') }, attachmentIds: [] });
+  for (const a of [car, condo, land, pol]) await save('assets', a);
+  const O = (asset, title, category, recurType, interval, firstDue, amount, acc, reminders, extra = {}) => mk(Object.assign({ assetId: asset.id, title, category, recurType, interval, firstDue, amount, amountMode: 'fixed', accountId: acc.id, autoDebit: false, reminders, payAhead: 0, endType: 'none', note: '', active: true }, extra));
+  const overdueFee = D(-3);
+  const obs = [
+    O(car, L('ต่อภาษีรถประจำปี', 'Annual vehicle tax'), 'tax', 'yearly', 1, Y(D(12)), 1950, a1, [30, 7, 1], { payAhead: 90 }),
+    O(car, L('พ.ร.บ.', 'Compulsory insurance (CMI)'), 'insurance', 'yearly', 1, Y(D(12)), 645, a2, [30, 7]),
+    O(car, L('ประกันภาคสมัครใจ', 'Voluntary insurance'), 'insurance', 'yearly', 1, Y(D(70)), 18500, a2, [45, 14, 3]),
+    O(condo, L('ค่าส่วนกลาง', 'Common area fee'), 'fee', 'yearly', 1, Y(overdueFee), 11520, a1, [30, 7]),
+    O(condo, L('ภาษีที่ดินและสิ่งปลูกสร้าง', 'Land & building tax'), 'tax', 'yearly', 1, Y(nextApr30()), 380, a1, [30, 7]),
+    O(condo, L('ประกันห้องชุด/อัคคีภัย', 'Unit / fire insurance'), 'insurance', 'yearly', 1, Y(D(150)), 1200, a1, [30, 7]),
+    O(condo, L('ค่างวดสินเชื่อ', 'Mortgage'), 'loan', 'monthly', 1, addMonthsISO(D(4), -11), 9800, a1, [5, 1], { autoDebit: true, endType: 'count', endCount: 240 }),
+    O(land, L('ภาษีที่ดินและสิ่งปลูกสร้าง', 'Land & building tax'), 'tax', 'yearly', 1, Y(nextApr30()), 1500, a1, [30, 7]),
+    O(pol, L('เบี้ยประกัน', 'Premium'), 'insurance', 'yearly', 1, Y(D(5)), 24300, a1, [30, 7, 1])
+  ];
+  for (const o of obs) { await save('obligations', o); await syncDues(o); }
+  // maintenance history for the car
+  const m1 = mk({ assetId: car.id, date: D(-330), kind: 'periodic', odometer: '40000', items: [{ desc: L('เปลี่ยนน้ำมันเครื่อง', 'Engine oil'), cost: 1450 }, { desc: L('ไส้กรองน้ำมันเครื่อง', 'Oil filter'), cost: 280 }, { desc: L('ค่าแรง', 'Labour'), cost: 600 }], provider: L('Honda ศูนย์บริการ (ตัวอย่าง)', 'Honda service centre (sample)'), totalCost: 2330, accountId: a2.id, warrantyUntil: '', nextServiceDate: '', note: '', attachmentIds: [] });
+  const m2 = mk({ assetId: car.id, date: D(-160), kind: 'periodic', odometer: '50000', items: [{ desc: L('เปลี่ยนน้ำมันเครื่อง', 'Engine oil'), cost: 1450 }, { desc: L('ไส้กรองอากาศ', 'Air filter'), cost: 420 }, { desc: L('น้ำมันเบรก', 'Brake fluid'), cost: 650 }, { desc: L('ค่าแรง', 'Labour'), cost: 800 }], provider: L('Honda ศูนย์บริการ (ตัวอย่าง)', 'Honda service centre (sample)'), totalCost: 3320, accountId: a2.id, warrantyUntil: '', nextServiceDate: D(25), note: L('นัดครั้งถัดไป 60,000 กม.', 'Next service at 60,000 km'), attachmentIds: [] });
+  const m3 = mk({ assetId: car.id, date: D(-20), kind: 'repair', odometer: '57800', items: [{ desc: L('เปลี่ยนผ้าเบรกหน้า', 'Front brake pads'), cost: 2400 }, { desc: L('เจียรจานเบรก', 'Rotor resurfacing'), cost: 400 }], provider: L('อู่ช่างเอก (ตัวอย่าง)', 'Ek Garage (sample)'), totalCost: 2800, accountId: a1.id, warrantyUntil: addMonthsISO(D(-20), 6), nextServiceDate: '', note: '', attachmentIds: [] });
+  for (const m of [m1, m2, m3]) { await save('maintenance', m); await syncMaintObligation(m); }
+  // past dues: paid, except the intentionally overdue common fee
+  for (const d of S.dues.filter(x => x.isSample && x.dueDate < t)) {
+    if (d.dueDate === overdueFee) continue;
+    const ob = obOf(d);
+    const p = mk({ dueId: d.id, paidDate: d.dueDate < addDaysISO(t, -2) ? addDaysISO(d.dueDate, -2) : d.dueDate, amount: d.expectedAmount, accountId: ob.accountId, reference: '', note: '', attachmentIds: [] });
+    await save('payments', p); d.paymentId = p.id; await save('dues', d);
+  }
+  await setKV('started', true);
+}
+async function clearSample() {
+  for (const s of DATA_STORES) for (const r of S[s].filter(x => x.isSample)) await removeRec(s, r.id);
+  const atts = await dbAll('attachments');
+  for (const a of atts.filter(x => x.isSample)) await dbDel('attachments', a.id);
+}
+const hasSample = () => DATA_STORES.some(s => S[s].some(x => x.isSample));
+
+/* maintenance → next-service reminder (one-time obligation) */
+async function syncMaintObligation(m) {
+  let ob = S.obligations.find(o => o.linkedMaintenanceId === m.id);
+  if (!m.nextServiceDate) { if (ob) { for (const d of S.dues.filter(x => x.obligationId === ob.id && !x.paymentId)) await dropDue(d); ob.active = false; ob.archived = true; await save('obligations', ob); } return; }
+  const asset = byId('assets', m.assetId);
+  if (!ob) ob = { id: uid(), linkedMaintenanceId: m.id, assetId: m.assetId, title: L('นัดบำรุงรักษาครั้งถัดไป', 'Next service appointment'), category: 'maintenance', recurType: 'once', interval: 1, amount: 0, amountMode: 'estimate', accountId: m.accountId || '', autoDebit: false, reminders: [14, 3], payAhead: 0, endType: 'none', note: m.provider || '', active: true, isSample: !!m.isSample };
+  ob.firstDue = m.nextServiceDate; ob.active = !!(asset && asset.status === 'active'); ob.archived = false;
+  await save('obligations', ob); await regenDues(ob);
+}
+
+/* ---------- icons ---------- */
+const IC = {
+  home: '<svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z"/></svg>',
+  calendar: '<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',
+  assets: '<svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>',
+  reports: '<svg viewBox="0 0 24 24"><path d="M5 20V11M11 20V5M17 20v-6M3 20h18"/></svg>',
+  more: '<svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/></svg>',
+  car: '<svg viewBox="0 0 24 24"><path d="M3 16v-3.5L5.2 7h13.6L21 12.5V16"/><path d="M3 12.5h18"/><circle cx="7" cy="16.5" r="2"/><circle cx="17" cy="16.5" r="2"/><path d="M9 16.5h6"/></svg>',
+  moto: '<svg viewBox="0 0 24 24"><circle cx="6" cy="16" r="3"/><circle cx="18" cy="16" r="3"/><path d="M6 16l4-6h5l3 6M14 6h3"/></svg>',
+  condo: '<svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="1"/><path d="M9 7h2M13 7h2M9 11h2M13 11h2M9 15h2M13 15h2"/></svg>',
+  house: '<svg viewBox="0 0 24 24"><path d="M3 11 12 4l9 7M6 9.5V20h12V9.5M10 20v-5h4v5"/></svg>',
+  land: '<svg viewBox="0 0 24 24"><path d="M2 19 9 9l4 5 3-3 6 8z"/><circle cx="17" cy="6" r="2"/></svg>',
+  policy: '<svg viewBox="0 0 24 24"><path d="M12 3 5 6v6c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6z"/><path d="m9 12 2 2 4-4"/></svg>',
+  other: '<svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 12h8M12 8v8"/></svg>',
+  plus: '<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>',
+  lock: '<svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>',
+  back: '<svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>',
+  cam: '<svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>',
+  wrench: '<svg viewBox="0 0 24 24"><path d="M14.5 6.5a4 4 0 0 0-5.3 5.3L4 17l3 3 5.2-5.2a4 4 0 0 0 5.3-5.3l-2.5 2.5-2.5-.5-.5-2.5z"/></svg>',
+  check: '<svg viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></svg>',
+  download: '<svg viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>',
+  gear: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>',
+  info: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>'
+};
+const brandMark = () => `<svg class="brand-mark" viewBox="0 0 64 64" style="stroke:none"><circle cx="32" cy="32" r="30" fill="#C9A24A"/><circle cx="32" cy="32" r="26" fill="#fff"/><circle cx="32" cy="32" r="21" fill="none" stroke="#C9A24A" stroke-width="2" stroke-dasharray="3 3"/><text x="32" y="39" font-size="19" text-anchor="middle" fill="#13294B" font-family="sans-serif" font-weight="700">M</text></svg>`;
+
+/* ---------- toast & sheet ---------- */
+let toastTimer;
+function toast(msg, actLabel, actFn) {
+  $('.toast')?.remove(); clearTimeout(toastTimer);
+  const t = document.createElement('div'); t.className = 'toast'; t.setAttribute('role', 'status');
+  t.innerHTML = `<span>${esc(msg)}</span>${actLabel ? `<button type="button">${esc(actLabel)}</button>` : ''}`;
+  if (actLabel) t.querySelector('button').onclick = () => { t.remove(); actFn(); };
+  document.body.appendChild(t); toastTimer = setTimeout(() => t.remove(), actLabel ? 6000 : 3000);
+}
+function closeSheet() { $('.sheet-wrap')?.remove(); }
+function sheet(title, body, o = {}) {
+  closeSheet();
+  const w = document.createElement('div'); w.className = 'sheet-wrap';
+  w.innerHTML = `<div class="sheet ${o.wide ? 'wide' : ''}" role="dialog" aria-modal="true" aria-label="${esc(title)}"><form class="sheet-form" novalidate>
+    <header class="sheet-head"><h2>${esc(title)}</h2><button type="button" class="icon-btn" data-close aria-label="${L('ปิด', 'Close')}">✕</button></header>
+    <div class="sheet-body">${body}</div>
+    ${o.submit ? `<footer class="sheet-foot">${o.extraBtn || ''}<span style="flex:1"></span><button type="button" class="btn ghost" data-close>${L('ยกเลิก', 'Cancel')}</button><button type="submit" class="btn ${o.danger ? 'danger' : 'primary'}">${esc(o.submitLabel || L('บันทึก', 'Save'))}</button></footer>` : ''}
+  </form></div>`;
+  document.body.appendChild(w);
+  w.addEventListener('mousedown', e => { if (e.target === w) closeSheet(); });
+  w.addEventListener('click', e => { if (e.target.closest('[data-close]')) closeSheet(); });
+  const f = $('form', w);
+  f.addEventListener('submit', async e => {
+    e.preventDefault(); if (!o.submit) return;
+    const btn = $('button[type=submit]', f); btn.disabled = true;
+    try { const ok = await o.submit(f); if (ok !== false) { closeSheet(); render(); } } catch (err) { console.error(err); toast(L('บันทึกไม่สำเร็จ: ', 'Could not save: ') + err.message); }
+    finally { btn.disabled = false; }
+  });
+  bindAttFields(w); hydrateImgs(w);
+  o.onOpen && o.onOpen(w, f);
+  return w;
+}
+const fv = (f, n) => (f.elements[n] ? String(f.elements[n].value).trim() : '');
+const fc = (f, n) => !!(f.elements[n] && f.elements[n].checked);
+function need(f, names) {
+  for (const n of names) if (!fv(f, n)) { toast(L('กรุณากรอกข้อมูลให้ครบ', 'Please fill in the required fields')); f.elements[n]?.focus(); return false; }
+  return true;
+}
+const opt = (v, label, sel) => `<option value="${esc(v)}" ${String(v) === String(sel) ? 'selected' : ''}>${esc(label)}</option>`;
+const accOptions = sel => opt('', L('— ไม่ระบุ —', '— None —'), sel) + S.accounts.filter(a => a.active !== false || a.id === sel).map(a => opt(a.id, `${a.name}${a.last4 ? ' •' + a.last4 : ''}`, sel)).join('');
+
+/* attachment field */
+function attField(ids = [], label) {
+  return `<div class="f"><span class="flabel">${esc(label || L('รูปแนบ (ใบเสร็จ/เอกสาร)', 'Photos (receipts / documents)'))}</span><div class="thumbs" data-attfield='${esc(JSON.stringify(ids))}'></div></div>`;
+}
+function bindAttFields(root) {
+  for (const box of $$('[data-attfield]', root)) {
+    const draw = () => {
+      const ids = JSON.parse(box.dataset.attfield || '[]');
+      box.innerHTML = ids.map(id => `<img class="thumb" data-att="${esc(id)}" data-act="viewAtt" data-id="${esc(id)}" alt="">`).join('') +
+        `<label class="add-thumb" title="${L('เพิ่มรูป', 'Add photo')}">${IC.cam}<input type="file" accept="image/*" multiple hidden></label>`;
+      hydrateImgs(box);
+      $('input', box).addEventListener('change', async e => {
+        const files = [...e.target.files]; if (!files.length) return;
+        toast(L('กำลังย่อรูป…', 'Resizing photo…'));
+        const list = JSON.parse(box.dataset.attfield || '[]');
+        for (const fl of files) { try { list.push(await addAttachment(fl)); } catch { toast(L('อ่านไฟล์รูปไม่ได้', 'Could not read that image')); } }
+        box.dataset.attfield = JSON.stringify(list); draw(); onAttChange(box);
+      });
+    };
+    box._draw = draw; draw();
+  }
+}
+const attIds = f => { const b = $('[data-attfield]', f); return b ? JSON.parse(b.dataset.attfield || '[]') : []; };
+
+/* ---------- router ---------- */
+let R = { view: 'home', id: '' };
+let ui = { welcomeStep: 0, calY: null, calM: null, calSel: null, assetTab: 'obl', duesFilter: 'open', duesAsset: '', reportYear: new Date().getFullYear(), maintQ: '' };
+function parseHash() { const h = (location.hash || '#home').slice(1).split('/'); R = { view: h[0] || 'home', id: decodeURIComponent(h[1] || '') }; }
+window.addEventListener('hashchange', () => { parseHash(); render(); window.scrollTo(0, 0); });
+
+function render() {
+  document.documentElement.lang = lang;
+  const root = $('#root');
+  if (!S.set.consent || S.set.consent.version < TERMS_VERSION) { root.innerHTML = viewWelcome(true); return; }
+  if (!S.set.started) { root.innerHTML = viewStart(); return; }
+  if (!S.set.hideWelcome && !welcomeSeen) { root.innerHTML = viewWelcome(false); return; }
+  const V = { home: viewHome, calendar: viewCalendar, dues: viewDues, assets: viewAssets, asset: viewAsset, reports: viewReports, more: viewMore, settings: viewMore };
+  const content = (V[R.view] || viewHome)();
+  root.innerHTML = shell(content);
+  bindAttFields(root); hydrateImgs(root); scrollTimeline();
+}
+function shell(content) {
+  const nav = [['home', IC.home, L('หน้าหลัก', 'Home')], ['calendar', IC.calendar, L('ปฏิทิน', 'Calendar')], ['assets', IC.assets, L('ทรัพย์สิน', 'Assets')], ['reports', IC.reports, L('รายงาน', 'Reports')], ['settings', IC.gear, L('ตั้งค่า', 'Settings')]];
+  const act = R.view === 'asset' ? 'assets' : R.view === 'dues' ? 'home' : (R.view === 'more' ? 'settings' : R.view in { home: 1, calendar: 1, assets: 1, reports: 1, settings: 1 } ? R.view : 'home');
+  const link = (n, cls = '') => `<a href="#${n[0]}" class="${cls} ${act === n[0] ? 'on' : ''}" ${act === n[0] ? 'aria-current="page"' : ''}>${n[1]}<span>${n[2]}</span></a>`;
+  const owner = S.set.owner ? `<div class="brand-owner">${esc(S.set.owner)}</div>` : '';
+  return `<div class="app">
+   <aside class="side"><div class="brand">${brandMark()}<div><div class="brand-name">MyAssets</div>${owner}</div></div>
+     <nav class="nav">${nav.map(n => link(n, 'nav-i')).join('')}</nav></aside>
+   <div class="main">
+     <header class="top"><div class="brand m-only">${brandMark()}<div><div class="brand-name">MyAssets</div>${owner}</div></div>
+       <div class="top-act"><button class="icon-btn" data-act="showTerms" aria-label="${L('เกี่ยวกับและข้อตกลงการใช้งาน', 'About and terms')}" title="${L('เกี่ยวกับและข้อตกลงการใช้งาน', 'About and terms')}">${IC.info}</button><button class="lang-btn" data-act="toggleLang" aria-label="${L('เปลี่ยนภาษา', 'Change language')}">${lang === 'th' ? 'EN' : 'ไทย'}</button>${S.set.pin ? `<button class="icon-btn" data-act="lockNow" aria-label="${L('ล็อกแอป', 'Lock app')}">${IC.lock}</button>` : ''}</div></header>
+     ${dataBar()}
+     <main id="view" class="view">${content}</main>
+     <footer class="credit">Create by Nattapol P. @2026 Version ${VERSION}</footer>
+   </div>
+   <nav class="bnav">${nav.map(n => link(n)).join('')}</nav></div>`;
+}
+
+/* ---------- shared bits ---------- */
+const badge = st => `<span class="badge b-${st}">${stName(st)}</span>`;
+function dueRow(d, withPay = true) {
+  const ob = obOf(d), a = assetOf(ob), st = dueStatus(d), p = d.paymentId ? byId('payments', d.paymentId) : null;
+  const left = diffDays(todayISO(), d.dueDate);
+  const when = st === 'paid' ? L('จ่ายแล้ว', 'Paid') : st === 'overdue' ? L(`เกิน ${-left} วัน`, `${-left} days overdue`) : left === 0 ? L('วันนี้', 'Today') : L(`อีก ${left} วัน`, `in ${left} days`);
+  const canPay = withPay && st !== 'paid' && st !== 'skipped';
+  const id = esc(d.id);
+  return `<details class="drow"><summary class="row">
+    <div class="row-ic">${assetIcon(a)}</div>
+    <div class="row-main"><div class="row-t">${esc(ob.title)}</div><div class="row-s">${esc(a?.name || '')} · ${fmtDate(d.dueDate)} · ${when}</div></div>
+    <div class="row-r"><div class="amt num">${fmtMoney(dueAmount(d))}</div>${canPay ? `<button class="btn sm gold" data-act="quickPay" data-id="${id}" style="margin-top:4px">${L('จ่ายแล้ว', 'Mark paid')}</button>` : badge(st)}</div><span class="chev" aria-hidden="true"></span></summary>
+    <div class="drow-b"><dl class="kv">
+      <dt>${L('สถานะ', 'Status')}</dt><dd>${badge(st)}</dd>
+      <dt>${L('หมวด / รอบ', 'Category / cycle')}</dt><dd>${catName(ob.category)} · ${recurText(ob)}</dd>
+      <dt>${p ? L('จ่ายจากบัญชี', 'Paid from') : L('บัญชีที่ตั้งไว้', 'Pay from')}</dt><dd>${esc(accName(p ? p.accountId : ob.accountId))}${ob.autoDebit ? ' · ' + L('หักอัตโนมัติ', 'auto-debit') : ''}</dd>
+      ${p ? `<dt>${L('จ่ายเมื่อ', 'Paid on')}</dt><dd>${fmtDate(p.paidDate, true)}</dd>${p.reference ? `<dt>${L('อ้างอิง', 'Reference')}</dt><dd>${esc(p.reference)}</dd>` : ''}` : `<dt>${L('ยอดที่คาด', 'Expected')}</dt><dd class="num">${fmtMoney(d.expectedAmount)}${ob.amountMode === 'estimate' ? ' ' + L('(ประมาณ)', '(est.)') : ''}</dd>`}
+      ${a?.ownerName ? `<dt>${L('ในนามของ', 'Owner')}</dt><dd>${esc(a.ownerName)}</dd>` : ''}
+      ${(p?.note || ob.note) ? `<dt>${L('หมายเหตุ', 'Notes')}</dt><dd>${esc(p?.note || ob.note)}</dd>` : ''}</dl>
+      ${p && (p.attachmentIds || []).length ? `<div class="thumbs">${p.attachmentIds.map(x => `<img class="thumb" data-att="${esc(x)}" data-act="viewAtt" data-id="${esc(x)}" data-ro="1" alt="">`).join('')}</div>` : ''}
+      <div class="chips" style="margin-top:10px">${p ? `<button class="btn sm" data-act="payForm" data-id="${id}">${L('แก้ไขการจ่าย', 'Edit payment')}</button>` : st === 'skipped' ? '' : `<button class="btn sm gold" data-act="payForm" data-id="${id}">${L('บันทึกการจ่าย + แนบรูป', 'Record payment + photo')}</button><button class="btn sm" data-act="editDue" data-id="${id}">${L('แก้วัน/ยอด', 'Edit date/amount')}</button>`}${a ? `<a class="btn sm" href="#asset/${encodeURIComponent(a.id)}">${L('ไปที่ทรัพย์สิน', 'Go to asset')}</a>` : ''}<button class="btn sm ghost" data-act="openDue" data-id="${id}">${L('ตัวเลือกเพิ่มเติม', 'More options')}</button></div></div></details>`;
+}
+function disc(d) {
+  const ob = obOf(d), a = assetOf(ob), st = dueStatus(d), left = diffDays(todayISO(), d.dueDate);
+  const win = Math.max(30, ...(ob.reminders || [0]));
+  const p = st === 'overdue' ? 1 : Math.max(0.04, Math.min(1, 1 - left / win));
+  const big = st === 'overdue' ? -left : left;
+  const small = st === 'overdue' ? L('วันที่เกิน', 'days late') : left === 0 ? L('ครบวันนี้', 'due today') : L('วัน', 'days');
+  return `<button class="disc s-${st}" data-act="openDue" data-id="${esc(d.id)}" aria-label="${esc(ob.title)} ${fmtDate(d.dueDate)}">
+    <div class="disc-ring" style="--p:${p.toFixed(3)}"><div class="disc-face"><i>${fmtDate(d.dueDate)}</i><b class="num">${big}</b><span>${small}</span></div></div>
+    <div class="disc-cap">${esc(ob.title)}<small>${esc(a?.name || '')}</small></div><div class="disc-amt num">${fmtMoney(d.expectedAmount)}</div></button>`;
+}
+const emptyBox = (msg, btn) => `<div class="card empty"><div>${msg}</div>${btn || ''}</div>`;
+
+/* ---------- dues list ---------- */
+function viewDues() {
+  const t = todayISO(), f = ui.duesFilter, aid = ui.duesAsset;
+  let list = liveDues();
+  if (aid) list = list.filter(d => obOf(d).assetId === aid);
+  const fl = { open: d => !d.paymentId && !d.skipped, overdue: d => dueStatus(d) === 'overdue', d7: d => !d.paymentId && !d.skipped && d.dueDate >= t && diffDays(t, d.dueDate) <= 7, d30: d => !d.paymentId && !d.skipped && d.dueDate >= t && diffDays(t, d.dueDate) <= 30, paid: d => !!d.paymentId, all: () => true };
+  list = list.filter(fl[f] || fl.open).sort((a, b) => f === 'paid' ? b.dueDate.localeCompare(a.dueDate) : a.dueDate.localeCompare(b.dueDate));
+  const chips = [['open', L('ยังไม่จ่าย', 'Unpaid')], ['overdue', L('เกินกำหนด', 'Overdue')], ['d7', L('7 วัน', '7 days')], ['d30', L('30 วัน', '30 days')], ['paid', L('จ่ายแล้ว', 'Paid')], ['all', L('ทั้งหมด', 'All')]];
+  let html = '', cur = '';
+  for (const d of list) {
+    const k = d.dueDate.slice(0, 7);
+    if (k !== cur) { if (cur) html += '</div>'; cur = k; html += `<div class="month-h">${fmtMonthY(+k.slice(0, 4), +k.slice(5, 7) - 1)}</div><div class="rows">`; }
+    html += dueRow(d, f !== 'paid');
+  }
+  if (cur) html += '</div>';
+  return `<div class="page-head"><div><a href="#home" class="link">${L('‹ หน้าหลัก', '‹ Home')}</a><h1 style="margin-top:6px">${L('งวดทั้งหมด', 'All payments')}</h1></div>
+    <select class="btn" data-change="duesAsset" aria-label="${L('กรองตามทรัพย์สิน', 'Filter by asset')}">${opt('', L('ทุกทรัพย์สิน', 'All assets'), aid)}${S.assets.map(a => opt(a.id, a.name, aid)).join('')}</select></div>
+  <div class="chips">${chips.map(c => `<button class="chip ${f === c[0] ? 'on' : ''}" data-act="duesFilter" data-f="${c[0]}">${c[1]}</button>`).join('')}</div>
+  ${html || `<div style="margin-top:14px">${emptyBox(L('ไม่มีรายการตามตัวกรองนี้', 'Nothing matches this filter'))}</div>`}`;
+}
+
+/* ---------- calendar ---------- */
+function viewCalendar() {
+  const now = new Date();
+  if (ui.calY == null) { ui.calY = now.getFullYear(); ui.calM = now.getMonth(); }
+  const y = ui.calY, m = ui.calM, t = todayISO();
+  const first = new Date(y, m, 1); const startDow = (first.getDay() + 6) % 7; // Monday first
+  const start = addDaysISO(iso(first), -startDow);
+  const map = {}; liveDues().filter(d => !d.skipped).forEach(d => (map[d.dueDate] = map[d.dueDate] || []).push(d));
+  const dows = lang === 'en' ? ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] : ['จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส', 'อา'];
+  let cells = '';
+  for (let i = 0; i < 42; i++) {
+    const ds = addDaysISO(start, i), dd = pd(ds); const list = map[ds] || [];
+    if (i >= 35 && dd.getMonth() !== m) break;
+    cells += `<button class="cal-d ${dd.getMonth() !== m ? 'out' : ''} ${ds === t ? 'today' : ''} ${ds === ui.calSel ? 'sel' : ''}" data-act="calSel" data-d="${ds}" aria-label="${fmtDate(ds, true)}${list.length ? ', ' + list.length + ' ' + L('รายการ', 'items') : ''}"><span class="num">${dd.getDate()}</span><span class="dots">${list.slice(0, 4).map(d => `<i class="dot ${dueStatus(d)}"></i>`).join('')}</span></button>`;
+  }
+  const sel = ui.calSel; const selList = sel ? (map[sel] || []) : [];
+  const monthList = liveDues().filter(d => !d.skipped && d.dueDate.slice(0, 7) === `${y}-${pad(m + 1)}`).sort((a, b) => a.dueDate.localeCompare(b.dueDate));
+  return `<div class="page-head"><h1>${L('ปฏิทินการจ่าย', 'Payment calendar')}</h1><button class="btn" data-act="openIcs">${IC.calendar}${L('ส่งออกเข้าปฏิทินมือถือ', 'Export to phone calendar')}</button></div>
+  <div class="card"><div class="cal-head"><button class="icon-btn" data-act="calNav" data-d="-1" aria-label="${L('เดือนก่อน', 'Previous month')}">${IC.back}</button><h2>${fmtMonthY(y, m)}</h2><button class="icon-btn" data-act="calNav" data-d="1" aria-label="${L('เดือนถัดไป', 'Next month')}" style="transform:scaleX(-1)">${IC.back}</button></div>
+   <div class="cal">${dows.map(d => `<div class="cal-dow">${d}</div>`).join('')}${cells}</div>
+   <div class="legend"><span><i style="background:var(--red)"></i>${stName('overdue')}</span><span><i style="background:var(--gold)"></i>${stName('soon')}</span><span><i style="background:var(--blue)"></i>${stName('open')}</span><span><i style="background:var(--grey)"></i>${stName('waiting')}</span><span><i style="background:var(--green)"></i>${stName('paid')}</span></div></div>
+  <div class="section"><div class="section-h"><h2>${sel ? fmtDate(sel, true) : L('รายการในเดือนนี้', 'This month')}</h2>${sel ? `<button class="link" data-act="calSel" data-d="">${L('ดูทั้งเดือน', 'Show whole month')}</button>` : ''}</div>
+   ${(sel ? selList : monthList).length ? `<div class="rows">${(sel ? selList : monthList).map(d => dueRow(d)).join('')}</div>` : emptyBox(L('ไม่มีรายการ', 'Nothing scheduled'))}</div>`;
+}
+
+/* ---------- assets ---------- */
+const assetIcon = a => a && a.coverId ? `<img data-att="${esc(a.coverId)}" alt="">` : (IC[a?.type] || IC.other);
+function assetCover(a, pick) {
+  const img = a.coverId ? `<img data-att="${esc(a.coverId)}" alt="">` : '';
+  if (pick) return `<label class="acover pick" title="${L('แตะเพื่อใส่หรือเปลี่ยนรูปทรัพย์สิน', 'Tap to add or change the photo')}">${IC[a.type] || IC.other}${img}<span class="pick-hint">${a.coverId ? L('เปลี่ยนรูป', 'Change') : L('ใส่รูป', 'Add photo')}</span><input type="file" accept="image/*" hidden data-cover="${esc(a.id)}"></label>`;
+  return `<div class="acover">${IC[a.type] || IC.other}${img}</div>`;
+}
+function viewAssets() {
+  const list = [...S.assets].sort((a, b) => (a.status !== 'active') - (b.status !== 'active') || a.name.localeCompare(b.name));
+  return `<div class="page-head"><div><h1>${L('ทรัพย์สิน', 'Assets')}</h1><p class="muted">${L(`${S.assets.length} รายการ`, `${S.assets.length} items`)}</p></div><button class="btn primary" data-act="newAsset">${IC.plus}${L('เพิ่มทรัพย์สิน', 'Add asset')}</button></div>
+  ${list.length ? `<div class="grid">${list.map(a => {
+    const yearCost = S.obligations.filter(o => o.assetId === a.id).reduce((s, o) => s + annualized(o), 0);
+    const nd = nextDueOfAsset(a.id);
+    return `<a class="acard" href="#asset/${encodeURIComponent(a.id)}" style="text-decoration:none;color:inherit">${assetCover(a)}<div class="acard-b">
+      <div class="row-t">${esc(a.name)}</div><div class="row-s">${typeName(a.type)}${a.ownerName ? ' · ' + L('ในนาม ', 'Owner: ') + esc(a.ownerName) : ''}${a.status !== 'active' ? ' · ' + statusAssetName(a.status) : ''}</div>
+      <div class="row-s" style="margin-top:6px">${L('ภาระต่อปีโดยประมาณ', 'Est. yearly cost')} <b class="num" style="color:var(--ink)">${fmtMoney(yearCost)}</b></div>
+      ${nd ? `<div class="row-s">${L('ถัดไป', 'Next')}: ${esc(obOf(nd).title)} · ${fmtDate(nd.dueDate)} ${badge(dueStatus(nd))}</div>` : ''}</div></a>`;
+  }).join('')}</div>` : emptyBox(L('ยังไม่มีทรัพย์สิน', 'No assets yet'), `<button class="btn primary" data-act="newAsset">${IC.plus}${L('เพิ่มทรัพย์สิน', 'Add asset')}</button>`)}`;
+}
+const statusAssetName = s => ({ active: L('ใช้งาน', 'Active'), sold: L('ขายแล้ว', 'Sold'), transferred: L('โอนแล้ว', 'Transferred') }[s] || s);
+
+function viewAsset() {
+  const a = byId('assets', R.id);
+  if (!a) return emptyBox(L('ไม่พบทรัพย์สินนี้', 'Asset not found'), `<a class="btn" href="#assets">${L('กลับ', 'Back')}</a>`);
+  const obs = S.obligations.filter(o => o.assetId === a.id && !o.archived);
+  const yearCost = obs.reduce((s, o) => s + annualized(o), 0);
+  const tab = ui.assetTab;
+  const tabs = [['obl', L('ภาระประจำ', 'Recurring costs')], ['pay', L('ประวัติจ่าย', 'Payments')], ['maint', L('ประวัติดูแลรักษา', 'Maintenance log')], ['info', L('ข้อมูล', 'Details')], ['docs', L('เอกสาร', 'Documents')]];
+  let body = '';
+  if (tab === 'obl') {
+    body = `<div class="section-h"><span class="muted small">${L('แตะรายการเพื่อแก้ไขรอบ ยอด หรือการแจ้งเตือน', 'Tap an item to edit its cycle, amount or reminders')}</span><div class="chips"><button class="btn sm" data-act="tplPicker" data-id="${esc(a.id)}">${L('เลือกจากเทมเพลต', 'From templates')}</button><button class="btn sm primary" data-act="newOb" data-id="${esc(a.id)}">${IC.plus}${L('เพิ่มภาระ', 'Add cost')}</button></div></div>
+    ${obs.length ? `<div class="rows">${obs.map(o => { const nds = openDues().filter(d => d.obligationId === o.id); const nd = nds[0]; const yr = todayISO().slice(0, 4); const paidY = S.payments.filter(p => p.paidDate.startsWith(yr) && byId('dues', p.dueId)?.obligationId === o.id); return `<details class="drow"><summary class="row"><div class="row-ic" style="color:${CAT_COLOR[o.category]}">${o.category === 'maintenance' ? IC.wrench : IC.calendar}</div><div class="row-main"><div class="row-t">${esc(o.title)}${o.active ? '' : ' · ' + L('หยุดใช้', 'Paused')}</div><div class="row-s">${catName(o.category)} · ${recurText(o)} · ${esc(accName(o.accountId))}</div></div><div class="row-r"><div class="amt num">${fmtMoney(o.amount)}</div>${nd ? `<div class="small muted">${fmtDate(nd.dueDate)}</div>` : ''}</div><span class="chev" aria-hidden="true"></span></summary>
+      <div class="drow-b"><dl class="kv"><dt>${L('งวดถัดไป', 'Next due')}</dt><dd>${nds.slice(0, 3).map(d => `${fmtDate(d.dueDate)} ${badge(dueStatus(d))}`).join('<br>') || '–'}</dd><dt>${L('จ่ายแล้วปีนี้', 'Paid this year')}</dt><dd class="num">${paidY.length} ${L('ครั้ง', 'times')} · ${fmtMoney(paidY.reduce((s, p) => s + (+p.amount || 0), 0))}</dd><dt>${L('ภาระต่อปี', 'Per year')}</dt><dd class="num">${fmtMoney(annualized(o))}</dd><dt>${L('เตือนล่วงหน้า', 'Reminders')}</dt><dd>${(o.reminders || []).join(', ') || '–'} ${L('วัน', 'days')}</dd>${o.autoDebit ? `<dt>${L('การจ่าย', 'Payment')}</dt><dd>${L('หักอัตโนมัติ', 'Auto-debit')}</dd>` : ''}${o.note ? `<dt>${L('หมายเหตุ', 'Notes')}</dt><dd>${esc(o.note)}</dd>` : ''}</dl>
+      <div class="chips" style="margin-top:10px">${nd ? `<button class="btn sm gold" data-act="payForm" data-id="${esc(nd.id)}">${L('บันทึกจ่ายงวดถัดไป', 'Pay next item')}</button>` : ''}<button class="btn sm" data-act="editOb" data-id="${esc(o.id)}">${L('แก้ไขรายการ', 'Edit item')}</button></div></div></details>`; }).join('')}</div>` : emptyBox(L('ยังไม่มีภาระประจำ', 'No recurring costs yet'))}`;
+  } else if (tab === 'pay') {
+    const pays = S.payments.map(p => ({ p, d: byId('dues', p.dueId) })).filter(x => x.d && obOf(x.d)?.assetId === a.id).sort((x, y) => y.p.paidDate.localeCompare(x.p.paidDate));
+    body = pays.length ? `<div class="rows">${pays.map(({ p, d }) => `<details class="drow"><summary class="row"><div class="row-ic" style="color:var(--green)">${IC.check}</div><div class="row-main"><div class="row-t">${esc(obOf(d).title)}</div><div class="row-s">${L('จ่าย', 'Paid')} ${fmtDate(p.paidDate)} · ${esc(accName(p.accountId))}${(p.attachmentIds || []).length ? ' · 📎' + p.attachmentIds.length : ''}</div></div><div class="row-r amt num">${fmtMoney(p.amount)}</div><span class="chev" aria-hidden="true"></span></summary>
+      <div class="drow-b"><dl class="kv"><dt>${L('งวดวันที่', 'For due date')}</dt><dd>${fmtDate(d.dueDate)}</dd><dt>${L('ยอดที่คาด', 'Expected')}</dt><dd class="num">${fmtMoney(d.expectedAmount)}</dd><dt>${L('อ้างอิง', 'Reference')}</dt><dd>${esc(p.reference || '–')}</dd>${p.note ? `<dt>${L('หมายเหตุ', 'Notes')}</dt><dd>${esc(p.note)}</dd>` : ''}</dl>${(p.attachmentIds || []).length ? `<div class="thumbs">${p.attachmentIds.map(x => `<img class="thumb" data-att="${esc(x)}" data-act="viewAtt" data-id="${esc(x)}" data-ro="1" alt="">`).join('')}</div>` : ''}<div class="chips" style="margin-top:10px"><button class="btn sm" data-act="payForm" data-id="${esc(d.id)}">${L('แก้ไขการจ่าย', 'Edit payment')}</button></div></div></details>`).join('')}</div>` : emptyBox(L('ยังไม่มีประวัติการจ่าย', 'No payments yet'));
+  } else if (tab === 'maint') {
+    const q = ui.maintQ.toLowerCase();
+    const ms = S.maintenance.filter(m => m.assetId === a.id).filter(m => !q || [m.provider, m.note, ...(m.items || []).map(i => i.desc)].join(' ').toLowerCase().includes(q)).sort((x, y) => y.date.localeCompare(x.date));
+    const total = ms.reduce((s, m) => s + (+m.totalCost || 0), 0);
+    const warn = S.maintenance.filter(m => m.assetId === a.id && m.warrantyUntil && m.warrantyUntil >= todayISO() && diffDays(todayISO(), m.warrantyUntil) <= 30);
+    body = `<div class="section-h" style="gap:8px;flex-wrap:wrap;justify-content:flex-end"><input type="search" class="btn" style="flex:1 1 100%;text-align:left;cursor:text" placeholder="${L('ค้นหา เช่น ผ้าเบรก', 'Search, e.g. brake')}" value="${esc(ui.maintQ)}" data-input="maintQ" aria-label="${L('ค้นหาประวัติ', 'Search log')}"><button class="btn sm" data-act="printMaint" data-id="${esc(a.id)}">${L('พิมพ์สมุดประวัติ', 'Print log')}</button><button class="btn sm primary" data-act="newMaint" data-id="${esc(a.id)}">${IC.plus}${L('บันทึกการดูแลรักษา', 'Add record')}</button></div>
+    ${warn.map(m => `<div class="banner warn">${L('ใกล้หมดรับประกัน', 'Warranty ending soon')}: ${esc((m.items || [])[0]?.desc || MK(m.kind))} · ${fmtDate(m.warrantyUntil)}</div>`).join('')}
+    ${ms.length ? `<p class="muted small">${L(`${ms.length} ครั้ง รวม`, `${ms.length} records, total`)} <b class="num">${fmtMoney(total)}</b></p><div class="tl">${ms.map(m => maintCard(m)).join('')}</div>` : emptyBox(q ? L('ไม่พบรายการที่ค้นหา', 'No matching records') : L('ยังไม่มีประวัติการดูแลรักษา', 'No maintenance records yet'))}`;
+  } else if (tab === 'info') {
+    const fields = FIELDS[a.type] || FIELDS.other;
+    body = `<div class="card"><dl class="kv"><dt>${L('ประเภท', 'Type')}</dt><dd>${typeName(a.type)}</dd><dt>${L('ในนามของ', 'Owner')}</dt><dd>${esc(a.ownerName || '–')}</dd><dt>${L('สถานะ', 'Status')}</dt><dd>${statusAssetName(a.status)}</dd>
+      ${fields.map(f => `<dt>${L(f[1], f[2])}</dt><dd>${esc(a.details?.[f[0]] || '–')}</dd>`).join('')}<dt>${L('หมายเหตุ', 'Notes')}</dt><dd>${esc(a.note || '–')}</dd></dl></div>
+      <div style="margin-top:12px"><button class="btn" data-act="editAsset" data-id="${esc(a.id)}">${L('แก้ไขข้อมูล', 'Edit details')}</button></div>`;
+  } else {
+    const ids = [...(a.attachmentIds || [])];
+    const linked = [];
+    S.maintenance.filter(m => m.assetId === a.id).forEach(m => (m.attachmentIds || []).forEach(id => linked.push(id)));
+    S.payments.forEach(p => { const d = byId('dues', p.dueId); if (d && obOf(d)?.assetId === a.id) (p.attachmentIds || []).forEach(id => linked.push(id)); });
+    body = `<div class="card"><h3>${L('เอกสารของทรัพย์สิน', 'Asset documents')}</h3><p class="muted small">${L('เช่น หน้าเล่มทะเบียน โฉนด หน้ากรมธรรม์', 'e.g. registration book, title deed, policy page')}</p>
+      <div class="thumbs" data-attfield='${esc(JSON.stringify(ids))}' data-asset-docs="${esc(a.id)}"></div></div>
+      <div class="card" style="margin-top:12px"><h3>${L('รูปจากใบเสร็จและการซ่อม', 'Photos from receipts and repairs')}</h3>${linked.length ? `<div class="thumbs">${linked.map(id => `<img class="thumb" data-att="${esc(id)}" data-act="viewAtt" data-id="${esc(id)}" data-ro="1" alt="">`).join('')}</div>` : `<p class="muted small">${L('ยังไม่มี', 'None yet')}</p>`}</div>`;
+  }
+  return `<div class="page-head" style="align-items:center"><div class="hero"><a href="#assets" class="icon-btn" aria-label="${L('กลับ', 'Back')}">${IC.back}</a>${assetCover(a, true)}<div><h1>${esc(a.name)}</h1><p class="muted">${typeName(a.type)}${a.ownerName ? ' · ' + L('ในนาม ', 'Owner: ') + esc(a.ownerName) : ''} · ${statusAssetName(a.status)}</p><p class="small">${L('ภาระต่อปีโดยประมาณ', 'Est. yearly cost')} <b class="num">${fmtMoney(yearCost)}</b></p></div></div>
+    <button class="btn" data-act="editAsset" data-id="${esc(a.id)}">${L('แก้ไข', 'Edit')}</button></div>
+  <div class="tabs" role="tablist">${tabs.map(x => `<button class="tab ${tab === x[0] ? 'on' : ''}" role="tab" aria-selected="${tab === x[0]}" data-act="assetTab" data-t="${x[0]}">${x[1]}</button>`).join('')}</div>${body}`;
+}
+const MK = k => L(...(MKINDS[k] || MKINDS.repair));
+function maintCard(m) {
+  return `<div class="tl-i"><div class="card" data-act="editMaint" data-id="${esc(m.id)}" role="button" tabindex="0" style="cursor:pointer">
+    <div class="section-h" style="margin:0"><div><b>${fmtDate(m.date)}</b> · ${MK(m.kind)}</div><b class="num">${fmtMoney(m.totalCost)}</b></div>
+    <div class="row-s" style="white-space:normal">${m.odometer ? L('เลขไมล์ ', 'Odometer ') + Number(m.odometer).toLocaleString() + ' ' + L('กม.', 'km') + ' · ' : ''}${esc(m.provider || '')}</div>
+    ${(m.items || []).length ? `<ul style="margin:6px 0 0;padding-left:18px;font-size:14px">${m.items.map(i => `<li>${esc(i.desc)}${i.cost ? ` <span class="muted num">${fmtMoney(i.cost)}</span>` : ''}</li>`).join('')}</ul>` : ''}
+    ${m.warrantyUntil ? `<div class="small muted" style="margin-top:4px">${L('รับประกันถึง', 'Warranty until')} ${fmtDate(m.warrantyUntil)}</div>` : ''}
+    ${m.nextServiceDate ? `<div class="small" style="margin-top:2px;color:#8A6418">${L('นัดครั้งถัดไป', 'Next service')} ${fmtDate(m.nextServiceDate)}</div>` : ''}
+    ${(m.attachmentIds || []).length ? `<div class="thumbs">${m.attachmentIds.map(id => `<img class="thumb" data-att="${esc(id)}" alt="">`).join('')}</div>` : ''}</div></div>`;
+}
+
+/* ---------- shared entries & dimensions (dashboard + reports) ---------- */
+const PALETTE = ['#13294B', '#B8892B', '#3E5F96', '#2E7D5B', '#8C5A8F', '#C46A3A', '#5B7BB5', '#7A8699', '#A88A3C', '#2F8A8A'];
+function dueEntries(from, to) {
+  return liveDues().filter(d => !d.skipped && d.dueDate >= from && d.dueDate <= to).map(d => {
+    const ob = obOf(d), a = assetOf(ob), p = d.paymentId ? byId('payments', d.paymentId) : null;
+    return { kind: 'due', id: d.id, d, ob, a, p, date: d.dueDate, amount: dueAmount(d), cat: ob.category, accountId: p ? p.accountId : ob.accountId, title: ob.title, status: dueStatus(d) };
+  });
+}
+function maintEntries(from, to) {
+  return S.maintenance.filter(m => m.date >= from && m.date <= to).map(m => {
+    const a = byId('assets', m.assetId);
+    return { kind: 'maint', id: m.id, m, a, date: m.date, amount: +m.totalCost || 0, cat: 'maintenance', accountId: m.accountId, title: (m.items || []).map(i => i.desc).filter(Boolean).join(', ') || MK(m.kind), status: 'paid', ref: m.provider || '' };
+  });
+}
+function payEntries(from, to) {
+  return S.payments.filter(p => p.paidDate >= from && p.paidDate <= to).map(p => {
+    const d = byId('dues', p.dueId), ob = obOf(d); if (!ob) return null; const a = assetOf(ob);
+    return { kind: 'pay', id: d.id, d, ob, a, p, date: p.paidDate, amount: +p.amount || 0, cat: ob.category, accountId: p.accountId, title: ob.title, status: 'paid', ref: p.reference || '' };
+  }).filter(Boolean);
+}
+const dimNames = () => ({ cat: L('หมวด', 'Category'), asset: L('ทรัพย์สิน', 'Asset'), account: L('บัญชี', 'Account'), owner: L('ผู้ถือกรรมสิทธิ์', 'Owner'), type: L('ประเภททรัพย์สิน', 'Asset type'), month: L('เดือน', 'Month'), status: L('สถานะ', 'Status') });
+function dimOf(e, dim) {
+  switch (dim) {
+    case 'cat': return [e.cat, catName(e.cat)];
+    case 'asset': return [e.a?.id || '', e.a?.name || '–'];
+    case 'account': return [e.accountId || '', accName(e.accountId)];
+    case 'owner': { const o = e.a?.ownerName || ''; return [o, o || L('ตัวเอง', 'Myself')]; }
+    case 'type': return [e.a?.type || 'other', typeName(e.a?.type || 'other')];
+    case 'month': return [e.date.slice(0, 7), fmtMonthY(+e.date.slice(0, 4), +e.date.slice(5, 7) - 1)];
+    case 'status': return [e.status, stName(e.status)];
+    default: return [e.ob ? e.ob.id : e.id, e.title + (e.a ? ' · ' + e.a.name : '')];
+  }
+}
+function groupBy(list, dim) {
+  const m = new Map();
+  for (const e of list) { const [k, l] = dimOf(e, dim); if (!m.has(k)) m.set(k, { key: k, label: l, v: 0, n: 0, items: [] }); const g = m.get(k); g.v += e.amount; g.n++; g.items.push(e); }
+  return [...m.values()].sort((a, b) => dim === 'month' ? a.key.localeCompare(b.key) : b.v - a.v);
+}
+const colorFor = (dim, key, i) => dim === 'cat' ? (CAT_COLOR[key] || PALETTE[i % PALETTE.length]) : PALETTE[i % PALETTE.length];
+const pct = (v, t) => t ? (v / t * 100) : 0;
+
+/* squarified treemap layout on a w×h box */
+function squarify(items, x, y, w, h) {
+  const out = []; const total = items.reduce((s, i) => s + i.v, 0); if (!total) return out;
+  const scale = w * h / total; const nodes = items.map(i => Object.assign({}, i, { a: i.v * scale }));
+  const worst = (row, len) => { const s = row.reduce((a, r) => a + r.a, 0); const mx = Math.max(...row.map(r => r.a)), mn = Math.min(...row.map(r => r.a)); return Math.max(len * len * mx / (s * s), (s * s) / (len * len * mn)); };
+  const layout = row => {
+    const s = row.reduce((a, r) => a + r.a, 0);
+    if (w >= h) { const cw = s / h; let cy = y; row.forEach(r => { const rh = r.a / cw; out.push(Object.assign(r, { x, y: cy, w: cw, h: rh })); cy += rh; }); x += cw; w -= cw; }
+    else { const rh = s / w; let cx = x; row.forEach(r => { const rw = r.a / rh; out.push(Object.assign(r, { x: cx, y, w: rw, h: rh })); cx += rw; }); y += rh; h -= rh; }
+  };
+  let row = [];
+  while (nodes.length) { const len = Math.min(w, h); const n = nodes[0]; if (!row.length || worst([...row, n], len) <= worst(row, len)) { row.push(n); nodes.shift(); } else { layout(row); row = []; } }
+  if (row.length) layout(row);
+  return out;
+}
+
+/* ---------- dashboard ---------- */
+ui.dash = { period: '90d', dim: 'cat', drill: null };
+function dashRange() {
+  const t = todayISO(), p = ui.dash.period;
+  if (p === '30d') return [t, addDaysISO(t, 30)];
+  if (p === '90d') return [t, addMonthsISO(t, 3)];
+  if (p === '12m') return [t, addMonthsISO(t, 12)];
+  const y = t.slice(0, 4); return [`${y}-01-01`, `${y}-12-31`];
+}
+const periodName = p => ({ '30d': L('30 วันข้างหน้า', 'Next 30 days'), '90d': L('3 เดือนข้างหน้า', 'Next 3 months'), '12m': L('12 เดือนข้างหน้า', 'Next 12 months'), year: L('ทั้งปีนี้', 'This year') }[p]);
+
+function treemapHTML(list) {
+  const dim = ui.dash.dim; let groups = groupBy(list, dim); let crumbs = '', drilled = false, baseColor = null;
+  if (ui.dash.drill != null) {
+    const gi = groups.findIndex(x => x.key === ui.dash.drill);
+    if (gi >= 0) { const g = groups[gi]; baseColor = colorFor(dim, g.key, gi); crumbs = `<button class="link" data-act="tmUp">${L('ทั้งหมด', 'All')}</button> › <b>${esc(g.label)}</b> <span class="muted num">${fmtMoney(g.v)}</span>`; groups = groupBy(g.items, 'item'); drilled = true; }
+    else ui.dash.drill = null;
+  }
+  groups = groups.filter(g => g.v > 0);
+  const tot = groups.reduce((s, g) => s + g.v, 0);
+  if (!tot) return emptyBox(L('ไม่มีภาระในช่วงเวลานี้', 'No costs in this period'));
+  const H = window.innerWidth >= 900 ? 40 : 62; const tiles = squarify(groups.map((g, i) => Object.assign({}, g, { i })), 0, 0, 100, H);
+  const tileHtml = tiles.map(tl => {
+    const c = drilled ? baseColor : colorFor(dim, tl.key, tl.i);
+    const op = drilled ? Math.max(0.45, 1 - tl.i * 0.09) : 1;
+    const big = tl.w > 16 && tl.h > 12, mid = tl.w > 9 && tl.h > 7;
+    const tip = `${tl.label}: ${fmtMoney(tl.v)} (${pct(tl.v, tot).toFixed(1)}%)`;
+    const act = drilled ? (tl.items[0]?.a ? `data-act="goAsset" data-id="${esc(tl.items[0].a.id)}"` : '') : `data-act="tmDrill" data-k="${esc(tl.key)}"`;
+    return `<button class="tm-t" ${act} title="${esc(tip)}" aria-label="${esc(tip)}" style="left:${tl.x.toFixed(3)}%;top:${(tl.y / H * 100).toFixed(3)}%;width:${tl.w.toFixed(3)}%;height:${(tl.h / H * 100).toFixed(3)}%;background:${c};opacity:${op}">${mid ? `<span class="tm-l">${esc(tl.label)}</span>` : ''}${big ? `<span class="tm-v num">${fmtMoney(tl.v)} · ${pct(tl.v, tot).toFixed(0)}%</span>` : ''}</button>`;
+  }).join('');
+  const legend = groups.slice(0, 8).map((g, i) => `<button class="tm-leg" ${drilled ? '' : `data-act="tmDrill" data-k="${esc(g.key)}"`}><i style="background:${drilled ? baseColor : colorFor(dim, g.key, i)};opacity:${drilled ? Math.max(0.45, 1 - i * 0.09) : 1}"></i><span>${esc(g.label)}</span><b class="num">${fmtMoney(g.v)}</b><em class="num">${pct(g.v, tot).toFixed(1)}%</em></button>`).join('');
+  return `${crumbs ? `<div class="crumbs">${crumbs}</div>` : `<p class="hint" style="margin:0 0 8px">${L('แตะช่องเพื่อเจาะดูรายการข้างใน', 'Tap a tile to drill into it')}</p>`}<div class="tm" style="padding-top:${H}%">${tileHtml}</div><div class="tm-legs">${legend}${groups.length > 8 ? `<div class="hint">${L(`และอีก ${groups.length - 8} รายการ`, `and ${groups.length - 8} more`)}</div>` : ''}</div>`;
+}
+
+function timelineHTML(list) {
+  const ev = list.filter(e => e.kind === 'due').sort((a, b) => a.date.localeCompare(b.date));
+  if (!ev.length) return emptyBox(L('ไม่มีงวดในช่วงเวลานี้', 'Nothing scheduled in this period'));
+  const t = todayISO(); const items = []; let added = false;
+  for (const e of ev) { if (!added && e.date >= t && ev[0].date < t) { items.push({ today: true }); added = true; } items.push(e); }
+  const W = 132;
+  const html = items.map((e, i) => {
+    if (e.today) return `<div class="tl-ev today" style="left:${i * W}px"><span class="tl-today">${L('วันนี้', 'Today')}</span></div>`;
+    const up = i % 2 === 0;
+    return `<button class="tl-ev ${up ? 'up' : 'down'} s-${e.status}" style="left:${i * W}px" data-act="openDue" data-id="${esc(e.id)}"><span class="tl-card"><b class="num">${fmtDate(e.date)}</b><span>${esc(e.title)}</span><small>${esc(e.a?.name || '')}</small><em class="num">${fmtMoney(e.amount)}</em></span><i class="tl-dot"></i></button>`;
+  }).join('');
+  return `<div class="tlx" id="tlx"><div class="tlx-in" style="width:${items.length * W}px"><div class="tlx-line"></div>${html}</div></div>`;
+}
+function scrollTimeline() {
+  const tl = $('#tlx'); if (!tl) return;
+  const target = $('.tl-ev.today', tl) || [...$$('.tl-ev', tl)].find(x => !x.classList.contains('s-paid'));
+  if (target) tl.scrollLeft = Math.max(0, target.offsetLeft - 40);
+}
+
+function viewHome() {
+  const t = todayISO();
+  let banners = '';
+  if (OFFICIAL_URL && !location.protocol.startsWith('file') && !location.href.startsWith(OFFICIAL_URL)) banners += `<div class="banner bad">${L('ลิงก์นี้อาจไม่ใช่ลิงก์ทางการของ MyAssets โปรดใช้: ', 'This may not be the official MyAssets link. Please use: ')}<b>${esc(OFFICIAL_URL)}</b></div>`;
+  if (hasSample()) banners += `<div class="banner info"><span>${L('กำลังดูข้อมูลตัวอย่าง ลองกดดูได้ทุกส่วน', 'You are viewing sample data. Feel free to explore.')}</span><button class="btn sm" data-act="clearSample">${L('ล้างข้อมูลตัวอย่างและเริ่มใช้จริง', 'Clear sample data and start')}</button></div>`;
+  const changed = icsChangedCount();
+  if (S.set.lastIcs && changed) banners += `<div class="banner info"><span>${L(`มี ${changed} งวดเปลี่ยนแปลงหลังส่งออกปฏิทินล่าสุด`, `${changed} items changed since your last calendar export`)}</span><button class="btn sm" data-act="openIcs">${L('ส่งออกปฏิทิน', 'Export calendar')}</button></div>`;
+  if (!S.assets.length) return `${banners}<div class="page-head"><div><h1>${L('เริ่มจากเพิ่มทรัพย์สินชิ้นแรก', 'Start by adding your first asset')}</h1><p class="muted">${L('เลือกประเภท แล้วแอปจะเสนอค่าใช้จ่ายตามรอบที่พบบ่อยให้ติ๊กเลือก', 'Pick a type and the app suggests the usual recurring costs to tick.')}</p></div></div>${emptyBox(L('ยังไม่มีทรัพย์สิน', 'No assets yet'), `<button class="btn primary" data-act="newAsset">${IC.plus}${L('เพิ่มทรัพย์สิน', 'Add asset')}</button>`)}`;
+
+  const [from, to] = dashRange();
+  const open = openDues();
+  const overdue = open.filter(d => d.dueDate < t);
+  const in30 = open.filter(d => d.dueDate >= t && diffDays(t, d.dueDate) <= 30);
+  const sum = a => a.reduce((s, d) => s + (+d.expectedAmount || 0), 0);
+  const list = [...dueEntries(from, to), ...maintEntries(from, to)];
+  const rangeTotal = list.reduce((s, e) => s + e.amount, 0);
+  const y = t.slice(0, 4);
+  const paidYear = payEntries(`${y}-01-01`, t).reduce((s, e) => s + e.amount, 0) + maintEntries(`${y}-01-01`, t).reduce((s, e) => s + e.amount, 0);
+  const periods = ['30d', '90d', '12m', 'year'];
+  const dims = ['cat', 'asset', 'account', 'owner', 'type'];
+  const urgent = open.filter(d => diffDays(t, d.dueDate) <= 14);
+  const listOpen = [...overdue, ...open.filter(d => d.dueDate >= t && d.dueDate <= to)];
+  return `${banners}
+  <div class="page-head"><div><h1>${L('แดชบอร์ด', 'Dashboard')}</h1><p class="muted">${fmtDate(t, true)}</p></div>
+    <button class="btn primary" data-act="newAsset">${IC.plus}${L('เพิ่มทรัพย์สิน', 'Add asset')}</button></div>
+  <div class="kpis">
+    <button class="stat ${overdue.length ? 'bad' : ''}" data-act="goDues" data-f="overdue"><span>${L('เกินกำหนด', 'Overdue')}</span><b class="num">${overdue.length}</b><small class="num">${fmtMoney(sum(overdue))}</small></button>
+    <button class="stat ${in30.length ? 'soon' : ''}" data-act="goDues" data-f="d30"><span>${L('ต้องจ่ายใน 30 วัน', 'Due in 30 days')}</span><b class="num">${in30.length}</b><small class="num">${fmtMoney(sum(in30))}</small></button>
+    <div class="stat"><span>${L('ภาระในช่วงที่เลือก', 'Costs in selected period')}</span><b class="num">${fmtShort(rangeTotal)}</b><small>${periodName(ui.dash.period)}</small></div>
+    <a class="stat" href="#reports" data-act="repGo" data-t="statement"><span>${L(`จ่ายแล้วปี ${lang === 'th' ? +y + 543 : y}`, `Paid in ${y}`)}</span><b class="num">${fmtShort(paidYear)}</b><small>${L('ดู Statement', 'View statement')}</small></a>
+  </div>
+  <div class="filterbar"><div class="chips" role="group" aria-label="${L('ช่วงเวลา', 'Period')}">${periods.map(p => `<button class="chip ${ui.dash.period === p ? 'on' : ''}" data-act="dashPeriod" data-p="${p}">${periodName(p)}</button>`).join('')}</div>
+    <label class="dimsel">${L('มุมมอง', 'View by')} <select class="btn sm" data-change="dashDim">${dims.map(k => opt(k, dimNames()[k], ui.dash.dim)).join('')}</select></label></div>
+  <div class="card section"><div class="section-h"><h2>${L('ไทม์ไลน์การจ่าย', 'Payment timeline')}</h2><span class="muted small">${periodName(ui.dash.period)} · ${list.filter(e => e.kind === 'due').length} ${L('งวด', 'items')}</span></div>
+    ${timelineHTML([...dueEntries('0000-01-01', addDaysISO(from, -1)).filter(e => e.status === 'overdue'), ...list])}
+    <div class="legend"><span><i style="background:var(--red)"></i>${stName('overdue')}</span><span><i style="background:var(--gold)"></i>${stName('soon')}</span><span><i style="background:var(--blue)"></i>${stName('open')}</span><span><i style="background:var(--grey)"></i>${stName('waiting')}</span><span><i style="background:var(--green)"></i>${stName('paid')}</span></div></div>
+  <div class="card section"><div class="section-h"><h2>${L('ภาพรวมภาระรายจ่าย', 'Cost overview')}</h2><span class="muted small">${L('ตาม', 'by')}${dimNames()[ui.dash.dim]} · ${L('รวม', 'total')} <b class="num">${fmtMoney(rangeTotal)}</b></span></div>${treemapHTML(list)}</div>
+  ${urgent.length ? `<div class="section"><div class="section-h"><h2>${L('ต้องจัดการใน 14 วัน', 'Needs action within 14 days')}</h2><a href="#dues">${L('ดูทั้งหมด', 'See all')}</a></div><div class="discs">${urgent.slice(0, 10).map(disc).join('')}</div></div>` : ''}
+  <div class="section"><div class="section-h"><h2>${L('รายการที่ยังไม่จ่าย', 'Unpaid items')} <span class="muted small">· ${periodName(ui.dash.period)}</span></h2><a href="#dues">${L('ดูทั้งหมด', 'See all')}</a></div>
+    ${listOpen.length ? `<div class="rows">${listOpen.slice(0, 15).map(d => dueRow(d)).join('')}</div>${listOpen.length > 15 ? `<p class="hint">${L(`แสดง 15 จาก ${listOpen.length} รายการ`, `Showing 15 of ${listOpen.length}`)}</p>` : ''}` : emptyBox(L('ไม่มีรายการค้างในช่วงนี้', 'Nothing unpaid in this period'))}</div>`;
+}
+
+/* ---------- attachment viewer (own layer, keeps the form underneath) ---------- */
+async function onAttChange(box) {
+  if (box.dataset.assetDocs) { const a = byId('assets', box.dataset.assetDocs); if (a) { a.attachmentIds = JSON.parse(box.dataset.attfield || '[]'); await save('assets', a); } }
+}
+async function viewAtt(id, sourceImg) {
+  const u = await attUrl(id); if (!u) return;
+  const box = sourceImg && sourceImg.closest('[data-attfield]');
+  const ro = !box;
+  const w = document.createElement('div'); w.className = 'sheet-wrap'; w.style.zIndex = 150;
+  w.innerHTML = `<div class="sheet viewer" role="dialog" aria-modal="true"><div class="sheet-head"><h2>${L('รูปแนบ', 'Photo')}</h2><button type="button" class="icon-btn" data-x aria-label="${L('ปิด', 'Close')}">✕</button></div><div class="sheet-body"><img src="${u}" alt=""></div><div class="sheet-foot">${ro ? '' : `<button type="button" class="btn danger" data-del>${L('ลบรูปนี้', 'Remove photo')}</button>`}<span style="flex:1"></span><button type="button" class="btn" data-x>${L('ปิด', 'Close')}</button></div></div>`;
+  document.body.appendChild(w);
+  w.addEventListener('click', async e => {
+    if (e.target === w || e.target.closest('[data-x]')) w.remove();
+    if (e.target.closest('[data-del]')) {
+      const list = JSON.parse(box.dataset.attfield || '[]').filter(x => x !== id);
+      box.dataset.attfield = JSON.stringify(list); box._draw && box._draw(); await onAttChange(box);
+      if (box.dataset.assetDocs) await deleteAttachments([id]);
+      w.remove();
+    }
+  });
+}
+async function cleanupOrphans() {
+  const used = new Set();
+  S.assets.forEach(a => { (a.attachmentIds || []).forEach(i => used.add(i)); if (a.coverId) used.add(a.coverId); });
+  S.payments.forEach(p => (p.attachmentIds || []).forEach(i => used.add(i)));
+  S.maintenance.forEach(m => (m.attachmentIds || []).forEach(i => used.add(i)));
+  const all = await dbAll('attachments');
+  for (const r of all) if (!used.has(r.id) && Date.now() - (r.createdAt || 0) > 864e5) await dbDel('attachments', r.id);
+}
+
+/* ---------- asset form ---------- */
+function assetForm(a) {
+  const isNew = !a; a = a || { type: 'car', name: '', ownerName: '', status: 'active', details: {}, note: '' };
+  const fieldsHtml = t => (FIELDS[t] || FIELDS.other).map(f => `<div class="f"><label for="d_${f[0]}">${L(f[1], f[2])}</label><input id="d_${f[0]}" name="d_${f[0]}" ${f[3] === 'number' ? 'inputmode="numeric"' : ''} value="${esc(a.details?.[f[0]] || '')}"></div>`).join('');
+  const body = `<div class="f"><span class="flabel">${L('รูปทรัพย์สิน (แสดงแทนไอคอน ใช้รูปล่าสุด)', 'Asset photo (replaces the icon; the latest photo is used)')}</span><div class="thumbs" data-attfield='${esc(JSON.stringify(a.coverId ? [a.coverId] : []))}'></div></div>
+   <div class="f"><label for="a_type">${L('ประเภท', 'Type')}</label><select id="a_type" name="type" ${isNew ? '' : 'disabled'}>${Object.keys(TYPES).map(k => opt(k, typeName(k), a.type)).join('')}</select></div>
+   <div class="f"><label for="a_name">${L('ชื่อเรียก', 'Name')} *</label><input id="a_name" name="name" value="${esc(a.name)}" placeholder="${L('เช่น รถคันหลัก, คอนโดอโศก', 'e.g. Family car, Asoke condo')}"></div>
+   <div class="f2"><div class="f"><label for="a_owner">${L('ในนามของ', 'Registered owner')}</label><input id="a_owner" name="ownerName" value="${esc(a.ownerName || '')}" placeholder="${L('เว้นว่างถ้าเป็นของคุณ', 'Leave blank if yours')}"></div>
+   <div class="f"><label for="a_status">${L('สถานะ', 'Status')}</label><select id="a_status" name="status">${['active', 'sold', 'transferred'].map(s => opt(s, statusAssetName(s), a.status)).join('')}</select></div></div>
+   <div id="detailFields">${fieldsHtml(a.type)}</div>
+   <div class="f"><label for="a_note">${L('หมายเหตุ', 'Notes')}</label><textarea id="a_note" name="note">${esc(a.note || '')}</textarea></div>
+   ${isNew ? '' : `<div class="danger-zone"><b>${L('ลบทรัพย์สิน', 'Delete asset')}</b><p class="small muted">${L('ลบทรัพย์สินพร้อมภาระ งวด ประวัติจ่าย และประวัติดูแลรักษาทั้งหมด ถ้าขายแล้ว แนะนำให้เปลี่ยนสถานะเป็น "ขายแล้ว" แทนเพื่อเก็บประวัติ', 'Removes the asset with all its costs, payments and maintenance log. If you sold it, set status to Sold instead to keep the history.')}</p><button type="button" class="btn sm danger" data-act="deleteAsset" data-id="${esc(a.id)}">${L('ลบถาวร', 'Delete permanently')}</button></div>`}`;
+  sheet(isNew ? L('เพิ่มทรัพย์สิน', 'Add asset') : L('แก้ไขทรัพย์สิน', 'Edit asset'), body, {
+    submitLabel: isNew ? L('ถัดไป: เลือกภาระ', 'Next: choose costs') : L('บันทึก', 'Save'),
+    onOpen: (w, f) => { f.elements.type.addEventListener('change', e => { $('#detailFields', w).innerHTML = fieldsHtml(e.target.value); }); },
+    submit: async f => {
+      if (!need(f, ['name'])) return false;
+      const type = isNew ? fv(f, 'type') : a.type;
+      const details = {}; (FIELDS[type] || FIELDS.other).forEach(x => { details[x[0]] = fv(f, 'd_' + x[0]); });
+      const covers = attIds(f);
+      const prevStatus = a.status;
+      Object.assign(a, { id: a.id || uid(), type, name: fv(f, 'name'), ownerName: fv(f, 'ownerName'), status: fv(f, 'status'), details, note: fv(f, 'note'), coverId: covers[covers.length - 1] || '', attachmentIds: a.attachmentIds || [] });
+      await save('assets', a);
+      if (!isNew && prevStatus !== a.status) await onAssetStatus(a);
+      if (isNew) { location.hash = '#asset/' + encodeURIComponent(a.id); ui.assetTab = 'obl'; setTimeout(() => tplPicker(a), 60); }
+      toast(L('บันทึกแล้ว', 'Saved'));
+    }
+  });
+}
+async function onAssetStatus(a) {
+  for (const ob of S.obligations.filter(o => o.assetId === a.id && !o.archived)) {
+    if (a.status !== 'active') { for (const d of S.dues.filter(x => x.obligationId === ob.id && !x.paymentId && !x.skipped && x.dueDate >= todayISO())) await dropDue(d); }
+    else await syncDues(ob);
+  }
+}
+async function deleteAsset(id) {
+  const a = byId('assets', id); if (!a) return;
+  if (!confirm(L(`ลบ "${a.name}" และข้อมูลที่เกี่ยวข้องทั้งหมด?`, `Delete "${a.name}" and everything linked to it?`))) return;
+  const obIds = S.obligations.filter(o => o.assetId === id).map(o => o.id);
+  for (const d of S.dues.filter(x => obIds.includes(x.obligationId))) { if (d.paymentId) { const p = byId('payments', d.paymentId); if (p) { await deleteAttachments(p.attachmentIds); await removeRec('payments', p.id); } } await removeRec('dues', d.id); }
+  for (const o of obIds) await removeRec('obligations', o);
+  for (const m of S.maintenance.filter(x => x.assetId === id)) { await deleteAttachments(m.attachmentIds); await removeRec('maintenance', m.id); }
+  await deleteAttachments([...(a.attachmentIds || []), a.coverId].filter(Boolean));
+  await removeRec('assets', id); closeSheet(); location.hash = '#assets'; toast(L('ลบแล้ว', 'Deleted'));
+}
+
+/* ---------- template picker ---------- */
+function tplPicker(a) {
+  const rows = TPL[a.type] || [];
+  if (!rows.length) { obForm(null, a.id); return; }
+  const body = `<p class="muted small" style="margin-top:0">${L('ติ๊กรายการที่มี แล้วใส่วันครบงวดถัดไปและยอดเงิน แก้ไขภายหลังได้ทุกค่า', 'Tick what applies, then enter the next due date and amount. Everything can be edited later.')}</p>
+   ${rows.map((r, i) => `<div class="tpl"><label class="check"><input type="checkbox" name="on_${i}" ${r[8] ? 'checked' : ''}><span><b>${L(r[1], r[2])}</b><br><span class="small muted">${catName(r[3])} · ${recurText({ recurType: r[4], interval: r[5] })}</span></span></label>
+     <div class="f2"><div class="f"><label for="dt_${i}">${L('วันครบงวดถัดไป', 'Next due date')}</label><input type="date" id="dt_${i}" name="dt_${i}" value="${r[9] === 'apr30' ? nextApr30() : ''}"></div>
+     <div class="f"><label for="am_${i}">${L('ยอดเงิน (บาท)', 'Amount (THB)')}</label><input id="am_${i}" name="am_${i}" inputmode="decimal" placeholder="0"></div></div></div>`).join('')}
+   <div class="f"><label for="tp_acc">${L('บัญชีที่ใช้จ่าย (ทุกรายการ)', 'Pay from (all items)')}</label><select id="tp_acc" name="acc">${accOptions('')}</select></div>`;
+  sheet(L(`ภาระของ ${a.name}`, `Costs for ${a.name}`), body, {
+    submitLabel: L('เพิ่มรายการที่เลือก', 'Add selected'),
+    submit: async f => {
+      const pick = rows.map((r, i) => ({ r, i })).filter(x => fc(f, 'on_' + x.i));
+      for (const { i } of pick) if (!fv(f, 'dt_' + i)) { toast(L('ใส่วันครบงวดถัดไปของรายการที่ติ๊กให้ครบ', 'Enter the next due date for each ticked item')); f.elements['dt_' + i].focus(); return false; }
+      for (const { r, i } of pick) {
+        const ob = { id: uid(), assetId: a.id, title: L(r[1], r[2]), category: r[3], recurType: r[4], interval: r[5], firstDue: fv(f, 'dt_' + i), amount: parseFloat(fv(f, 'am_' + i).replace(/,/g, '')) || 0, amountMode: 'fixed', accountId: fv(f, 'acc'), autoDebit: false, reminders: [...r[6]], payAhead: r[7], endType: 'none', note: '', active: true };
+        await save('obligations', ob); await syncDues(ob);
+      }
+      toast(L(`เพิ่ม ${pick.length} รายการแล้ว`, `${pick.length} items added`));
+    }
+  });
+}
+
+/* ---------- obligation form ---------- */
+function obForm(ob, assetId) {
+  const isNew = !ob;
+  ob = ob || { assetId, title: '', category: 'other', recurType: 'yearly', interval: 1, firstDue: '', amount: '', amountMode: 'fixed', accountId: '', autoDebit: false, reminders: [30, 7, 1], payAhead: 0, endType: 'none', endDate: '', endCount: '', note: '', active: true };
+  const hasPaid = !isNew && S.dues.some(d => d.obligationId === ob.id && d.paymentId);
+  const body = `<div class="f"><label for="o_t">${L('ชื่อรายการ', 'Item name')} *</label><input id="o_t" name="title" value="${esc(ob.title)}" placeholder="${L('เช่น ต่อภาษีรถประจำปี', 'e.g. Annual vehicle tax')}"></div>
+   <div class="f2"><div class="f"><label for="o_c">${L('หมวด', 'Category')}</label><select id="o_c" name="category">${Object.keys(CATS).map(c => opt(c, catName(c), ob.category)).join('')}</select></div>
+   <div class="f"><label for="o_am">${L('ยอดเงิน (บาท)', 'Amount (THB)')}</label><input id="o_am" name="amount" inputmode="decimal" value="${esc(ob.amount)}"></div></div>
+   <label class="check"><input type="checkbox" name="estimate" ${ob.amountMode === 'estimate' ? 'checked' : ''}> ${L('เป็นยอดประมาณการ แก้ตอนจ่ายจริง', 'Estimated amount, adjust when paying')}</label>
+   <div class="f3" style="margin-top:8px"><div class="f"><label for="o_r">${L('รอบ', 'Cycle')}</label><select id="o_r" name="recurType">${opt('monthly', L('รายเดือน', 'Months'), ob.recurType)}${opt('yearly', L('รายปี', 'Years'), ob.recurType)}${opt('once', L('ครั้งเดียว', 'One-time'), ob.recurType)}</select></div>
+   <div class="f"><label for="o_n">${L('ทุก ๆ', 'Every')}</label><input id="o_n" name="interval" type="number" min="1" max="60" value="${esc(ob.interval || 1)}"></div>
+   <div class="f"><label for="o_fd">${L('วันครบงวดถัดไป', 'Next due date')} *</label><input id="o_fd" type="date" name="firstDue" value="${esc(ob.firstDue)}"></div></div>
+   <div class="f2"><div class="f"><label for="o_acc">${L('บัญชีที่ใช้จ่าย', 'Pay from')}</label><select id="o_acc" name="accountId">${accOptions(ob.accountId)}</select></div>
+   <div class="f"><label for="o_rem">${L('เตือนล่วงหน้า (วัน)', 'Remind before (days)')}</label><input id="o_rem" name="reminders" value="${esc((ob.reminders || []).join(', '))}" placeholder="30, 7, 1"><span class="hint">${L('สูงสุด 3 ค่า คั่นด้วยจุลภาค', 'Up to 3 values, comma separated')}</span></div></div>
+   <label class="check"><input type="checkbox" name="autoDebit" ${ob.autoDebit ? 'checked' : ''}> ${L('หักบัญชีอัตโนมัติ (ยังต้องกดยืนยันว่าหักผ่าน)', 'Auto-debit (you still confirm it went through)')}</label>
+   <div class="f2" style="margin-top:8px"><div class="f"><label for="o_pa">${L('จ่ายล่วงหน้าได้ (วัน)', 'Payable in advance (days)')}</label><input id="o_pa" name="payAhead" type="number" min="0" value="${esc(ob.payAhead || 0)}"></div>
+   <div class="f"><label for="o_end">${L('สิ้นสุด', 'Ends')}</label><select id="o_end" name="endType">${opt('none', L('ไม่มีกำหนด', 'Never'), ob.endType)}${opt('date', L('ถึงวันที่', 'On date'), ob.endType)}${opt('count', L('ครบจำนวนงวด', 'After N payments'), ob.endType)}</select></div></div>
+   <div class="f2"><div class="f"><label for="o_ed">${L('วันสิ้นสุด', 'End date')}</label><input id="o_ed" type="date" name="endDate" value="${esc(ob.endDate || '')}"></div><div class="f"><label for="o_ec">${L('จำนวนงวด', 'Payments')}</label><input id="o_ec" type="number" min="1" name="endCount" value="${esc(ob.endCount || '')}"></div></div>
+   <div class="f"><label for="o_note">${L('หมายเหตุ', 'Notes')}</label><textarea id="o_note" name="note">${esc(ob.note || '')}</textarea></div>
+   ${isNew ? '' : `<label class="check"><input type="checkbox" name="active" ${ob.active ? 'checked' : ''}> ${L('ใช้งานอยู่ (ยกเลิกติ๊กเพื่อหยุดสร้างงวดใหม่)', 'Active (untick to stop creating new payments)')}</label>
+   <div class="danger-zone"><button type="button" class="btn sm danger" data-act="deleteOb" data-id="${esc(ob.id)}">${hasPaid ? L('เก็บเข้าคลัง (มีประวัติจ่าย)', 'Archive (has payment history)') : L('ลบรายการนี้', 'Delete this item')}</button></div>`}`;
+  sheet(isNew ? L('เพิ่มภาระประจำ', 'Add recurring cost') : L('แก้ไขภาระประจำ', 'Edit recurring cost'), body, {
+    submit: async f => {
+      if (!need(f, ['title', 'firstDue'])) return false;
+      const rem = fv(f, 'reminders').split(/[,\s]+/).map(Number).filter(n => Number.isFinite(n) && n >= 0).slice(0, 3).sort((a, b) => b - a);
+      const before = JSON.stringify([ob.recurType, ob.interval, ob.firstDue, ob.endType, ob.endDate, ob.endCount, ob.active, ob.amount]);
+      Object.assign(ob, { id: ob.id || uid(), title: fv(f, 'title'), category: fv(f, 'category'), amount: parseFloat(fv(f, 'amount').replace(/,/g, '')) || 0, amountMode: fc(f, 'estimate') ? 'estimate' : 'fixed', recurType: fv(f, 'recurType'), interval: Math.max(1, parseInt(fv(f, 'interval')) || 1), firstDue: fv(f, 'firstDue'), accountId: fv(f, 'accountId'), reminders: rem, autoDebit: fc(f, 'autoDebit'), payAhead: Math.max(0, parseInt(fv(f, 'payAhead')) || 0), endType: fv(f, 'endType'), endDate: fv(f, 'endDate'), endCount: parseInt(fv(f, 'endCount')) || '', note: fv(f, 'note'), active: isNew ? true : fc(f, 'active') });
+      await save('obligations', ob);
+      const after = JSON.stringify([ob.recurType, ob.interval, ob.firstDue, ob.endType, ob.endDate, ob.endCount, ob.active, ob.amount]);
+      if (isNew) await syncDues(ob);
+      else if (before !== after) { if (!ob.active) { for (const d of S.dues.filter(x => x.obligationId === ob.id && !x.paymentId && !x.skipped && x.dueDate >= todayISO())) await dropDue(d); } else await regenDues(ob); }
+      else for (const d of S.dues.filter(x => x.obligationId === ob.id && !x.paymentId)) await save('dues', d); // bump for calendar export
+      toast(L('บันทึกแล้ว', 'Saved'));
+    }
+  });
+}
+async function deleteOb(id) {
+  const ob = byId('obligations', id); if (!ob) return;
+  const hasPaid = S.dues.some(d => d.obligationId === id && d.paymentId);
+  if (!confirm(hasPaid ? L('เก็บรายการนี้เข้าคลัง? ประวัติการจ่ายยังอยู่ แต่จะไม่สร้างงวดใหม่', 'Archive this item? Payment history stays, no new payments are created.') : L('ลบรายการนี้และงวดที่ยังไม่จ่ายทั้งหมด?', 'Delete this item and all unpaid payments?'))) return;
+  for (const d of S.dues.filter(x => x.obligationId === id && !x.paymentId)) await dropDue(d);
+  if (hasPaid) { ob.active = false; ob.archived = true; await save('obligations', ob); } else await removeRec('obligations', id);
+  closeSheet(); render(); toast(L('เรียบร้อย', 'Done'));
+}
+
+/* ---------- due detail & payment ---------- */
+function openDue(id) {
+  const d = byId('dues', id); if (!d) return;
+  const ob = obOf(d), a = assetOf(ob), st = dueStatus(d), p = d.paymentId ? byId('payments', d.paymentId) : null;
+  const body = `<div class="hero" style="margin-bottom:12px"><div class="row-ic">${assetIcon(a)}</div><div><b>${esc(ob.title)}</b><div class="muted small">${esc(a?.name || '')} · ${catName(ob.category)}</div></div></div>
+   <dl class="kv"><dt>${L('วันครบกำหนด', 'Due date')}</dt><dd>${fmtDate(d.dueDate, true)}</dd><dt>${L('สถานะ', 'Status')}</dt><dd>${badge(st)}</dd>
+   <dt>${L('ยอดที่คาด', 'Expected')}</dt><dd class="num">${fmtMoney(d.expectedAmount)}${ob.amountMode === 'estimate' ? ' ' + L('(ประมาณ)', '(est.)') : ''}</dd><dt>${L('บัญชีที่ตั้งไว้', 'Planned account')}</dt><dd>${accName(ob.accountId)}${ob.autoDebit ? ' · ' + L('หักอัตโนมัติ', 'Auto-debit') : ''}</dd>
+   ${p ? `<dt>${L('จ่ายเมื่อ', 'Paid on')}</dt><dd>${fmtDate(p.paidDate, true)}</dd><dt>${L('ยอดจ่ายจริง', 'Amount paid')}</dt><dd class="num">${fmtMoney(p.amount)}</dd><dt>${L('จ่ายจากบัญชี', 'Paid from')}</dt><dd>${accName(p.accountId)}</dd>${p.reference ? `<dt>${L('เลขอ้างอิง', 'Reference')}</dt><dd>${esc(p.reference)}</dd>` : ''}${p.note ? `<dt>${L('หมายเหตุ', 'Notes')}</dt><dd>${esc(p.note)}</dd>` : ''}` : ''}
+   ${ob.note ? `<dt>${L('หมายเหตุรายการ', 'Item notes')}</dt><dd>${esc(ob.note)}</dd>` : ''}</dl>
+   ${p && (p.attachmentIds || []).length ? `<div class="thumbs">${p.attachmentIds.map(x => `<img class="thumb" data-att="${esc(x)}" alt="">`).join('')}</div>` : ''}
+   <div class="chips" style="margin-top:16px">
+   ${p ? `<button type="button" class="btn" data-act="payForm" data-id="${esc(d.id)}">${L('แก้ไขการจ่าย', 'Edit payment')}</button><button type="button" class="btn" data-act="unpay" data-id="${esc(d.id)}">${L('ยกเลิกการจ่าย', 'Undo payment')}</button>`
+      : `<button type="button" class="btn gold" data-act="payForm" data-id="${esc(d.id)}">${L('บันทึกการจ่าย', 'Record payment')}</button><button type="button" class="btn" data-act="editDue" data-id="${esc(d.id)}">${L('แก้วัน/ยอดงวดนี้', 'Edit this payment')}</button><button type="button" class="btn" data-act="skipDue" data-id="${esc(d.id)}">${d.skipped ? L('ยกเลิกการข้าม', 'Unskip') : L('ข้ามงวดนี้', 'Skip this one')}</button>`}
+   <button type="button" class="btn ghost" data-act="editOb" data-id="${esc(ob.id)}">${L('ตั้งค่ารายการ', 'Item settings')}</button></div>`;
+  sheet(L('รายละเอียดงวด', 'Payment details'), body);
+}
+function payForm(dueId) {
+  const d = byId('dues', dueId), ob = obOf(d); const p = d.paymentId ? byId('payments', d.paymentId) : null;
+  const body = `<p class="muted small" style="margin-top:0">${esc(ob.title)} · ${esc(assetOf(ob)?.name || '')} · ${L('ครบ', 'due')} ${fmtDate(d.dueDate)}</p>
+   <div class="f2"><div class="f"><label for="p_d">${L('วันที่จ่าย', 'Paid on')}</label><input id="p_d" type="date" name="paidDate" value="${esc(p ? p.paidDate : todayISO())}"></div>
+   <div class="f"><label for="p_a">${L('ยอดจ่ายจริง (บาท)', 'Amount paid (THB)')}</label><input id="p_a" name="amount" inputmode="decimal" value="${esc(p ? p.amount : d.expectedAmount)}"></div></div>
+   <div class="f"><label for="p_acc">${L('จ่ายจากบัญชี', 'Paid from')}</label><select id="p_acc" name="accountId">${accOptions(p ? p.accountId : ob.accountId)}</select></div>
+   <div class="f"><label for="p_ref">${L('เลขที่ใบเสร็จ/อ้างอิง', 'Receipt / reference no.')}</label><input id="p_ref" name="reference" value="${esc(p?.reference || '')}"></div>
+   <div class="f"><label for="p_n">${L('หมายเหตุ', 'Notes')}</label><input id="p_n" name="note" value="${esc(p?.note || '')}"></div>
+   ${attField(p?.attachmentIds || [])}
+   ${ob.amountMode === 'estimate' ? `<label class="check"><input type="checkbox" name="updAmt" checked> ${L('ใช้ยอดนี้เป็นยอดประมาณของงวดถัดไป', 'Use this amount for future estimates')}</label>` : ''}`;
+  sheet(p ? L('แก้ไขการจ่าย', 'Edit payment') : L('บันทึกการจ่าย', 'Record payment'), body, {
+    submit: async f => {
+      if (!need(f, ['paidDate'])) return false;
+      const amount = parseFloat(fv(f, 'amount').replace(/,/g, '')) || 0;
+      const rec = p || { id: uid(), dueId: d.id, isSample: false };
+      Object.assign(rec, { paidDate: fv(f, 'paidDate'), amount, accountId: fv(f, 'accountId'), reference: fv(f, 'reference'), note: fv(f, 'note'), attachmentIds: attIds(f) });
+      await save('payments', rec); d.paymentId = rec.id; await save('dues', d);
+      if (fc(f, 'updAmt')) { ob.amount = amount; await save('obligations', ob); for (const x of S.dues.filter(x => x.obligationId === ob.id && !x.paymentId && !x.overridden)) { x.expectedAmount = amount; await save('dues', x); } }
+      toast(L('บันทึกการจ่ายแล้ว', 'Payment recorded'));
+      if (!p && ob.category === 'maintenance') setTimeout(() => { if (confirm(L('บันทึกรายละเอียดลงสมุดประวัติดูแลรักษาเลยไหม?', 'Add details to the maintenance log now?'))) maintForm(null, ob.assetId, { date: rec.paidDate, totalCost: amount, accountId: rec.accountId, attachmentIds: [...rec.attachmentIds] }); }, 150);
+    }
+  });
+}
+async function quickPay(dueId) {
+  const d = byId('dues', dueId), ob = obOf(d); if (!d || d.paymentId) return;
+  if (ob.amountMode === 'estimate') { payForm(dueId); return; }
+  const p = { id: uid(), dueId, paidDate: todayISO(), amount: d.expectedAmount, accountId: ob.accountId, reference: '', note: '', attachmentIds: [] };
+  await save('payments', p); d.paymentId = p.id; await save('dues', d); render();
+  toast(L(`บันทึกจ่าย ${ob.title} แล้ว`, `${ob.title} marked paid`), L('แก้ไข / แนบรูป', 'Edit / add photo'), () => payForm(dueId));
+  if (ob.category === 'maintenance') setTimeout(() => { if (confirm(L('บันทึกรายละเอียดลงสมุดประวัติดูแลรักษาเลยไหม?', 'Add details to the maintenance log now?'))) maintForm(null, ob.assetId, { date: p.paidDate, totalCost: p.amount, accountId: p.accountId }); }, 300);
+}
+async function unpay(dueId) {
+  const d = byId('dues', dueId); if (!d || !d.paymentId) return;
+  if (!confirm(L('ยกเลิกการจ่ายงวดนี้? รูปแนบของการจ่ายจะถูกลบด้วย', 'Undo this payment? Its photos will be removed too.'))) return;
+  const p = byId('payments', d.paymentId); if (p) { await deleteAttachments(p.attachmentIds); await removeRec('payments', p.id); }
+  d.paymentId = null; await save('dues', d); closeSheet(); render(); toast(L('ยกเลิกแล้ว', 'Payment removed'));
+}
+function editDue(id) {
+  const d = byId('dues', id);
+  sheet(L('แก้วัน/ยอดงวดนี้', 'Edit this payment'), `<p class="muted small" style="margin-top:0">${L('แก้เฉพาะงวดนี้ งวดอื่นไม่เปลี่ยน', 'Changes only this one, others stay the same')}</p>
+    <div class="f2"><div class="f"><label for="e_d">${L('วันครบกำหนด', 'Due date')}</label><input id="e_d" type="date" name="dueDate" value="${esc(d.dueDate)}"></div><div class="f"><label for="e_a">${L('ยอดที่คาด (บาท)', 'Expected (THB)')}</label><input id="e_a" name="amount" inputmode="decimal" value="${esc(d.expectedAmount)}"></div></div>`, {
+    submit: async f => { if (!need(f, ['dueDate'])) return false; d.dueDate = fv(f, 'dueDate'); d.expectedAmount = parseFloat(fv(f, 'amount').replace(/,/g, '')) || 0; d.overridden = true; await save('dues', d); toast(L('บันทึกแล้ว', 'Saved')); }
+  });
+}
+async function skipDue(id) { const d = byId('dues', id); d.skipped = !d.skipped; await save('dues', d); closeSheet(); render(); toast(d.skipped ? L('ข้ามงวดนี้แล้ว', 'Skipped') : L('ยกเลิกการข้ามแล้ว', 'Unskipped')); }
+
+/* ---------- maintenance form ---------- */
+function maintForm(m, assetId, preset = {}) {
+  const isNew = !m;
+  m = m || Object.assign({ assetId, date: todayISO(), kind: 'periodic', odometer: '', items: [{ desc: '', cost: '' }], provider: '', totalCost: '', accountId: '', warrantyUntil: '', nextServiceDate: '', note: '', attachmentIds: [] }, preset);
+  const a = byId('assets', m.assetId); const isVehicle = a && (a.type === 'car' || a.type === 'moto');
+  const irow = (it = {}) => `<div class="irow"><input name="idesc" placeholder="${L('รายการที่ทำ', 'Work done')}" value="${esc(it.desc || '')}" aria-label="${L('รายการ', 'Item')}"><input name="icost" inputmode="decimal" placeholder="${L('ราคา', 'Cost')}" value="${esc(it.cost || '')}" aria-label="${L('ราคา', 'Cost')}"><button type="button" class="icon-btn" data-rmrow aria-label="${L('ลบแถว', 'Remove row')}">✕</button></div>`;
+  const body = `<div class="f2"><div class="f"><label for="m_d">${L('วันที่', 'Date')} *</label><input id="m_d" type="date" name="date" value="${esc(m.date)}"></div>
+   <div class="f"><label for="m_k">${L('ประเภท', 'Type')}</label><select id="m_k" name="kind">${Object.keys(MKINDS).map(k => opt(k, MK(k), m.kind)).join('')}</select></div></div>
+   ${isVehicle ? `<div class="f"><label for="m_o">${L('เลขไมล์ (กม.)', 'Odometer (km)')}</label><input id="m_o" name="odometer" inputmode="numeric" value="${esc(m.odometer || '')}"></div>` : ''}
+   <div class="f"><span class="flabel">${L('รายการที่ทำและราคา', 'Work done and cost')}</span><div class="items" id="items">${(m.items && m.items.length ? m.items : [{}]).map(irow).join('')}</div><button type="button" class="btn sm" id="addRow">${IC.plus}${L('เพิ่มแถว', 'Add row')}</button></div>
+   <div class="f2"><div class="f"><label for="m_p">${L('ผู้ให้บริการ', 'Service provider')}</label><input id="m_p" name="provider" value="${esc(m.provider || '')}" placeholder="${L('ศูนย์บริการ อู่ หรือช่าง', 'Dealer, garage or technician')}"></div>
+   <div class="f"><label for="m_t">${L('ค่าใช้จ่ายรวม (บาท)', 'Total cost (THB)')}</label><input id="m_t" name="totalCost" inputmode="decimal" value="${esc(m.totalCost)}"><span class="hint">${L('เว้นว่างเพื่อรวมจากรายการ', 'Leave blank to sum the rows')}</span></div></div>
+   <div class="f"><label for="m_acc">${L('จ่ายจากบัญชี', 'Paid from')}</label><select id="m_acc" name="accountId">${accOptions(m.accountId)}</select></div>
+   <div class="f2"><div class="f"><label for="m_w">${L('รับประกันงานถึง', 'Warranty until')}</label><input id="m_w" type="date" name="warrantyUntil" value="${esc(m.warrantyUntil || '')}"></div>
+   <div class="f"><label for="m_n">${L('นัดครั้งถัดไป', 'Next service')}</label><input id="m_n" type="date" name="nextServiceDate" value="${esc(m.nextServiceDate || '')}"><span class="hint">${L('จะสร้างงวดเตือนให้อัตโนมัติ', 'Creates a reminder automatically')}</span></div></div>
+   <div class="f"><label for="m_note">${L('หมายเหตุ', 'Notes')}</label><textarea id="m_note" name="note">${esc(m.note || '')}</textarea></div>
+   ${attField(m.attachmentIds || [], L('รูปใบเสร็จ ใบรายการซ่อม หรือก่อน/หลังซ่อม', 'Receipts, job sheets or before/after photos'))}
+   ${isNew ? '' : `<div class="danger-zone"><button type="button" class="btn sm danger" data-act="deleteMaint" data-id="${esc(m.id)}">${L('ลบบันทึกนี้', 'Delete this record')}</button></div>`}`;
+  sheet(isNew ? L('บันทึกการดูแลรักษา', 'Add maintenance record') : L('แก้ไขบันทึกการดูแลรักษา', 'Edit maintenance record'), body, {
+    onOpen: (w) => {
+      $('#addRow', w).onclick = () => $('#items', w).insertAdjacentHTML('beforeend', irow());
+      $('#items', w).addEventListener('click', e => { const b = e.target.closest('[data-rmrow]'); if (b) b.parentElement.remove(); });
+    },
+    submit: async f => {
+      if (!need(f, ['date'])) return false;
+      const descs = $$('input[name=idesc]', f).map(i => i.value.trim()), costs = $$('input[name=icost]', f).map(i => parseFloat(i.value.replace(/,/g, '')) || 0);
+      const items = descs.map((d, i) => ({ desc: d, cost: costs[i] })).filter(x => x.desc || x.cost);
+      const tot = fv(f, 'totalCost') ? parseFloat(fv(f, 'totalCost').replace(/,/g, '')) || 0 : items.reduce((s, x) => s + x.cost, 0);
+      Object.assign(m, { id: m.id || uid(), date: fv(f, 'date'), kind: fv(f, 'kind'), odometer: fv(f, 'odometer'), items, provider: fv(f, 'provider'), totalCost: tot, accountId: fv(f, 'accountId'), warrantyUntil: fv(f, 'warrantyUntil'), nextServiceDate: fv(f, 'nextServiceDate'), note: fv(f, 'note'), attachmentIds: attIds(f) });
+      await save('maintenance', m);
+      if (isVehicle && m.odometer && (+m.odometer > +(a.details?.odometer || 0))) { a.details = a.details || {}; a.details.odometer = m.odometer; await save('assets', a); }
+      await syncMaintObligation(m);
+      ui.assetTab = 'maint'; if (R.view !== 'asset' || R.id !== m.assetId) location.hash = '#asset/' + encodeURIComponent(m.assetId);
+      toast(L('บันทึกแล้ว', 'Saved'));
+    }
+  });
+}
+async function deleteMaint(id) {
+  const m = byId('maintenance', id); if (!m || !confirm(L('ลบบันทึกนี้?', 'Delete this record?'))) return;
+  m.nextServiceDate = ''; await syncMaintObligation(m);
+  await deleteAttachments(m.attachmentIds); await removeRec('maintenance', id); closeSheet(); render(); toast(L('ลบแล้ว', 'Deleted'));
+}
+
+/* ---------- reports ---------- */
+const _now = new Date();
+ui.rep = { type: 'overview', period: 'month', month: todayISO().slice(0, 7), year: _now.getFullYear(), q: Math.floor(_now.getMonth() / 3) + 1, from: '', to: '', asset: '', cat: '', acc: '', owner: '__all', rowDim: 'cat', colDim: 'status' };
+const REPORTS = () => [
+  ['overview', L('ภาพรวมหลายมิติ (Pivot)', 'Multi-dimension overview (pivot)')],
+  ['due', L('รายการถึงกำหนดชำระ', 'Payments due')],
+  ['statement', L('Statement การจ่าย', 'Payment statement')],
+  ['forecast', L('แผนเงินสด 12 เดือน', '12-month cash plan')],
+  ['ownership', L('ต้นทุนการถือครองต่อทรัพย์สิน', 'Cost of ownership by asset')],
+  ['maint', L('ประวัติดูแลรักษาทุกทรัพย์สิน', 'Maintenance across assets')],
+  ['overdue', L('ค้างจ่าย / เกินกำหนด', 'Overdue items')],
+  ['taxins', L('สรุปภาษีและเบี้ยประกันที่จ่าย', 'Taxes and premiums paid')],
+  ['register', L('ทะเบียนทรัพย์สิน', 'Asset register')]
+];
+const NO_PERIOD = { overdue: 1, register: 1 };
+const yearLabel = y => lang === 'th' ? `${+y + 543}` : `${y}`;
+function repRange() {
+  const r = ui.rep;
+  if (r.type === 'forecast') { const s = (r.period === 'month' ? r.month : todayISO().slice(0, 7)) + '-01'; return [s, addDaysISO(addMonthsISO(s, 12), -1)]; }
+  if (r.period === 'month') { const [y, m] = r.month.split('-').map(Number); return [`${r.month}-01`, iso(new Date(y, m, 0))]; }
+  if (r.period === 'quarter') { const sm = (r.q - 1) * 3; return [iso(new Date(r.year, sm, 1)), iso(new Date(r.year, sm + 3, 0))]; }
+  if (r.period === 'year') return [`${r.year}-01-01`, `${r.year}-12-31`];
+  const f = r.from || `${r.year}-01-01`, t = r.to || todayISO(); return f <= t ? [f, t] : [t, f];
+}
+function periodText() {
+  const r = ui.rep; if (NO_PERIOD[r.type]) return L(`ณ วันที่ ${fmtDate(todayISO(), true)}`, `As of ${fmtDate(todayISO(), true)}`);
+  const [f, t] = repRange();
+  if (r.type !== 'forecast' && r.period === 'month') return L('เดือน ', 'Month: ') + fmtMonthY(+f.slice(0, 4), +f.slice(5, 7) - 1);
+  if (r.type !== 'forecast' && r.period === 'year') return L('ปี ', 'Year ') + yearLabel(r.year);
+  if (r.type !== 'forecast' && r.period === 'quarter') return L(`ไตรมาส ${r.q}/${yearLabel(r.year)}`, `Q${r.q} ${r.year}`);
+  return `${fmtDate(f, true)} – ${fmtDate(t, true)}`;
+}
+function filterText() {
+  const r = ui.rep, x = [];
+  if (r.asset) x.push(L('ทรัพย์สิน: ', 'Asset: ') + (byId('assets', r.asset)?.name || ''));
+  if (r.cat) x.push(L('หมวด: ', 'Category: ') + catName(r.cat));
+  if (r.acc) x.push(L('บัญชี: ', 'Account: ') + accName(r.acc));
+  if (r.owner !== '__all') x.push(L('ในนาม: ', 'Owner: ') + (r.owner || L('ตัวเอง', 'Myself')));
+  return x.join(' · ');
+}
+function passF(e) {
+  const r = ui.rep;
+  if (r.asset && e.a?.id !== r.asset) return false;
+  if (r.cat && e.cat !== r.cat) return false;
+  if (r.acc && (e.accountId || '') !== r.acc) return false;
+  if (r.owner !== '__all' && (e.a?.ownerName || '') !== r.owner) return false;
+  return true;
+}
+const tbl = (head, rows, foot, cls = '') => `<div class="tw"><table class="t ${cls}"><thead><tr>${head.map(h => `<th class="${h[1] || ''}">${h[0]}</th>`).join('')}</tr></thead><tbody>${rows.join('') || `<tr><td colspan="${head.length}" class="muted">${L('ไม่มีข้อมูล', 'No data')}</td></tr>`}</tbody>${foot ? `<tfoot>${foot}</tfoot>` : ''}</table></div>`;
+const kpiRow = arr => `<div class="rkpis">${arr.map(k => `<div><span>${k[0]}</span><b class="num">${k[1]}</b></div>`).join('')}</div>`;
+const miniBar = (v, max, c = 'var(--navy)') => `<span class="mbar"><i style="width:${max ? (v / max * 100).toFixed(1) : 0}%;background:${c}"></i></span>`;
+const stBadge = st => `<span class="badge b-${st}">${stName(st)}</span>`;
+
+const BUILD = {
+  overview() {
+    const [f, t] = repRange(); const list = [...dueEntries(f, t), ...maintEntries(f, t)].filter(passF);
+    const total = list.reduce((s, e) => s + e.amount, 0), paid = list.filter(e => e.status === 'paid').reduce((s, e) => s + e.amount, 0);
+    const over = list.filter(e => e.status === 'overdue').reduce((s, e) => s + e.amount, 0);
+    const rd = ui.rep.rowDim, cd = ui.rep.colDim === rd ? 'none' : ui.rep.colDim;
+    const rows = groupBy(list, rd); const cols = cd === 'none' ? [] : groupBy(list, cd);
+    const cell = (g, c) => g.items.filter(e => dimOf(e, cd)[0] === c.key).reduce((s, e) => s + e.amount, 0);
+    const max = Math.max(1, ...rows.map(r => r.v));
+    const head = [[dimNames()[rd]], ...cols.map(c => [esc(c.label), 'r']), [L('รวม', 'Total'), 'r'], ['%', 'r']];
+    const body = rows.map(g => `<tr><td>${esc(g.label)}</td>${cols.map(c => { const v = cell(g, c); return `<td class="r num">${v ? fmtMoney(v) : '–'}</td>`; }).join('')}<td class="r num"><b>${fmtMoney(g.v)}</b></td><td class="r num">${pct(g.v, total).toFixed(1)}% ${miniBar(g.v, max)}</td></tr>`);
+    const foot = `<tr><th>${L('รวม', 'Total')}</th>${cols.map(c => `<th class="r num">${fmtMoney(c.v)}</th>`).join('')}<th class="r num">${fmtMoney(total)}</th><th class="r">100%</th></tr>`;
+    const csv = [[dimNames()[rd], ...cols.map(c => c.label), L('รวม', 'Total')], ...rows.map(g => [g.label, ...cols.map(c => cell(g, c)), g.v]), [L('รวม', 'Total'), ...cols.map(c => c.v), total]];
+    return { title: L('ภาพรวมภาระรายจ่ายหลายมิติ', 'Multi-dimension cost overview'), html: kpiRow([[L('ภาระรวม', 'Total'), fmtMoney(total)], [L('จ่ายแล้ว', 'Paid'), fmtMoney(paid)], [L('ยังไม่จ่าย', 'Unpaid'), fmtMoney(total - paid)], [L('เกินกำหนด', 'Overdue'), fmtMoney(over)], [L('จำนวนรายการ', 'Items'), list.length]]) + `<p class="hint">${L('รวมงวดตามรอบ (ยอดจ่ายจริงหรือยอดที่คาด) และค่าดูแลรักษาในช่วงเวลา', 'Includes scheduled payments (actual or expected) and maintenance in the period')}</p>` + tbl(head, body, foot), csv };
+  },
+  due() {
+    const [f, t] = repRange(); const list = dueEntries(f, t).filter(passF).sort((a, b) => a.date.localeCompare(b.date));
+    const total = list.reduce((s, e) => s + e.amount, 0), unpaid = list.filter(e => e.status !== 'paid');
+    const byAcc = groupBy(unpaid, 'account');
+    const rows = list.map(e => `<tr><td class="ck">${e.status === 'paid' ? '☑' : '☐'}</td><td class="num">${fmtDate(e.date)}</td><td>${esc(e.a?.name || '')}</td><td>${esc(e.title)}${e.ob.autoDebit ? ` <span class="muted small">(${L('หักอัตโนมัติ', 'auto-debit')})</span>` : ''}</td><td>${catName(e.cat)}</td><td>${esc(accName(e.accountId))}</td><td class="r num">${fmtMoney(e.amount)}</td><td>${stBadge(e.status)}</td></tr>`);
+    const html = kpiRow([[L('จำนวนงวด', 'Items'), list.length], [L('ยอดรวม', 'Total'), fmtMoney(total)], [L('จ่ายแล้ว', 'Paid'), fmtMoney(total - unpaid.reduce((s, e) => s + e.amount, 0))], [L('ยังต้องจ่าย', 'Still to pay'), fmtMoney(unpaid.reduce((s, e) => s + e.amount, 0))]]) +
+      tbl([['', 'ck'], [L('วันครบ', 'Due')], [L('ทรัพย์สิน', 'Asset')], [L('รายการ', 'Item')], [L('หมวด', 'Category')], [L('บัญชีที่จ่าย', 'Pay from')], [L('ยอด', 'Amount'), 'r'], [L('สถานะ', 'Status')]], rows, `<tr><th colspan="6">${L('รวม', 'Total')}</th><th class="r num">${fmtMoney(total)}</th><th></th></tr>`) +
+      `<h3 class="rh">${L('เงินที่ต้องเตรียมแยกตามบัญชี (เฉพาะที่ยังไม่จ่าย)', 'Money to prepare per account (unpaid only)')}</h3>` + tbl([[L('บัญชี', 'Account')], [L('จำนวนงวด', 'Items'), 'r'], [L('ยอดที่ต้องมี', 'Needed'), 'r']], byAcc.map(g => `<tr><td>${esc(g.label)}</td><td class="r num">${g.n}</td><td class="r num"><b>${fmtMoney(g.v)}</b></td></tr>`));
+    const csv = [[L('วันครบ', 'Due'), L('ทรัพย์สิน', 'Asset'), L('รายการ', 'Item'), L('หมวด', 'Category'), L('บัญชี', 'Account'), L('ยอด', 'Amount'), L('สถานะ', 'Status')], ...list.map(e => [e.date, e.a?.name || '', e.title, catName(e.cat), accName(e.accountId), e.amount, stName(e.status)])];
+    return { title: L('รายการถึงกำหนดชำระ', 'Payments due'), html, csv };
+  },
+  statement() {
+    const [f, t] = repRange(); const list = [...payEntries(f, t), ...maintEntries(f, t)].filter(passF).sort((a, b) => a.date.localeCompare(b.date));
+    let run = 0; const rows = list.map(e => { run += e.amount; return `<tr><td class="num">${fmtDate(e.date)}</td><td>${esc(e.title)}${e.kind === 'maint' ? ` <span class="muted small">(${L('ดูแลรักษา', 'maintenance')})</span>` : ''}</td><td>${esc(e.a?.name || '')}</td><td>${catName(e.cat)}</td><td>${esc(accName(e.accountId))}</td><td>${esc(e.ref || '')}</td><td class="r num">${fmtMoney(e.amount)}</td><td class="r num muted">${fmtMoney(run)}</td></tr>`; });
+    const byAcc = groupBy(list, 'account'), byCat = groupBy(list, 'cat');
+    const mx = Math.max(1, ...byCat.map(g => g.v));
+    const title = ui.rep.acc ? L('Statement การจ่าย บัญชี ', 'Payment statement – ') + accName(ui.rep.acc) : L('Statement การจ่าย', 'Payment statement');
+    const html = kpiRow([[L('จำนวนรายการ', 'Transactions'), list.length], [L('ยอดจ่ายรวม', 'Total paid'), fmtMoney(run)], [L('จากบัญชี', 'Accounts used'), byAcc.length]]) +
+      tbl([[L('วันที่', 'Date')], [L('รายการ', 'Description')], [L('ทรัพย์สิน', 'Asset')], [L('หมวด', 'Category')], [L('บัญชี', 'Account')], [L('อ้างอิง', 'Ref.')], [L('จำนวนเงิน', 'Amount'), 'r'], [L('ยอดสะสม', 'Running total'), 'r']], rows, `<tr><th colspan="6">${L('รวมทั้งสิ้น', 'Grand total')}</th><th class="r num">${fmtMoney(run)}</th><th></th></tr>`) +
+      `<div class="rgrid"><div><h3 class="rh">${L('สรุปตามบัญชี', 'By account')}</h3>${tbl([[L('บัญชี', 'Account')], [L('รายการ', 'Items'), 'r'], [L('ยอด', 'Amount'), 'r']], byAcc.map(g => `<tr><td>${esc(g.label)}</td><td class="r num">${g.n}</td><td class="r num">${fmtMoney(g.v)}</td></tr>`))}</div>
+       <div><h3 class="rh">${L('สรุปตามหมวด', 'By category')}</h3>${tbl([[L('หมวด', 'Category')], [L('ยอด', 'Amount'), 'r'], ['', '']], byCat.map(g => `<tr><td>${esc(g.label)}</td><td class="r num">${fmtMoney(g.v)}</td><td>${miniBar(g.v, mx, CAT_COLOR[g.key])}</td></tr>`))}</div></div>`;
+    const csv = [[L('วันที่', 'Date'), L('รายการ', 'Description'), L('ทรัพย์สิน', 'Asset'), L('หมวด', 'Category'), L('บัญชี', 'Account'), L('อ้างอิง', 'Ref.'), L('จำนวนเงิน', 'Amount')], ...list.map(e => [e.date, e.title, e.a?.name || '', catName(e.cat), accName(e.accountId), e.ref || '', e.amount])];
+    return { title, html, csv };
+  },
+  forecast() {
+    const [f, t] = repRange(); const list = dueEntries(f, t).filter(passF);
+    const cd = ['cat', 'account', 'asset', 'owner'].includes(ui.rep.colDim) ? ui.rep.colDim : 'cat';
+    const cols = groupBy(list, cd); const months = [];
+    for (let i = 0; i < 12; i++) { const s = addMonthsISO(f, i); months.push(s.slice(0, 7)); }
+    const mt = months.map(k => list.filter(e => e.date.slice(0, 7) === k));
+    const max = Math.max(1, ...mt.map(a => a.reduce((s, e) => s + e.amount, 0)));
+    const bars = `<div class="bars">${months.map((k, i) => { const tot = mt[i].reduce((s, e) => s + e.amount, 0); return `<div class="bar"><div class="bar-val num">${tot ? fmtShort(tot) : ''}</div><div class="bar-stack" style="height:${(tot / max * 85).toFixed(1)}%">${cols.map((c, ci) => { const v = mt[i].filter(e => dimOf(e, cd)[0] === c.key).reduce((s, e) => s + e.amount, 0); return v ? `<i style="display:block;height:${(v / tot * 100).toFixed(1)}%;background:${colorFor(cd, c.key, ci)}"></i>` : ''; }).join('')}</div><div class="bar-lbl">${fmtMonthY(+k.slice(0, 4), +k.slice(5, 7) - 1, true)}</div></div>`; }).join('')}</div><div class="legend">${cols.map((c, ci) => `<span><i style="background:${colorFor(cd, c.key, ci)}"></i>${esc(c.label)}</span>`).join('')}</div>`;
+    const head = [[L('เดือน', 'Month')], ...cols.map(c => [esc(c.label), 'r']), [L('รวม', 'Total'), 'r']];
+    const rows = months.map((k, i) => `<tr><td>${fmtMonthY(+k.slice(0, 4), +k.slice(5, 7) - 1)}</td>${cols.map(c => { const v = mt[i].filter(e => dimOf(e, cd)[0] === c.key).reduce((s, e) => s + e.amount, 0); return `<td class="r num">${v ? fmtMoney(v) : '–'}</td>`; }).join('')}<td class="r num"><b>${fmtMoney(mt[i].reduce((s, e) => s + e.amount, 0))}</b></td></tr>`);
+    const total = list.reduce((s, e) => s + e.amount, 0);
+    const foot = `<tr><th>${L('รวม 12 เดือน', '12-month total')}</th>${cols.map(c => `<th class="r num">${fmtMoney(c.v)}</th>`).join('')}<th class="r num">${fmtMoney(total)}</th></tr><tr><th>${L('เฉลี่ยต่อเดือน (ควรกันไว้)', 'Monthly average to set aside')}</th>${cols.map(c => `<th class="r num">${fmtMoney(c.v / 12)}</th>`).join('')}<th class="r num">${fmtMoney(total / 12)}</th></tr>`;
+    const csv = [[L('เดือน', 'Month'), ...cols.map(c => c.label), L('รวม', 'Total')], ...months.map((k, i) => [k, ...cols.map(c => mt[i].filter(e => dimOf(e, cd)[0] === c.key).reduce((s, e) => s + e.amount, 0)), mt[i].reduce((s, e) => s + e.amount, 0)])];
+    return { title: L('แผนเงินสด 12 เดือน', '12-month cash plan'), html: bars + tbl(head, rows, foot), csv };
+  },
+  ownership() {
+    const [f, t] = repRange(); const list = [...dueEntries(f, t), ...maintEntries(f, t)].filter(passF);
+    const cats = Object.keys(CATS).filter(c => list.some(e => e.cat === c));
+    const assets = S.assets.filter(a => (!ui.rep.asset || a.id === ui.rep.asset) && (ui.rep.owner === '__all' || (a.ownerName || '') === ui.rep.owner));
+    const data = assets.map(a => { const its = list.filter(e => e.a?.id === a.id); const by = {}; cats.forEach(c => by[c] = its.filter(e => e.cat === c).reduce((s, e) => s + e.amount, 0)); return { a, by, tot: its.reduce((s, e) => s + e.amount, 0), est: S.obligations.filter(o => o.assetId === a.id).reduce((s, o) => s + annualized(o), 0) }; }).sort((x, y) => y.tot - x.tot);
+    const head = [[L('ทรัพย์สิน', 'Asset')], ...cats.map(c => [catName(c), 'r']), [L('รวมในช่วง', 'Period total'), 'r'], [L('ภาระต่อปี (ประมาณ)', 'Est. per year'), 'r']];
+    const rows = data.map(d => `<tr><td>${esc(d.a.name)}<div class="muted small">${typeName(d.a.type)}${d.a.ownerName ? ' · ' + esc(d.a.ownerName) : ''}</div></td>${cats.map(c => `<td class="r num">${d.by[c] ? fmtMoney(d.by[c]) : '–'}</td>`).join('')}<td class="r num"><b>${fmtMoney(d.tot)}</b></td><td class="r num">${fmtMoney(d.est)}</td></tr>`);
+    const foot = `<tr><th>${L('รวม', 'Total')}</th>${cats.map(c => `<th class="r num">${fmtMoney(data.reduce((s, d) => s + d.by[c], 0))}</th>`).join('')}<th class="r num">${fmtMoney(data.reduce((s, d) => s + d.tot, 0))}</th><th class="r num">${fmtMoney(data.reduce((s, d) => s + d.est, 0))}</th></tr>`;
+    const csv = [[L('ทรัพย์สิน', 'Asset'), ...cats.map(catName), L('รวมในช่วง', 'Period total'), L('ภาระต่อปี', 'Est. per year')], ...data.map(d => [d.a.name, ...cats.map(c => d.by[c]), d.tot, d.est])];
+    return { title: L('ต้นทุนการถือครองต่อทรัพย์สิน', 'Cost of ownership by asset'), html: `<p class="hint">${L('รวมยอดจ่ายจริง ยอดที่คาดของงวดที่ยังไม่จ่าย และค่าดูแลรักษาในช่วงเวลา', 'Actual payments, expected unpaid items and maintenance within the period')}</p>` + tbl(head, rows, foot), csv };
+  },
+  maint() {
+    const [f, t] = repRange(); const list = maintEntries(f, t).filter(passF).sort((a, b) => a.date.localeCompare(b.date));
+    const rows = list.map(e => `<tr><td class="num">${fmtDate(e.date)}</td><td>${esc(e.a?.name || '')}</td><td>${MK(e.m.kind)}</td><td class="num">${e.m.odometer ? Number(e.m.odometer).toLocaleString() : '–'}</td><td>${(e.m.items || []).map(i => esc(i.desc) + (i.cost ? ` <span class="muted num">${fmtMoney(i.cost)}</span>` : '')).join('<br>') || '–'}</td><td>${esc(e.m.provider || '')}</td><td class="r num">${fmtMoney(e.amount)}</td></tr>`);
+    const byA = groupBy(list, 'asset'); const total = list.reduce((s, e) => s + e.amount, 0);
+    const csv = [[L('วันที่', 'Date'), L('ทรัพย์สิน', 'Asset'), L('ประเภท', 'Type'), L('เลขไมล์', 'Odometer'), L('รายการ', 'Work'), L('ผู้ให้บริการ', 'Provider'), L('ค่าใช้จ่าย', 'Cost')], ...list.map(e => [e.date, e.a?.name || '', MK(e.m.kind), e.m.odometer || '', (e.m.items || []).map(i => i.desc).join('; '), e.m.provider || '', e.amount])];
+    return { title: L('ประวัติดูแลรักษาทุกทรัพย์สิน', 'Maintenance across assets'), html: kpiRow([[L('จำนวนครั้ง', 'Records'), list.length], [L('ค่าใช้จ่ายรวม', 'Total cost'), fmtMoney(total)]]) + tbl([[L('วันที่', 'Date')], [L('ทรัพย์สิน', 'Asset')], [L('ประเภท', 'Type')], [L('เลขไมล์', 'Odometer')], [L('รายการที่ทำ', 'Work done')], [L('ผู้ให้บริการ', 'Provider')], [L('ค่าใช้จ่าย', 'Cost'), 'r']], rows, `<tr><th colspan="6">${L('รวม', 'Total')}</th><th class="r num">${fmtMoney(total)}</th></tr>`) + `<h3 class="rh">${L('สรุปตามทรัพย์สิน', 'By asset')}</h3>` + tbl([[L('ทรัพย์สิน', 'Asset')], [L('ครั้ง', 'Records'), 'r'], [L('รวม', 'Total'), 'r']], byA.map(g => `<tr><td>${esc(g.label)}</td><td class="r num">${g.n}</td><td class="r num">${fmtMoney(g.v)}</td></tr>`)), csv };
+  },
+  overdue() {
+    const t = todayISO(); const list = openDues().filter(d => d.dueDate < t).map(d => dueEntries(d.dueDate, d.dueDate).find(e => e.id === d.id)).filter(Boolean).filter(passF);
+    const total = list.reduce((s, e) => s + e.amount, 0);
+    const rows = list.map(e => `<tr><td class="num">${fmtDate(e.date)}</td><td class="r num" style="color:var(--red)">${diffDays(e.date, t)}</td><td>${esc(e.a?.name || '')}</td><td>${esc(e.title)}</td><td>${esc(accName(e.accountId))}</td><td class="r num">${fmtMoney(e.amount)}</td></tr>`);
+    const csv = [[L('วันครบ', 'Due'), L('เกิน (วัน)', 'Days late'), L('ทรัพย์สิน', 'Asset'), L('รายการ', 'Item'), L('บัญชี', 'Account'), L('ยอด', 'Amount')], ...list.map(e => [e.date, diffDays(e.date, t), e.a?.name || '', e.title, accName(e.accountId), e.amount])];
+    return { title: L('รายการค้างจ่าย / เกินกำหนด', 'Overdue items'), html: kpiRow([[L('จำนวน', 'Items'), list.length], [L('ยอดค้างรวม', 'Total overdue'), fmtMoney(total)]]) + tbl([[L('วันครบ', 'Due')], [L('เกิน (วัน)', 'Days late'), 'r'], [L('ทรัพย์สิน', 'Asset')], [L('รายการ', 'Item')], [L('บัญชี', 'Account')], [L('ยอด', 'Amount'), 'r']], rows, `<tr><th colspan="5">${L('รวม', 'Total')}</th><th class="r num">${fmtMoney(total)}</th></tr>`), csv };
+  },
+  taxins() {
+    const [f, t] = repRange(); const list = payEntries(f, t).filter(e => e.cat === 'tax' || e.cat === 'insurance').filter(passF).sort((a, b) => a.date.localeCompare(b.date));
+    const sec = c => { const its = list.filter(e => e.cat === c); const tot = its.reduce((s, e) => s + e.amount, 0); return `<h3 class="rh">${catName(c)} <span class="muted num">${fmtMoney(tot)}</span></h3>` + tbl([[L('วันที่จ่าย', 'Paid on')], [L('ทรัพย์สิน', 'Asset')], [L('รายการ', 'Item')], [L('ในนามของ', 'Owner')], [L('เลขอ้างอิง/ใบเสร็จ', 'Receipt / ref.')], [L('ยอด', 'Amount'), 'r']], its.map(e => `<tr><td class="num">${fmtDate(e.date)}</td><td>${esc(e.a?.name || '')}</td><td>${esc(e.title)}</td><td>${esc(e.a?.ownerName || L('ตัวเอง', 'Myself'))}</td><td>${esc(e.ref || '–')}</td><td class="r num">${fmtMoney(e.amount)}</td></tr>`), `<tr><th colspan="5">${L('รวม', 'Total')}</th><th class="r num">${fmtMoney(tot)}</th></tr>`); };
+    const csv = [[L('วันที่จ่าย', 'Paid on'), L('หมวด', 'Category'), L('ทรัพย์สิน', 'Asset'), L('รายการ', 'Item'), L('ในนามของ', 'Owner'), L('อ้างอิง', 'Ref.'), L('ยอด', 'Amount')], ...list.map(e => [e.date, catName(e.cat), e.a?.name || '', e.title, e.a?.ownerName || '', e.ref || '', e.amount])];
+    return { title: L('สรุปภาษีและเบี้ยประกันที่จ่าย', 'Taxes and premiums paid'), html: sec('tax') + sec('insurance') + `<p class="hint">${L('ใช้เป็นข้อมูลประกอบการยื่นภาษีหรือเก็บหลักฐาน สิทธิ์ลดหย่อนแต่ละประเภทให้ตรวจสอบกับกรมสรรพากรหรือผู้เชี่ยวชาญ', 'For records and tax filing reference. Check deduction eligibility with the Revenue Department or an adviser.')}</p>`, csv };
+  },
+  register() {
+    const assets = S.assets.filter(a => (!ui.rep.asset || a.id === ui.rep.asset) && (ui.rep.owner === '__all' || (a.ownerName || '') === ui.rep.owner));
+    const rows = assets.map(a => { const nd = nextDueOfAsset(a.id); const det = (FIELDS[a.type] || []).filter(x => a.details?.[x[0]]).slice(0, 3).map(x => `${L(x[1], x[2])}: ${esc(a.details[x[0]])}`).join('<br>'); return `<tr><td><b>${esc(a.name)}</b></td><td>${typeName(a.type)}</td><td>${esc(a.ownerName || L('ตัวเอง', 'Myself'))}</td><td>${statusAssetName(a.status)}</td><td class="small">${det || '–'}</td><td class="r num">${fmtMoney(S.obligations.filter(o => o.assetId === a.id).reduce((s, o) => s + annualized(o), 0))}</td><td class="small">${nd ? esc(obOf(nd).title) + '<br>' + fmtDate(nd.dueDate) : '–'}</td></tr>`; });
+    const csv = [[L('ชื่อ', 'Name'), L('ประเภท', 'Type'), L('ในนามของ', 'Owner'), L('สถานะ', 'Status'), L('ภาระต่อปี', 'Est. per year')], ...assets.map(a => [a.name, typeName(a.type), a.ownerName || '', statusAssetName(a.status), S.obligations.filter(o => o.assetId === a.id).reduce((s, o) => s + annualized(o), 0)])];
+    return { title: L('ทะเบียนทรัพย์สิน', 'Asset register'), html: kpiRow([[L('จำนวนทรัพย์สิน', 'Assets'), assets.length], [L('ภาระต่อปีรวม (ประมาณ)', 'Est. yearly total'), fmtMoney(S.obligations.filter(o => assets.some(a => a.id === o.assetId)).reduce((s, o) => s + annualized(o), 0))]]) + tbl([[L('ชื่อ', 'Name')], [L('ประเภท', 'Type')], [L('ในนามของ', 'Owner')], [L('สถานะ', 'Status')], [L('รายละเอียด', 'Details')], [L('ภาระต่อปี', 'Per year'), 'r'], [L('งวดถัดไป', 'Next due')]], rows), csv };
+  }
+};
+let lastReport = null;
+function viewReports() {
+  const r = ui.rep; const rep = (BUILD[r.type] || BUILD.overview)(); lastReport = rep;
+  const owners = [...new Set(S.assets.map(a => a.ownerName || ''))];
+  const years = [...new Set([_now.getFullYear() + 1, _now.getFullYear(), _now.getFullYear() - 1, ...S.payments.map(p => +p.paidDate.slice(0, 4)), ...S.maintenance.map(m => +m.date.slice(0, 4))])].sort((a, b) => b - a);
+  const sel = (key, inner, label) => `<label class="f"><span class="flabel">${label}</span><select data-change="rep:${key}">${inner}</select></label>`;
+  let periodCtl = '';
+  if (r.type === 'forecast') periodCtl = `<label class="f"><span class="flabel">${L('เริ่มเดือน', 'Starting month')}</span><input type="month" value="${esc(r.month)}" data-change="rep:month"></label>`;
+  else if (!NO_PERIOD[r.type]) {
+    periodCtl = sel('period', [['month', L('รายเดือน', 'Month')], ['quarter', L('รายไตรมาส', 'Quarter')], ['year', L('รายปี', 'Year')], ['custom', L('กำหนดเอง', 'Custom')]].map(x => opt(x[0], x[1], r.period)).join(''), L('ช่วงเวลา', 'Period'));
+    if (r.period === 'month') periodCtl += `<label class="f"><span class="flabel">${L('เดือน', 'Month')}</span><input type="month" value="${esc(r.month)}" data-change="rep:month"></label>`;
+    if (r.period === 'quarter') periodCtl += sel('q', [1, 2, 3, 4].map(q => opt(q, L(`ไตรมาส ${q}`, `Q${q}`), r.q)).join(''), L('ไตรมาส', 'Quarter'));
+    if (r.period === 'quarter' || r.period === 'year') periodCtl += sel('year', years.map(y => opt(y, yearLabel(y), r.year)).join(''), L('ปี', 'Year'));
+    if (r.period === 'custom') periodCtl += `<label class="f"><span class="flabel">${L('ตั้งแต่', 'From')}</span><input type="date" value="${esc(repRange()[0])}" data-change="rep:from"></label><label class="f"><span class="flabel">${L('ถึง', 'To')}</span><input type="date" value="${esc(repRange()[1])}" data-change="rep:to"></label>`;
+  }
+  let dimCtl = '';
+  if (r.type === 'overview') dimCtl = sel('rowDim', ['cat', 'asset', 'account', 'owner', 'type', 'month', 'status'].map(k => opt(k, dimNames()[k], r.rowDim)).join(''), L('แถว (มิติหลัก)', 'Rows')) + sel('colDim', [['none', L('— ไม่แยก —', '— None —')], ...['month', 'cat', 'asset', 'account', 'owner', 'status'].map(k => [k, dimNames()[k]])].map(x => opt(x[0], x[1], r.colDim)).join(''), L('คอลัมน์ (มิติรอง)', 'Columns'));
+  if (r.type === 'forecast') dimCtl = sel('colDim', ['cat', 'account', 'asset', 'owner'].map(k => opt(k, dimNames()[k], ['cat', 'account', 'asset', 'owner'].includes(r.colDim) ? r.colDim : 'cat')).join(''), L('แยกตาม', 'Split by'));
+  const filt = sel('asset', opt('', L('ทั้งหมด', 'All'), r.asset) + S.assets.map(a => opt(a.id, a.name, r.asset)).join(''), L('ทรัพย์สิน', 'Asset')) +
+    (r.type === 'register' ? '' : sel('cat', opt('', L('ทั้งหมด', 'All'), r.cat) + Object.keys(CATS).map(c => opt(c, catName(c), r.cat)).join(''), L('หมวด', 'Category')) +
+      sel('acc', opt('', L('ทั้งหมด', 'All'), r.acc) + S.accounts.map(a => opt(a.id, accName(a.id), r.acc)).join(''), L('บัญชี', 'Account'))) +
+    (owners.length > 1 ? sel('owner', opt('__all', L('ทั้งหมด', 'All'), r.owner) + owners.map(o => opt(o, o || L('ตัวเอง', 'Myself'), r.owner)).join(''), L('ในนามของ', 'Owner')) : '');
+  return `<div class="page-head"><h1>${L('รายงาน', 'Reports')}</h1><div class="chips"><button class="btn primary" data-act="printReport">${IC.download}${L('ส่งออก PDF (A4)', 'Export PDF (A4)')}</button><button class="btn" data-act="exportCsv">CSV</button></div></div>
+   <div class="card repctl"><label class="f" style="grid-column:1/-1"><span class="flabel">${L('เลือกรายงาน', 'Report')}</span><select data-change="rep:type">${REPORTS().map(x => opt(x[0], x[1], r.type)).join('')}</select></label>${periodCtl}${dimCtl}${filt}</div>
+   <div class="card section rep"><div class="rep-h"><h2>${esc(rep.title)}</h2><div class="muted small">${esc(periodText())}${filterText() ? ' · ' + esc(filterText()) : ''}</div></div>${rep.html}</div>`;
+}
+function exportCsv() {
+  const rep = lastReport || (BUILD[ui.rep.type] || BUILD.overview)();
+  const csv = '\ufeff' + rep.csv.map(row => row.map(c => `"${String(c ?? '').replace(/"/g, '""')}"`).join(',')).join('\r\n');
+  const [f, t] = repRange(); download(`myassets-${ui.rep.type}-${f}_${t}.csv`, csv, 'text/csv;charset=utf-8');
+}
+function printDoc(title, sub, body) {
+  const pa = $('#printArea');
+  pa.innerHTML = `<div class="p-head"><div class="p-brand">${brandMark()}<div><b>MyAssets</b><div>${esc(S.set.owner || '')}</div></div></div><div class="p-title"><h1>${esc(title)}</h1><div>${esc(sub)}</div></div></div>${body}<div class="p-foot">${L('พิมพ์เมื่อ', 'Printed')} ${fmtStamp(Date.now())} · Create by Nattapol P. @2026 Version ${VERSION}</div>`;
+  document.body.classList.add('printing');
+  setTimeout(() => window.print(), 60);
+}
+window.addEventListener('afterprint', () => { document.body.classList.remove('printing'); const pa = $('#printArea'); if (pa) pa.innerHTML = ''; });
+function printReport() {
+  const rep = lastReport || (BUILD[ui.rep.type] || BUILD.overview)();
+  toast(L('เลือกเครื่องพิมพ์ "บันทึกเป็น PDF" และขนาด A4', 'Choose “Save as PDF” and A4 paper'));
+  printDoc(rep.title, periodText() + (filterText() ? ' · ' + filterText() : ''), rep.html);
+}
+function printMaint(aid) {
+  const a = byId('assets', aid); const ms = S.maintenance.filter(m => m.assetId === aid).sort((x, y) => x.date.localeCompare(y.date));
+  const fields = (FIELDS[a.type] || []).map(f => `${L(f[1], f[2])}: ${esc(a.details?.[f[0]] || '–')}`).join(' · ');
+  const body = `<p>${typeName(a.type)} · ${fields}</p>` + tbl([[L('วันที่', 'Date')], [L('ประเภท', 'Type')], [L('เลขไมล์', 'Odometer')], [L('รายการ', 'Work done')], [L('ผู้ให้บริการ', 'Provider')], [L('ค่าใช้จ่าย', 'Cost'), 'r']],
+    ms.map(m => `<tr><td>${fmtDate(m.date)}</td><td>${MK(m.kind)}</td><td>${m.odometer ? Number(m.odometer).toLocaleString() : '–'}</td><td>${(m.items || []).map(i => esc(i.desc)).join('<br>')}${m.note ? '<br><i>' + esc(m.note) + '</i>' : ''}</td><td>${esc(m.provider || '')}</td><td class="r num">${fmtMoney(m.totalCost)}</td></tr>`),
+    `<tr><th colspan="5">${L('รวม', 'Total')}</th><th class="r num">${fmtMoney(ms.reduce((s, m) => s + (+m.totalCost || 0), 0))}</th></tr>`);
+  printDoc(L('สมุดประวัติดูแลรักษา: ', 'Maintenance log: ') + a.name, L(`ณ วันที่ ${fmtDate(todayISO(), true)}`, `As of ${fmtDate(todayISO(), true)}`), body);
+}
+
+function download(name, content, mime) {
+  const blob = content instanceof Blob ? content : new Blob([content], { type: mime });
+  const u = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = u; a.download = name;
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(u), 4000);
+}
+
+/* ---------- more / settings ---------- */
+function viewMore() {
+  const accRows = S.accounts.map(a => `<div class="row" data-act="editAcc" data-id="${esc(a.id)}" role="button" tabindex="0"><div class="row-main"><div class="row-t">${esc(a.name)}${a.active === false ? ' · ' + L('ปิดใช้', 'Inactive') : ''}</div><div class="row-s">${L(...(ACC_KINDS[a.kind] || ACC_KINDS.savings))}${a.bank ? ' · ' + esc(a.bank) : ''}${a.last4 ? ' · •' + esc(a.last4) : ''}</div></div></div>`).join('');
+  return `<div class="page-head"><h1>${L('ตั้งค่า', 'Settings')}</h1></div>
+  <div class="section-h"><h2>${L('บัญชีที่ใช้จ่าย', 'Payment accounts')}</h2><button class="btn sm primary" data-act="editAcc">${IC.plus}${L('เพิ่มบัญชี', 'Add account')}</button></div>
+  ${accRows ? `<div class="rows">${accRows}</div>` : emptyBox(L('ยังไม่มีบัญชี', 'No accounts yet'))}
+  <p class="hint">${L('เก็บแค่เลข 4 หลักท้ายเพื่อจำแนกบัญชี ไม่ต้องใส่เลขบัญชีเต็ม', 'Store only the last 4 digits to tell accounts apart. Never enter a full account number.')}</p>
+  <div class="section"><h2 style="margin-bottom:10px">${L('ปฏิทินและข้อมูล', 'Calendar and data')}</h2><div class="rows">
+    <button class="row" data-act="openIcs"><div class="row-ic">${IC.calendar}</div><div class="row-main"><div class="row-t">${L('ส่งออกเข้าปฏิทินมือถือ (.ics)', 'Export to phone calendar (.ics)')}</div><div class="row-s">${L('ล่าสุด', 'Last')}: ${fmtStamp(S.set.lastIcs)}</div></div></button>
+    <button class="row" data-act="openData"><div class="row-ic">${IC.download}</div><div class="row-main"><div class="row-t">${L('การบันทึกและสำรองข้อมูล', 'Saving and backups')}</div><div class="row-s">${L('สำรองล่าสุด', 'Last backup')}: ${fmtStamp(S.set.lastBackup)}</div></div></button>
+  </div></div>
+  <div class="section"><h2 style="margin-bottom:10px">${L('ทั่วไป', 'General')}</h2><div class="rows">
+    <button class="row" data-act="editOwner"><div class="row-main"><div class="row-t">${L('ชื่อเจ้าของข้อมูล', 'Owner name')}</div><div class="row-s">${esc(S.set.owner || L('ยังไม่ได้ตั้ง', 'Not set'))}</div></div></button>
+    <button class="row" data-act="toggleLang"><div class="row-main"><div class="row-t">${L('ภาษา', 'Language')}</div><div class="row-s">${lang === 'th' ? 'ไทย (แตะเพื่อเปลี่ยนเป็น English)' : 'English (tap for ไทย)'}</div></div></button>
+    <button class="row" data-act="pinSettings"><div class="row-ic">${IC.lock}</div><div class="row-main"><div class="row-t">${L('PIN ล็อกแอป', 'App PIN lock')}</div><div class="row-s">${S.set.pin ? L('เปิดใช้อยู่', 'On') : L('ปิดอยู่ (ไม่บังคับ)', 'Off (optional)')}</div></div></button>
+    <button class="row" data-act="toggleWelcome"><div class="row-main"><div class="row-t">${L('แสดงหน้าต้อนรับเมื่อเปิดแอป', 'Show welcome screen on start')}</div><div class="row-s">${S.set.hideWelcome ? L('ปิดอยู่ (แตะเพื่อเปิด)', 'Off (tap to turn on)') : L('เปิดอยู่ (แตะเพื่อปิด)', 'On (tap to turn off)')}</div></div></button>
+    <button class="row" data-act="showTerms"><div class="row-main"><div class="row-t">${L('เกี่ยวกับ MyAssets และข้อตกลงการใช้งาน', 'About MyAssets and terms of use')}</div><div class="row-s">${L('ยอมรับเมื่อ', 'Accepted')} ${fmtStamp(S.set.consent?.at)}</div></div></button>
+  </div></div>
+  <div class="section card"><b>${L('ข้อมูลตัวอย่าง', 'Sample data')}</b>${hasSample() ? `<p class="small muted">${L('ลบเฉพาะรายการตัวอย่าง ข้อมูลที่คุณเพิ่มเองยังอยู่', 'Removes only sample records; your own data stays.')}</p><button class="btn sm" data-act="clearSample">${L('ล้างข้อมูลตัวอย่าง', 'Clear sample data')}</button>` : `<p class="small muted">${L('โหลดชุดตัวอย่างกลับมาเพื่อทดลองใช้งาน ข้อมูลของคุณไม่ถูกแก้ไข และล้างทิ้งได้ทุกเมื่อ', 'Load the sample set again to try things out. Your data is untouched and you can clear it any time.')}</p><button class="btn sm" data-act="reloadSample">${L('โหลดข้อมูลตัวอย่าง', 'Load sample data')}</button>`}</div>
+  <div class="danger-zone"><b>${L('ลบข้อมูลทั้งหมด', 'Erase all data')}</b><p class="small muted">${L('ลบทุกอย่างในอุปกรณ์นี้และกลับไปหน้าต้อนรับ กู้คืนได้จากไฟล์สำรองเท่านั้น', 'Deletes everything on this device and returns to the welcome screen. Only a backup file can bring it back.')}</p><button class="btn sm danger" data-act="eraseAll">${L('ลบข้อมูลทั้งหมด', 'Erase all data')}</button></div>`;
+}
+function editAcc(id) {
+  const a = id ? byId('accounts', id) : null; const isNew = !a; const x = a || { name: '', kind: 'savings', bank: '', last4: '', active: true };
+  sheet(isNew ? L('เพิ่มบัญชี', 'Add account') : L('แก้ไขบัญชี', 'Edit account'), `
+   <div class="f"><label for="ac_n">${L('ชื่อเรียก', 'Name')} *</label><input id="ac_n" name="name" value="${esc(x.name)}" placeholder="${L('เช่น บัญชีเงินเดือน', 'e.g. Salary account')}"></div>
+   <div class="f3"><div class="f"><label for="ac_k">${L('ประเภท', 'Type')}</label><select id="ac_k" name="kind">${Object.keys(ACC_KINDS).map(k => opt(k, L(...ACC_KINDS[k]), x.kind)).join('')}</select></div>
+   <div class="f"><label for="ac_b">${L('ธนาคาร/ผู้ให้บริการ', 'Bank / provider')}</label><input id="ac_b" name="bank" value="${esc(x.bank || '')}"></div>
+   <div class="f"><label for="ac_l">${L('4 หลักท้าย', 'Last 4 digits')}</label><input id="ac_l" name="last4" inputmode="numeric" maxlength="4" value="${esc(x.last4 || '')}"></div></div>
+   ${isNew ? '' : `<label class="check"><input type="checkbox" name="active" ${x.active !== false ? 'checked' : ''}> ${L('ใช้งานอยู่', 'Active')}</label>`}`, {
+    submit: async f => {
+      if (!need(f, ['name'])) return false;
+      const l4 = fv(f, 'last4').replace(/\D/g, '').slice(-4);
+      Object.assign(x, { id: x.id || uid(), name: fv(f, 'name'), kind: fv(f, 'kind'), bank: fv(f, 'bank'), last4: l4, active: isNew ? true : fc(f, 'active') });
+      await save('accounts', x); toast(L('บันทึกแล้ว', 'Saved'));
+    }
+  });
+}
+
+/* ---------- calendar export (.ics) ---------- */
+function icsChangedCount() { return S.dues.filter(d => (d.icsExportedAt && d.updatedAt > d.icsExportedAt) || (!d.icsExportedAt && !d.removed && !d.paymentId && !d.skipped && obOf(d) && d.dueDate >= todayISO() && d.dueDate <= addMonthsISO(todayISO(), 12) && S.set.lastIcs && d.createdAt > S.set.lastIcs)).length; }
+function openIcs() {
+  const changed = icsChangedCount();
+  sheet(L('ส่งออกเข้าปฏิทินมือถือ', 'Export to phone calendar'), `<p style="margin-top:0">${L('ไฟล์ .ics ใช้นำเข้า Google Calendar, ปฏิทิน iPhone หรือ Outlook แต่ละงวดจะมีการเตือนตามระยะที่ตั้งไว้ เวลา 09:00 น.', 'Import the .ics file into Google Calendar, iPhone Calendar or Outlook. Each payment carries its reminders at 09:00.')}</p>
+   <div class="f"><span class="flabel">${L('ช่วงที่ส่งออก', 'What to export')}</span>
+   <label class="check"><input type="radio" name="range" value="12" checked> ${L('งวดที่ยังไม่จ่าย 12 เดือนข้างหน้า', 'Unpaid items for the next 12 months')}</label>
+   <label class="check"><input type="radio" name="range" value="3"> ${L('3 เดือนข้างหน้า', 'Next 3 months')}</label>
+   <label class="check"><input type="radio" name="range" value="changed" ${S.set.lastIcs ? '' : 'disabled'}> ${L(`เฉพาะที่เปลี่ยนแปลงตั้งแต่ส่งออกล่าสุด (${changed})`, `Only changes since the last export (${changed})`)}</label></div>
+   <div class="banner info small">${L('ปฏิทินไม่ซิงก์กับแอปอัตโนมัติ เมื่อเพิ่มหรือแก้งวด ให้ส่งออกใหม่ งวดเดิมจะถูกอัปเดต ไม่ซ้ำ งวดที่จ่ายแล้วจะถูกยกเลิกในปฏิทิน (บางแอปปฏิทินอาจไม่รองรับการยกเลิกทั้งหมด)', 'Calendars do not sync automatically. After adding or editing items, export again: existing events are updated, not duplicated, and paid items are cancelled (some calendar apps may not honour every cancellation).')}</div>
+   <p class="hint">${L('iPhone: แตะไฟล์ที่ดาวน์โหลด แล้วเลือก "เพิ่มทั้งหมด" · Google Calendar: เปิดบนคอม ไปที่ ตั้งค่า → นำเข้าและส่งออก', 'iPhone: tap the downloaded file, then Add All · Google Calendar: on a computer, Settings → Import & export')}</p>`, {
+    submitLabel: L('ดาวน์โหลดไฟล์ .ics', 'Download .ics'),
+    submit: async f => {
+      const r = [...f.elements.range].find(x => x.checked).value; const t = todayISO();
+      let list;
+      if (r === 'changed') list = S.dues.filter(d => obOf(d) && ((d.icsExportedAt && d.updatedAt > d.icsExportedAt) || (!d.icsExportedAt && !d.removed && !d.paymentId && !d.skipped && d.dueDate >= t && d.dueDate <= addMonthsISO(t, 12))));
+      else { const end = addMonthsISO(t, +r); list = S.dues.filter(d => obOf(d) && ((!d.removed && !d.paymentId && !d.skipped && d.dueDate >= addDaysISO(t, -60) && d.dueDate <= end) || (d.icsExportedAt && (d.removed || d.paymentId || d.skipped) && d.updatedAt > d.icsExportedAt))); }
+      if (!list.length) { toast(L('ไม่มีรายการให้ส่งออก', 'Nothing to export')); return false; }
+      download(`myassets-${t}.ics`, buildIcs(list), 'text/calendar;charset=utf-8');
+      const now = Date.now() + 1000;
+      for (const d of list) { if (d.removed) await removeRec('dues', d.id); else { d.icsExportedAt = now; await save('dues', d, true); } }
+      await setKV('lastIcs', now); toast(L(`ส่งออก ${list.length} รายการแล้ว`, `${list.length} items exported`));
+    }
+  });
+}
+function icsText(s) { return String(s ?? '').replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n'); }
+function icsFold(line) { const out = []; let cur = ''; for (const ch of line) { if (new TextEncoder().encode(cur + ch).length > 73) { out.push(cur); cur = ' ' + ch; } else cur += ch; } out.push(cur); return out.join('\r\n'); }
+function buildIcs(list) {
+  const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+/, '');
+  const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Nattapol P.//MyAssets ' + VERSION + '//' + lang.toUpperCase(), 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH', 'X-WR-CALNAME:MyAssets'];
+  for (const d of list) {
+    const ob = obOf(d), a = assetOf(ob); const cancel = d.removed || d.paymentId || d.skipped;
+    const summary = `[${a?.name || ''}] ${ob.title} – ${fmtMoney(d.expectedAmount)}`;
+    const desc = `${L('ครบกำหนด', 'Due')} ${fmtDate(d.dueDate, true)}\n${L('จ่ายจาก', 'Pay from')}: ${accName(ob.accountId)}${ob.autoDebit ? ' (' + L('หักอัตโนมัติ', 'auto-debit') + ')' : ''}${ob.note ? '\n' + ob.note : ''}\n— MyAssets`;
+    lines.push('BEGIN:VEVENT', `UID:${d.id}@myassets`, `DTSTAMP:${stamp}`, `SEQUENCE:${Math.max(0, Math.floor(((d.updatedAt || 0) - 1.7e12) / 1000))}`,
+      `DTSTART;VALUE=DATE:${d.dueDate.replace(/-/g, '')}`, `DTEND;VALUE=DATE:${addDaysISO(d.dueDate, 1).replace(/-/g, '')}`,
+      icsFold('SUMMARY:' + icsText(summary)), icsFold('DESCRIPTION:' + icsText(desc)), `STATUS:${cancel ? 'CANCELLED' : 'CONFIRMED'}`, 'TRANSP:TRANSPARENT');
+    if (!cancel) for (const n of (ob.reminders || [])) {
+      const trig = n >= 1 ? `-P${n - 1}DT15H` : 'PT9H';
+      lines.push('BEGIN:VALARM', 'ACTION:DISPLAY', icsFold('DESCRIPTION:' + icsText(summary)), `TRIGGER:${trig}`, 'END:VALARM');
+    }
+    lines.push('END:VEVENT');
+  }
+  lines.push('END:VCALENDAR');
+  return lines.join('\r\n') + '\r\n';
+}
+
+/* ---------- backup / restore ---------- */
+const blobToDataURL = b => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(b); });
+function dataURLToBlob(u) { const [h, b64] = u.split(','); const mime = (h.match(/data:([^;]+)/) || [])[1] || 'application/octet-stream'; const bin = atob(b64); const arr = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i); return new Blob([arr], { type: mime }); }
+/* file backup: manual (choose name/location) + automatic to a chosen folder */
+let backupDir = null, dirPerm = 'prompt', autoBusy = false;
+const fsSupported = () => 'showDirectoryPicker' in window;
+const ymd = () => todayISO().replace(/-/g, '');
+function nextBackupName() { const s = S.set.backupSeq || {}; const n = s.date === ymd() ? s.n + 1 : 1; return `MyAssetData-${ymd()}-${pad(n)}`; }
+async function commitSeq() { const s = S.set.backupSeq || {}; const n = s.date === ymd() ? s.n + 1 : 1; await setKV('backupSeq', { date: ymd(), n }); }
+async function buildBackup(withImg) {
+  const data = {}; for (const s of DATA_STORES) data[s] = S[s];
+  const kv = Object.fromEntries(Object.entries(S.set).filter(([k]) => !['pin', 'consent', 'backupDir', 'backupSeq', 'lastAutoBackup'].includes(k)));
+  const atts = [];
+  if (withImg) for (const r of await dbAll('attachments')) atts.push({ id: r.id, mime: r.mime, size: r.size, createdAt: r.createdAt, isSample: r.isSample, data: await blobToDataURL(r.blob) });
+  return JSON.stringify({ app: 'MyAssets', format: 1, version: VERSION, exportedAt: new Date().toISOString(), data, kv, attachments: atts });
+}
+function dataBar() {
+  const ab = S.set.autoBackup || { interval: 1, withImages: false };
+  const dirty = lastChangeAt > (S.set.lastBackup || 0);
+  const t = lastChangeAt ? new Date(lastChangeAt).toLocaleTimeString(locale(), { hour: '2-digit', minute: '2-digit' }) : '';
+  let txt = L(`บันทึกอัตโนมัติแล้ว${t ? ' ' + t : ''}`, `Auto-saved${t ? ' ' + t : ''}`), cls = '';
+  if (fsSupported() && backupDir && ab.interval) {
+    if (dirPerm === 'granted') { txt += ' · ' + L(`สำรองไฟล์ทุก ${ab.interval} นาที`, `file backup every ${ab.interval} min`); cls = dirty ? 'warn' : ''; }
+    else { txt += ' · ' + L('แตะเพื่อเปิดสำรองอัตโนมัติ', 'tap to resume backup'); cls = 'warn'; }
+  } else if (dirty) { txt += ' · ' + L('ยังไม่สำรองเป็นไฟล์', 'not backed up yet'); cls = 'warn'; }
+  return `<div class="databar"><button class="save-chip" data-act="openData" aria-label="${L('การบันทึกและสำรองข้อมูล', 'Saving and backups')}"><i class="sd ${cls}"></i><span>${esc(txt)}</span></button><button class="btn sm" data-act="backupNow">${L('สำรองข้อมูล', 'Back up')}</button><button class="btn sm" data-act="openRestore">${L('เปิดไฟล์สำรอง', 'Open backup')}</button></div>`;
+}
+function updateDataBar() { const el = $('.databar'); if (el) el.outerHTML = dataBar(); }
+function openData() {
+  const ab = S.set.autoBackup || { interval: 1, withImages: false }; const sup = fsSupported();
+  sheet(L('การบันทึกและสำรองข้อมูล', 'Saving and backups'), `
+   <div class="banner info small">${L('ทุกการแก้ไขบันทึกลงอุปกรณ์นี้ทันทีโดยอัตโนมัติ การสำรองเป็นไฟล์ช่วยกันข้อมูลหาย และใช้ย้ายไปเครื่องอื่น', 'Every change is saved to this device instantly. File backups protect against loss and let you move to another device.')}</div>
+   <h3 style="margin:6px 0 10px">${L('สำรองไฟล์อัตโนมัติ', 'Automatic file backup')}</h3>
+   ${sup ? `<div class="f"><label for="ab_i">${L('ความถี่ (สำรองเมื่อมีการเปลี่ยนแปลง)', 'Frequency (only when something changed)')}</label><select id="ab_i" name="interval">${[0, 1, 5, 15, 30, 60].map(n => opt(n, n ? L(`ทุก ${n} นาที`, `Every ${n} min`) : L('ปิด', 'Off'), ab.interval)).join('')}</select></div>
+   <div class="f"><span class="flabel">${L('โฟลเดอร์ที่เก็บไฟล์', 'Backup folder')}</span><div class="chips" style="align-items:center"><span>${backupDir ? esc(backupDir.name) + (dirPerm === 'granted' ? '' : ' · ' + L('ต้องอนุญาตอีกครั้ง', 'needs permission')) : L('ยังไม่ได้เลือก', 'Not chosen')}</span><button type="button" class="btn sm" data-act="pickDir">${backupDir ? L('เปลี่ยนโฟลเดอร์', 'Change folder') : L('เลือกโฟลเดอร์', 'Choose folder')}</button>${backupDir && dirPerm !== 'granted' ? `<button type="button" class="btn sm gold" data-act="grantDir">${L('อนุญาต', 'Allow')}</button>` : ''}</div>
+   <span class="hint">${L('แนะนำโฟลเดอร์ที่ซิงก์กับ Google Drive, OneDrive หรือ iCloud Drive บนคอม · ไฟล์ถัดไป: ', 'Tip: pick a folder synced with Google Drive, OneDrive or iCloud Drive · next file: ')}${nextBackupName()}.json</span></div>
+   <label class="check"><input type="checkbox" name="img" ${ab.withImages ? 'checked' : ''}> ${L('รวมรูปแนบในไฟล์อัตโนมัติ (ไฟล์ใหญ่ขึ้น)', 'Include photos in automatic backups (larger files)')}</label>`
+    : `<div class="banner warn small">${L('เบราว์เซอร์นี้ไม่รองรับการบันทึกไฟล์ลงโฟลเดอร์อัตโนมัติ (เช่น iPhone, iPad, Safari, Firefox) ใช้ปุ่ม "สำรองข้อมูล" แทน จุดสีทองด้านบนจะบอกเมื่อมีข้อมูลใหม่ที่ยังไม่สำรอง การสำรองอัตโนมัติใช้ได้บน Chrome หรือ Edge บนคอมพิวเตอร์', 'This browser cannot write backups to a folder automatically (e.g. iPhone, iPad, Safari, Firefox). Use Back up instead; the gold dot at the top shows unsaved changes. Automatic backup works in Chrome or Edge on a computer.')}</div>`}
+   <p class="small muted">${L('สำรองล่าสุด', 'Last backup')}: ${fmtStamp(S.set.lastBackup)}</p>
+   <div class="chips"><button type="button" class="btn" data-act="backupNow">${L('สำรองข้อมูลตอนนี้', 'Back up now')}</button><button type="button" class="btn" data-act="openRestore">${L('เปิดไฟล์สำรอง', 'Open backup')}</button></div>`,
+    sup ? { submitLabel: L('บันทึกการตั้งค่า', 'Save settings'), submit: async f => { await setKV('autoBackup', { interval: +fv(f, 'interval'), withImages: fc(f, 'img') }); toast(L('บันทึกการตั้งค่าแล้ว', 'Settings saved')); } } : {});
+}
+async function pickDir() {
+  try {
+    const h = await window.showDirectoryPicker({ id: 'myassets', mode: 'readwrite' });
+    backupDir = h; dirPerm = 'granted';
+    try { await setKV('backupDir', h); } catch { S.set.backupDir = h; }
+    if (!S.set.autoBackup) await setKV('autoBackup', { interval: 1, withImages: false });
+    toast(L(`เลือกโฟลเดอร์ ${h.name} แล้ว`, `Folder ${h.name} selected`)); openData(); updateDataBar();
+  } catch (e) { if (e.name !== 'AbortError') toast(L('เลือกโฟลเดอร์ไม่ได้: ', 'Could not use that folder: ') + e.message); }
+}
+async function grantDir() {
+  if (!backupDir) return pickDir();
+  try { dirPerm = await backupDir.requestPermission({ mode: 'readwrite' }); } catch { dirPerm = 'denied'; }
+  if ($('.sheet-wrap')) openData(); updateDataBar();
+}
+function backupNow() {
+  const canPick = 'showSaveFilePicker' in window;
+  sheet(L('สำรองข้อมูล', 'Back up data'), `<div class="f"><label for="bk_name">${L('ชื่อไฟล์', 'File name')}</label><input id="bk_name" name="fname" value="${esc(nextBackupName())}"><span class="hint">.json · ${L('ระบบตั้งชื่อให้อัตโนมัติ แก้ไขได้', 'named automatically, you can change it')}</span></div>
+   <label class="check"><input type="checkbox" name="img" checked> ${L('รวมรูปแนบ (ไฟล์ใหญ่ขึ้น)', 'Include photos (larger file)')}</label>
+   <p class="hint">${canPick ? L('กดบันทึกแล้วเลือกตำแหน่งเก็บไฟล์ได้เอง เช่น โฟลเดอร์ที่ซิงก์กับ Google Drive หรือ iCloud', 'After Save, choose where to keep the file, e.g. a folder synced with Google Drive or iCloud.') : L('ไฟล์จะไปที่โฟลเดอร์ดาวน์โหลดของเบราว์เซอร์ บน iPhone ให้เลือก "บันทึกไปยังแอปไฟล์" เพื่อเลือกตำแหน่งเอง', 'The file goes to your browser’s downloads. On iPhone, choose Save to Files to pick a location.')}</p>
+   <div class="banner warn small">${L('ไฟล์สำรองไม่ได้เข้ารหัส เก็บในที่ปลอดภัยและไม่ส่งต่อผู้อื่น', 'Backup files are not encrypted. Keep them private.')}</div>`, {
+    submitLabel: L('บันทึกไฟล์', 'Save file'),
+    submit: async f => {
+      let name = (fv(f, 'fname') || nextBackupName()).replace(/[\\/:*?"<>|]/g, '-'); if (!/\.json$/i.test(name)) name += '.json';
+      const withImg = fc(f, 'img');
+      if (canPick) {
+        let h; try { h = await window.showSaveFilePicker({ suggestedName: name, types: [{ description: 'MyAssets backup', accept: { 'application/json': ['.json'] } }] }); } catch (e) { if (e.name === 'AbortError') return false; throw e; }
+        const w = await h.createWritable(); await w.write(await buildBackup(withImg)); await w.close(); name = h.name;
+      } else download(name, await buildBackup(withImg), 'application/json');
+      await commitSeq(); await setKV('lastBackup', Date.now()); toast(L('สำรองข้อมูลแล้ว: ', 'Backup saved: ') + name);
+    }
+  });
+}
+function openRestore() {
+  sheet(L('เปิดไฟล์สำรอง', 'Open a backup'), `<p class="small muted" style="margin-top:0">${L('เลือกไฟล์ MyAssetData-….json ที่สำรองไว้ เพื่อนำข้อมูลกลับมาใช้ หรือย้ายมาจากเครื่องอื่น', 'Choose a saved MyAssetData-….json file to bring data back or move it from another device.')}</p>
+   <label class="check"><input type="radio" name="rmode" value="merge" checked> ${L('รวมกับข้อมูลที่มีอยู่ (ใช้ฉบับที่แก้ล่าสุด)', 'Merge with current data (newest edit wins)')}</label>
+   <label class="check"><input type="radio" name="rmode" value="replace"> ${L('แทนที่ข้อมูลทั้งหมดในเครื่องนี้', 'Replace everything on this device')}</label>
+   <label class="btn primary" style="margin-top:10px">${L('เลือกไฟล์สำรอง…', 'Choose backup file…')}<input type="file" accept=".json,application/json" id="bk_file" hidden></label>`, {
+    onOpen: w => { $('#bk_file', w).addEventListener('change', e => doRestore(e.target.files[0], [...w.querySelectorAll('[name=rmode]')].find(x => x.checked).value)); }
+  });
+}
+setInterval(async () => {
+  updateDataBar();
+  const ab = S.set.autoBackup || { interval: 1 };
+  if (autoBusy || !ab.interval || !backupDir || dirPerm !== 'granted' || !S.set.started || locked) return;
+  if (lastChangeAt <= (S.set.lastBackup || 0)) return;
+  if (Date.now() - (S.set.lastAutoBackup || 0) < ab.interval * 60000) return;
+  autoBusy = true;
+  try {
+    const name = nextBackupName() + '.json';
+    const fh = await backupDir.getFileHandle(name, { create: true });
+    const w = await fh.createWritable(); await w.write(await buildBackup(!!ab.withImages)); await w.close();
+    await commitSeq(); const now = Date.now(); await setKV('lastBackup', now); await setKV('lastAutoBackup', now); updateDataBar();
+  } catch (e) { console.warn('auto backup', e); dirPerm = 'prompt'; updateDataBar(); }
+  finally { autoBusy = false; }
+}, 15000);
+
+async function doRestore(file, mode) {
+  if (!file) return;
+  let j; try { j = JSON.parse(await file.text()); } catch { toast(L('อ่านไฟล์ไม่ได้ ต้องเป็นไฟล์สำรองของ MyAssets', 'Could not read the file. It must be a MyAssets backup.')); return; }
+  if (j.app !== 'MyAssets' || !j.data) { toast(L('ไฟล์นี้ไม่ใช่ไฟล์สำรองของ MyAssets', 'This is not a MyAssets backup file')); return; }
+  if (mode === 'replace' && !confirm(L('แทนที่ข้อมูลทั้งหมดในเครื่องนี้ด้วยไฟล์สำรอง?', 'Replace all data on this device with the backup?'))) return;
+  if (mode === 'replace') { for (const s of DATA_STORES) await dbClear(s); await dbClear('attachments'); }
+  for (const s of DATA_STORES) for (const r of (j.data[s] || [])) {
+    if (!r || !r.id) continue;
+    if (mode === 'merge') { const cur = await dbGet(s, r.id); if (cur && (cur.updatedAt || 0) >= (r.updatedAt || 0)) continue; }
+    await dbPut(s, r);
+  }
+  for (const a of (j.attachments || [])) { try { if (mode === 'merge' && await dbGet('attachments', a.id)) continue; await dbPut('attachments', { id: a.id, blob: dataURLToBlob(a.data), mime: a.mime, size: a.size, createdAt: a.createdAt || Date.now(), isSample: !!a.isSample }); } catch { } }
+  for (const [k, v] of Object.entries(j.kv || {})) if (!['pin', 'consent', 'lastBackup', 'lastIcs'].includes(k)) await dbPut('kv', { k, v });
+  await dbPut('kv', { k: 'started', v: true });
+  await loadAll(); for (const o of S.obligations) await syncDues(o);
+  closeSheet(); render(); toast(L('กู้คืนข้อมูลแล้ว', 'Data restored'));
+}
+
+/* ---------- PIN lock ---------- */
+let locked = false, hiddenAt = 0, pinTries = 0, pinWait = 0;
+function lockScreen(mode, onDone) {
+  // mode: 'unlock' | 'set1' | 'set2'
+  $('#lock')?.remove(); let entry = ''; const w = document.createElement('div'); w.id = 'lock'; w.className = 'lock';
+  const len = mode === 'unlock' ? (S.set.pin?.len || 4) : 6;
+  const title = mode === 'unlock' ? L('ใส่ PIN เพื่อเปิด MyAssets', 'Enter PIN to open MyAssets') : mode === 'set1' ? L('ตั้ง PIN 4–6 หลัก', 'Choose a 4–6 digit PIN') : L('ใส่ PIN อีกครั้งเพื่อยืนยัน', 'Enter the PIN again to confirm');
+  const draw = () => {
+    w.innerHTML = `${brandMark()}<div style="font-size:17px;font-weight:600;text-align:center">${title}</div><div class="pin-dots">${Array.from({ length: mode === 'unlock' ? len : Math.max(4, entry.length) }, (_, i) => `<i class="${i < entry.length ? 'f' : ''}"></i>`).join('')}</div><div id="pinMsg" style="min-height:20px;font-size:13px;color:#F5C2BD"></div>
+     <div class="keypad">${[1, 2, 3, 4, 5, 6, 7, 8, 9].map(n => `<button class="key" data-k="${n}">${n}</button>`).join('')}<button class="key plain" data-k="x">${mode === 'unlock' ? L('ลืม PIN', 'Forgot') : L('ยกเลิก', 'Cancel')}</button><button class="key" data-k="0">0</button><button class="key plain" data-k="b">⌫</button></div>
+     ${mode !== 'unlock' ? `<button class="btn gold" data-k="ok" ${entry.length >= 4 ? '' : 'disabled'}>${L('ตกลง', 'OK')}</button>` : ''}`;
+    $('.brand-mark', w).style.cssText = 'width:56px;height:56px';
+  };
+  const press = async k => {
+    const msg = () => $('#pinMsg', w);
+    if (k === 'b') { entry = entry.slice(0, -1); draw(); return; }
+    if (k === 'x') { if (mode === 'unlock') forgotPin(); else { w.remove(); } return; }
+    if (k === 'ok') { if (entry.length >= 4) { const e = entry; w.remove(); onDone(e); } return; }
+    if (entry.length >= (mode === 'unlock' ? len : 6)) return;
+    entry += k; draw();
+    if (mode === 'unlock' && entry.length === len) {
+      if (Date.now() < pinWait) { entry = ''; draw(); msg().textContent = L('รอสักครู่แล้วลองใหม่', 'Please wait and try again'); return; }
+      const h = await hashPin(entry, S.set.pin.salt);
+      if (h === S.set.pin.hash) { pinTries = 0; locked = false; w.remove(); onDone && onDone(); }
+      else { pinTries++; entry = ''; draw(); $('.pin-dots', w).classList.add('shake'); if (pinTries >= 5) { pinWait = Date.now() + 30000; pinTries = 0; msg().textContent = L('ใส่ผิด 5 ครั้ง รอ 30 วินาที', '5 wrong attempts. Wait 30 seconds.'); } else msg().textContent = L('PIN ไม่ถูกต้อง', 'Wrong PIN'); }
+    }
+  };
+  w.addEventListener('click', e => { const b = e.target.closest('[data-k]'); if (b && !b.disabled) press(b.dataset.k); });
+  w._key = e => { if (!document.body.contains(w)) return document.removeEventListener('keydown', w._key); if (/^\d$/.test(e.key)) press(e.key); else if (e.key === 'Backspace') press('b'); else if (e.key === 'Enter' && mode !== 'unlock') press('ok'); };
+  document.addEventListener('keydown', w._key);
+  draw(); document.body.appendChild(w);
+}
+function lockNow() { if (!S.set.pin) return; locked = true; closeSheet(); lockScreen('unlock', () => {}); }
+function forgotPin() {
+  if (!confirm(L('ลืม PIN ไม่มีทางรีเซ็ต ทางเดียวคือลบข้อมูลทั้งหมดในเครื่องนี้ แล้วกู้คืนจากไฟล์สำรอง ต้องการลบข้อมูลทั้งหมดไหม?', 'A forgotten PIN cannot be reset. The only way is to erase all data on this device and restore from a backup. Erase everything?'))) return;
+  const typed = prompt(L('พิมพ์คำว่า ลบ เพื่อยืนยัน', 'Type DELETE to confirm'));
+  if (typed !== L('ลบ', 'DELETE')) return;
+  eraseEverything();
+}
+function pinSettings() {
+  if (!S.set.pin) {
+    sheet(L('PIN ล็อกแอป', 'App PIN lock'), `<p style="margin-top:0">${L('เมื่อตั้ง PIN แอปจะถาม PIN ทุกครั้งที่เปิด และเมื่อกลับมาหลังไม่ได้ใช้เกิน 5 นาที', 'With a PIN, the app asks for it every time it opens and after 5 minutes away.')}</p>
+     <div class="banner warn small">${L('PIN เป็นตัวล็อกหน้าจอเพื่อกันคนทั่วไปเปิดดู ไม่ใช่การเข้ารหัสข้อมูล และถ้าลืม PIN จะรีเซ็ตไม่ได้ ต้องลบข้อมูลแล้วกู้คืนจากไฟล์สำรอง', 'The PIN is a screen lock against casual viewing, not data encryption. A forgotten PIN cannot be reset: you would erase the data and restore from a backup.')}</div>
+     <button type="button" class="btn primary" data-act="setPin">${L('ตั้ง PIN', 'Set PIN')}</button>`);
+  } else {
+    sheet(L('PIN ล็อกแอป', 'App PIN lock'), `<p style="margin-top:0">${L('PIN เปิดใช้อยู่', 'PIN lock is on')}</p><div class="chips"><button type="button" class="btn" data-act="setPin">${L('เปลี่ยน PIN', 'Change PIN')}</button><button type="button" class="btn danger" data-act="removePin">${L('ปิด PIN', 'Turn off PIN')}</button></div>`);
+  }
+}
+function setPin() {
+  const go = () => { closeSheet(); lockScreen('set1', p1 => lockScreen('set2', async p2 => { if (p1 !== p2) { toast(L('PIN สองครั้งไม่ตรงกัน ลองใหม่', 'PINs did not match. Try again.')); return; } const salt = uid(); await setKV('pin', { salt, hash: await hashPin(p1, salt), len: p1.length }); render(); toast(L('ตั้ง PIN แล้ว', 'PIN set')); })); };
+  if (S.set.pin) { closeSheet(); lockScreen('unlock', go); } else go();
+}
+function removePin() { closeSheet(); lockScreen('unlock', async () => { S.set.pin = null; await dbDel('kv', 'pin'); delete S.set.pin; render(); toast(L('ปิด PIN แล้ว', 'PIN turned off')); }); }
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) hiddenAt = Date.now();
+  else if (S.set.pin && !locked && hiddenAt && Date.now() - hiddenAt > 5 * 60000) lockNow();
+});
+
+async function eraseEverything() {
+  for (const s of STORES) await dbClear(s);
+  Object.keys(urlCache).forEach(k => { URL.revokeObjectURL(urlCache[k]); delete urlCache[k]; });
+  for (const s of DATA_STORES) S[s] = []; S.set = {}; locked = false; $('#lock')?.remove(); closeSheet(); welcomeSeen = false; backupDir = null; lastChangeAt = 0; location.hash = '#home'; render();
+}
+
+/* ---------- welcome, terms, start ---------- */
+function termsSections() {
+  return [
+    [L('หลักการทำงาน', 'How it works'), `<ul>
+      <li>${L('MyAssets ทำงานในเบราว์เซอร์บนอุปกรณ์ของคุณทั้งหมด ไม่มีเซิร์ฟเวอร์ และไม่ต้องสมัครสมาชิก', 'MyAssets runs entirely in the browser on your device. There is no server and no sign-up.')}</li>
+      <li>${L('ข้อมูลที่คุณกรอก รวมถึงรูปแนบ บันทึกอยู่ในเบราว์เซอร์ของอุปกรณ์นี้ทันทีที่แก้ไข ไม่ถูกส่งไปที่ใด ผู้พัฒนาไม่เห็นและเข้าถึงข้อมูลของคุณไม่ได้', 'Everything you enter, including photos, is saved in this device’s browser as you edit and is never sent anywhere. The developer cannot see or access your data.')}</li>
+      <li>${L('ข้อมูลในแต่ละอุปกรณ์และแต่ละเบราว์เซอร์แยกจากกัน ย้ายข้อมูลระหว่างเครื่องด้วยไฟล์สำรอง', 'Each device and browser keeps its own data. Move data between devices with a backup file.')}</li>
+      <li>${L('การแจ้งเตือนล่วงหน้าทำงานผ่านปฏิทินในมือถือของคุณ เมื่อส่งออกไฟล์ .ics จากแอป', 'Advance reminders work through your phone’s calendar once you export the .ics file from the app.')}</li></ul>`],
+    [L('ข้อมูลของคุณปลอดภัยแค่ไหน', 'How safe is your data?'), `<div class="qa">
+      <div><b>${L('ข้อมูลของฉันเก็บไว้ที่ไหน?', 'Where is my data kept?')}</b><p>${L('อยู่ในเครื่องที่คุณใช้อยู่เท่านั้น ไม่ได้ส่งขึ้นอินเทอร์เน็ต และไม่มีใครเก็บสำเนาไว้ที่อื่น', 'Only on the device you are using. Nothing is sent over the internet and no copy is kept anywhere else.')}</p></div>
+      <div><b>${L('ใครเห็นข้อมูลของฉันได้บ้าง?', 'Who can see my data?')}</b><p>${L('เฉพาะคนที่เปิดแอปนี้บนเครื่องเดียวกันกับคุณ ผู้พัฒนาและคนอื่นทางอินเทอร์เน็ตมองไม่เห็น', 'Only someone who opens this app on the same device. The developer and people online cannot see it.')}</p><p class="tip">✓ ${L('ถ้าใช้เครื่องร่วมกับคนอื่น ให้ตั้งรหัส PIN ในหน้าตั้งค่า', 'If you share the device, set a PIN in Settings.')}</p></div>
+      <div><b>${L('ข้อมูลหายได้ไหม?', 'Can I lose my data?')}</b><p>${L('หายได้ ถ้าล้างประวัติหรือข้อมูลเว็บของเบราว์เซอร์ เครื่องหายหรือเสีย หรือไม่ได้เปิดแอปนาน ๆ บน iPhone', 'Yes, if you clear the browser’s history or site data, lose or break the device, or leave the app unused for a long time on iPhone.')}</p><p class="tip">✓ ${L('กดปุ่ม "สำรองข้อมูล" ด้านบนเก็บไว้เป็นไฟล์เป็นประจำ', 'Use the Back up button at the top regularly.')}</p></div>
+      <div><b>${L('ไฟล์สำรองปลอดภัยไหม?', 'Are backup files safe?')}</b><p>${L('ไฟล์สำรองไม่ได้ล็อกรหัส ใครได้ไฟล์ไปก็เปิดอ่านได้', 'Backup files are not password-protected. Anyone with the file can read it.')}</p><p class="tip">✓ ${L('เก็บไว้ในที่ของคุณเอง และอย่าส่งต่อให้คนอื่น', 'Keep them in your own storage and do not share them.')}</p></div>
+      <div><b>${L('อะไรที่ไม่ควรกรอก?', 'What should I never enter?')}</b><p>${L('เลขบัญชีเต็ม เลขบัตรเครดิต รหัสผ่าน และเลขบัตรประชาชน แอปนี้ไม่จำเป็นต้องใช้ข้อมูลเหล่านี้', 'Full account numbers, card numbers, passwords or ID numbers. The app never needs them.')}</p></div>
+      ${OFFICIAL_URL ? `<div><b>${L('เปิดแอปจากลิงก์ไหน?', 'Which link should I use?')}</b><p>${L('ใช้ลิงก์ทางการเท่านั้น: ', 'Only the official link: ')}<b>${esc(OFFICIAL_URL)}</b></p></div>` : ''}</div>`],
+    [L('วิธีเริ่มใช้งาน', 'Getting started'), `<ol>
+      <li>${L('ลองด้วยข้อมูลตัวอย่าง หรือเริ่มต้นใหม่', 'Try the sample data, or start fresh.')}</li>
+      <li>${L('เพิ่มบัญชีที่ใช้จ่ายเงิน (หน้าตั้งค่า)', 'Add the accounts you pay from (Settings).')}</li>
+      <li>${L('เพิ่มทรัพย์สิน ใส่รูป แล้วติ๊กเลือกภาระจากเทมเพลต ตรวจยอดและวันครบให้ตรงกับของจริง', 'Add an asset with a photo, tick its costs from the templates, and check dates and amounts against real documents.')}</li>
+      <li>${L('ส่งออก .ics เข้าปฏิทินมือถือ เพื่อรับการแจ้งเตือนแม้ไม่ได้เปิดแอป', 'Export the .ics file to your phone calendar for reminders when the app is closed.')}</li>
+      <li>${L('กด "จ่ายแล้ว" ทุกครั้งที่ชำระ และบันทึกการซ่อมบำรุงในสมุดประวัติ', 'Tap “Mark paid” when you pay, and log repairs in the maintenance log.')}</li>
+      <li>${L('สำรองข้อมูลเป็นไฟล์อย่างสม่ำเสมอ ด้วยปุ่มสำรองข้อมูลด้านบน', 'Back up to a file regularly with the Back up button at the top.')}</li></ol>`],
+    [L('ข้อตกลงการใช้งานและข้อจำกัดความรับผิด', 'Terms of use and limitation of liability'), `<ol>
+      <li>${L('MyAssets เป็นโปรแกรมแจกฟรีเพื่อใช้งานส่วนบุคคล ไม่อนุญาตให้นำไปจำหน่าย หรือดัดแปลงแล้วเผยแพร่ในนามผู้อื่น', 'MyAssets is free software for personal use. It may not be sold, or modified and redistributed under another name.')}</li>
+      <li>${L('โปรแกรมให้ใช้งานตามสภาพที่เป็นอยู่ ผู้พัฒนาไม่รับประกันว่าจะทำงานถูกต้องหรือต่อเนื่องตลอดเวลา', 'The app is provided as is. The developer does not guarantee it will always work correctly or without interruption.')}</li>
+      <li>${L('ข้อมูลทั้งหมดอยู่ในความดูแลของผู้ใช้ ผู้พัฒนาไม่ได้เก็บข้อมูลไว้ จึงกู้คืนข้อมูลให้ไม่ได้ ผู้ใช้มีหน้าที่สำรองข้อมูลเอง', 'All data is in your care. The developer does not hold any data and cannot recover it. Backing up is your responsibility.')}</li>
+      <li>${L('วันครบกำหนดและยอดเงินในเทมเพลตเป็นค่าตั้งต้นเพื่อความสะดวกเท่านั้น ผู้ใช้ต้องตรวจสอบกับหนังสือแจ้งหรือหน่วยงานที่เกี่ยวข้องเสมอ', 'Template dates and amounts are starting points only. Always check them against official notices or the relevant agency.')}</li>
+      <li>${L('ผู้พัฒนาขอสงวนสิทธิ์ไม่รับผิดชอบต่อความเสียหายใด ๆ จากการใช้งาน เช่น ข้อมูลสูญหาย การชำระล่าช้า ค่าปรับ หรือการแจ้งเตือนไม่ทำงาน ทั้งนี้เท่าที่กฎหมายอนุญาต', 'To the extent permitted by law, the developer accepts no liability for any loss arising from use of the app, such as lost data, late payments, fines or reminders that fail.')}</li>
+      <li>${L('ผู้พัฒนาอาจปรับปรุง เปลี่ยนแปลง หรือหยุดเผยแพร่โปรแกรมได้โดยไม่ต้องแจ้งล่วงหน้า ผู้ใช้ควรสำรองข้อมูลเก็บไว้เสมอ', 'The developer may update, change or stop distributing the app without notice. Always keep a backup.')}</li></ol>`]
+  ];
+}
+const detailsList = () => termsSections().map(s => `<details class="more"><summary>${s[0]}</summary><div>${s[1]}</div></details>`).join('');
+let welcomeSeen = false;
+function viewWelcome(first) {
+  const kp = (ic, th, en) => `<div class="keypt">${ic}<span>${L(th, en)}</span></div>`;
+  return `<div class="welcome"><div class="w-top"><div class="brand">${brandMark()}<div class="brand-name">MyAssets</div></div><button class="lang-btn" data-act="toggleLang">${lang === 'th' ? 'EN' : 'ไทย'}</button></div>
+   <div class="w-card"><div class="w-body">
+    <div class="w-hero">${brandMark().replace('class="brand-mark"', '')}</div>
+    <h1 style="text-align:center">${L('ยินดีต้อนรับสู่ MyAssets', 'Welcome to MyAssets')}</h1>
+    <p class="muted" style="text-align:center;margin-top:6px">${L('ไม่พลาดค่าใช้จ่ายตามรอบของทรัพย์สินทุกชิ้น ทั้งภาษี ประกัน ค่าส่วนกลาง และประวัติการซ่อม', 'Never miss a recurring cost on anything you own: taxes, insurance, fees and repairs.')}</p>
+    <div class="keypts">${kp(IC.lock, 'ข้อมูลอยู่ในอุปกรณ์ของคุณเท่านั้น ผู้พัฒนาเข้าถึงไม่ได้', 'Your data stays on your device. The developer cannot access it.')}${kp(IC.calendar, 'เตือนล่วงหน้าผ่านปฏิทินในมือถือ', 'Reminders arrive through your phone calendar.')}${kp(IC.download, 'สำรองไฟล์สม่ำเสมอ ถ้าล้างเบราว์เซอร์หรือเครื่องหาย ข้อมูลจะหาย', 'Back up to a file regularly: clearing the browser or losing the device loses the data.')}</div>
+    <p class="small muted" style="margin:0 0 8px">${L('รายละเอียดเพิ่มเติม (กดเพื่ออ่าน)', 'More details (tap to read)')}</p>
+    ${detailsList()}</div>
+    <div style="margin-top:10px">${first ? `<label class="check"><input type="checkbox" id="ck1" data-change="consentCk"> ${L('ข้าพเจ้ายอมรับข้อตกลงการใช้งาน และเข้าใจว่าข้อมูลเก็บไว้ในอุปกรณ์นี้เท่านั้น', 'I accept the terms of use and understand my data is stored only on this device.')}</label>` : ''}
+     <label class="check"><input type="checkbox" id="ckHide" ${S.set.hideWelcome ? 'checked' : ''}> ${L('ไม่ต้องแสดงหน้านี้อีก (อ่านภายหลังได้ที่ปุ่ม ⓘ ด้านบน)', 'Don’t show this again (read it any time via the ⓘ button)')}</label></div>
+    <div class="w-nav"><span></span>${first ? `<button class="btn gold" id="startBtn" data-act="acceptTerms" disabled>${L('ยอมรับและเริ่มใช้งาน', 'Accept and start')}</button>` : `<button class="btn gold" data-act="enterApp">${L('เข้าสู่แอป', 'Open MyAssets')}</button>`}</div>
+    <div class="small muted" style="text-align:center;margin-top:14px">${L('แจกฟรีสำหรับใช้งานส่วนบุคคล · พัฒนาโดย', 'Free for personal use · Developed by')} Nattapol P.${OFFICIAL_URL ? '<br>' + esc(OFFICIAL_URL) : ''}</div></div>
+   <div class="w-foot">Create by Nattapol P. @2026 Version ${VERSION}</div></div>`;
+}
+
+function viewStart() {
+  return `<div class="welcome"><div class="w-top"><div class="brand">${brandMark()}<div class="brand-name">MyAssets</div></div><button class="lang-btn" data-act="toggleLang">${lang === 'th' ? 'EN' : 'ไทย'}</button></div>
+   <div class="w-card"><div class="w-body"><h1>${L('เริ่มต้นอย่างไรดี', 'How would you like to start?')}</h1>
+    <div class="f" style="margin-top:14px"><label for="ownerIn">${L('ชื่อเจ้าของข้อมูล (แสดงที่หัวแอป ไม่บังคับ)', 'Your name (shown in the header, optional)')}</label><input id="ownerIn" value="${esc(S.set.owner || '')}"></div>
+    <button class="card" data-act="startSample" style="width:100%;text-align:left;cursor:pointer;margin-bottom:10px"><h3>${L('ลองด้วยข้อมูลตัวอย่าง', 'Try with sample data')}</h3><p class="muted small" style="margin:4px 0 0">${L('รถ 1 คัน คอนโด 1 ห้อง ที่ดิน 1 แปลง กรมธรรม์ 1 ฉบับ พร้อมประวัติจ่ายและประวัติซ่อม ล้างทิ้งได้ด้วยปุ่มเดียว', 'A car, a condo, a plot of land and a policy, with payment and repair history. Clear it with one tap.')}</p></button>
+    <button class="card" data-act="startFresh" style="width:100%;text-align:left;cursor:pointer"><h3>${L('เริ่มต้นใหม่', 'Start fresh')}</h3><p class="muted small" style="margin:4px 0 0">${L('เริ่มจากหน้าว่าง แล้วเพิ่มทรัพย์สินของคุณเอง', 'Begin with an empty app and add your own assets.')}</p></button>
+   </div></div><div class="w-foot">Create by Nattapol P. @2026 Version ${VERSION}</div></div>`;
+}
+function showTerms() {
+  sheet(L('เกี่ยวกับ MyAssets', 'About MyAssets'), `<p style="margin-top:0">${L('MyAssets ช่วยติดตามค่าใช้จ่ายตามรอบของทรัพย์สิน แจกฟรีสำหรับใช้งานส่วนบุคคล พัฒนาโดย Nattapol P.', 'MyAssets tracks recurring costs of what you own. Free for personal use, developed by Nattapol P..')}</p>${detailsList()}<p class="small muted" style="margin-top:16px">${OFFICIAL_URL ? esc(OFFICIAL_URL) + '<br>' : ''}${L('ยอมรับข้อตกลงเมื่อ', 'Terms accepted')} ${fmtStamp(S.set.consent?.at)}<br>Create by Nattapol P. @2026 Version ${VERSION}</p>`, { wide: true });
+}
+/* ---------- actions ---------- */
+const ACT = {
+  toggleLang: async () => { lang = lang === 'th' ? 'en' : 'th'; await setKV('lang', lang); render(); },
+  lockNow, openIcs, openData: () => { if (backupDir && dirPerm !== 'granted' && fsSupported()) grantDir().then(openData); else openData(); }, backupNow, openRestore, pickDir, grantDir, openBackup: openData, pinSettings, setPin, removePin, showTerms, exportCsv,
+  newAsset: () => assetForm(null),
+  editAsset: d => assetForm(byId('assets', d.id)),
+  deleteAsset: d => deleteAsset(d.id),
+  tplPicker: d => tplPicker(byId('assets', d.id)),
+  newOb: d => obForm(null, d.id),
+  editOb: d => obForm(byId('obligations', d.id)),
+  deleteOb: d => deleteOb(d.id),
+  openDue: d => openDue(d.id),
+  quickPay: (d, el, e) => { e.preventDefault(); e.stopPropagation(); quickPay(d.id); },
+  payForm: d => payForm(d.id),
+  unpay: d => unpay(d.id),
+  editDue: d => editDue(d.id),
+  skipDue: d => skipDue(d.id),
+  newMaint: d => maintForm(null, d.id),
+  editMaint: d => maintForm(byId('maintenance', d.id)),
+  deleteMaint: d => deleteMaint(d.id),
+  printMaint: d => printMaint(d.id),
+  viewAtt: (d, el, e) => { e.stopPropagation(); viewAtt(d.id, d.ro ? null : el); },
+  editAcc: d => editAcc(d.id),
+  assetTab: d => { ui.assetTab = d.t; render(); },
+  dashPeriod: d => { ui.dash.period = d.p; ui.dash.drill = null; render(); },
+  tmDrill: d => { ui.dash.drill = d.k; render(); },
+  tmUp: () => { ui.dash.drill = null; render(); },
+  goAsset: d => { location.hash = '#asset/' + encodeURIComponent(d.id); },
+  repGo: d => { ui.rep.type = d.t; ui.rep.period = 'year'; ui.rep.year = new Date().getFullYear(); },
+  printReport,
+  duesFilter: d => { ui.duesFilter = d.f; render(); },
+  goDues: d => { ui.duesFilter = d.f; ui.duesAsset = ''; location.hash = '#dues'; },
+  calNav: d => { ui.calM += +d.d; if (ui.calM < 0) { ui.calM = 11; ui.calY--; } if (ui.calM > 11) { ui.calM = 0; ui.calY++; } ui.calSel = null; render(); },
+  calSel: d => { ui.calSel = d.d || null; render(); },
+  wStep: d => { ui.welcomeStep = Math.max(0, ui.welcomeStep + +d.d); render(); window.scrollTo(0, 0); },
+  enterApp: async () => { const h = $('#ckHide')?.checked; if (h) await setKV('hideWelcome', true); welcomeSeen = true; render(); },
+  toggleWelcome: async () => { await setKV('hideWelcome', !S.set.hideWelcome); render(); },
+  reloadSample: async () => { if (!confirm(L('โหลดข้อมูลตัวอย่าง? ข้อมูลของคุณยังอยู่ครบ', 'Load sample data? Your own data stays as it is.'))) return; await loadSample(); location.hash = '#home'; render(); toast(L('โหลดข้อมูลตัวอย่างแล้ว', 'Sample data loaded')); },
+  acceptTerms: async () => { if ($('#ckHide')?.checked) await setKV('hideWelcome', true); welcomeSeen = true; await setKV('consent', { version: TERMS_VERSION, at: Date.now() }); try { navigator.storage && navigator.storage.persist && navigator.storage.persist(); } catch { } render(); },
+  startSample: async () => { await setKV('owner', $('#ownerIn')?.value.trim() || ''); await loadSample(); location.hash = '#home'; render(); toast(L('โหลดข้อมูลตัวอย่างแล้ว', 'Sample data loaded')); },
+  startFresh: async () => { await setKV('owner', $('#ownerIn')?.value.trim() || ''); await setKV('started', true); location.hash = '#home'; render(); },
+  clearSample: async () => { if (!confirm(L('ลบข้อมูลตัวอย่างทั้งหมด? ข้อมูลที่คุณเพิ่มเองยังอยู่', 'Remove all sample data? Your own data stays.'))) return; await clearSample(); render(); toast(L('ล้างข้อมูลตัวอย่างแล้ว', 'Sample data cleared')); },
+  editOwner: () => sheet(L('ชื่อเจ้าของข้อมูล', 'Owner name'), `<div class="f"><label for="ow">${L('ชื่อ', 'Name')}</label><input id="ow" name="owner" value="${esc(S.set.owner || '')}"></div>`, { submit: async f => { await setKV('owner', fv(f, 'owner')); } }),
+  eraseAll: () => { if (!confirm(L('ลบข้อมูลทั้งหมดในอุปกรณ์นี้? กู้คืนได้จากไฟล์สำรองเท่านั้น', 'Erase all data on this device? Only a backup file can restore it.'))) return; const t = prompt(L('พิมพ์คำว่า ลบ เพื่อยืนยัน', 'Type DELETE to confirm')); if (t === L('ลบ', 'DELETE')) eraseEverything(); }
+};
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-act]'); if (!el) return;
+  const fn = ACT[el.dataset.act]; if (!fn) return;
+  if (el.tagName === 'A' && !el.getAttribute('href')) e.preventDefault();
+  fn(el.dataset, el, e);
+});
+document.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('[role=button][data-act]')) { e.preventDefault(); e.target.click(); } if (e.key === 'Escape') { if ($('.sheet-wrap')) closeSheet(); } });
+document.addEventListener('change', async e => {
+  if (e.target.dataset.cover && e.target.files[0]) {
+    const a = byId('assets', e.target.dataset.cover); if (!a) return;
+    try { const id = await addAttachment(e.target.files[0]); const old = a.coverId; a.coverId = id; await save('assets', a); if (old) await deleteAttachments([old]); render(); toast(L('อัปเดตรูปแล้ว', 'Photo updated')); } catch { toast(L('อ่านไฟล์รูปไม่ได้', 'Could not read that image')); }
+    return;
+  }
+  const k = e.target.dataset.change; if (!k) return;
+  if (k === 'duesAsset') { ui.duesAsset = e.target.value; render(); }
+  if (k === 'dashDim') { ui.dash.dim = e.target.value; ui.dash.drill = null; render(); }
+  if (k.startsWith('rep:')) { const key = k.slice(4); let v = e.target.value; if (key === 'year' || key === 'q') v = +v; if (key === 'month' && !v) return; ui.rep[key] = v; if (key === 'type' && v === 'due') ui.rep.period = 'month'; render(); }
+  if (k === 'consentCk') { const b = $('#startBtn'); if (b) b.disabled = !$('#ck1').checked; }
+});
+let qTimer;
+document.addEventListener('input', e => {
+  if (e.target.dataset.input === 'maintQ') { clearTimeout(qTimer); const v = e.target.value; qTimer = setTimeout(() => { ui.maintQ = v; render(); const i = $('[data-input=maintQ]'); if (i) { i.focus(); i.setSelectionRange(v.length, v.length); } }, 250); }
+});
+
+/* ---------- boot ---------- */
+(async function boot() {
+  parseHash();
+  try { db = await openDB(); } catch (e) {
+    $('#root').innerHTML = `<div class="welcome"><div class="w-card"><h1>เปิดที่เก็บข้อมูลไม่ได้ / Storage unavailable</h1><p>เบราว์เซอร์นี้ไม่อนุญาตให้เก็บข้อมูล (อาจเป็นโหมดไม่ระบุตัวตน) กรุณาเปิดด้วยเบราว์เซอร์ปกติ<br>This browser does not allow local storage (private mode?). Please open MyAssets in a normal window.</p></div></div>`;
+    return;
+  }
+  await loadAll();
+  lang = S.set.lang || 'th';
+  for (const s of DATA_STORES) for (const r of S[s]) if ((r.updatedAt || 0) > lastChangeAt) lastChangeAt = r.updatedAt;
+  backupDir = S.set.backupDir && S.set.backupDir.getFileHandle ? S.set.backupDir : null;
+  if (backupDir) { try { dirPerm = await backupDir.queryPermission({ mode: 'readwrite' }); } catch { dirPerm = 'prompt'; } }
+  for (const o of S.obligations) await syncDues(o);
+  render();
+  if (S.set.pin && S.set.consent) { locked = true; lockScreen('unlock', () => {}); }
+  setTimeout(() => cleanupOrphans().catch(() => {}), 4000);
+})();
+</script>
+</body></html>
