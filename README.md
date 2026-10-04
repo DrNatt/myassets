@@ -30,6 +30,7 @@ MyAssets ช่วยให้คุณไม่พลาดค่าใช้�
 | ประวัติดูแลรักษา | บันทึกการซ่อม เลขไมล์ อู่/ศูนย์บริการ วันหมดรับประกัน และนัดครั้งถัดไป |
 | รายงาน | 9 รายงาน เช่น Pivot หลายมิติ รายการถึงกำหนดชำระ Statement การจ่าย แผนเงินสด 12 เดือน ส่งออกเป็น PDF (A4) หรือ CSV |
 | ข้อมูล | บันทึกอัตโนมัติทุกครั้งที่แก้ไข สำรอง/กู้คืนเป็นไฟล์ ตั้ง PIN ล็อกแอปได้ สลับภาษาไทย/อังกฤษ |
+| นำเข้าจาก Excel | ดาวน์โหลด Template ที่ล็อกไว้ให้กรอกเฉพาะช่องที่กำหนด แล้วนำเข้าบัญชี ทรัพย์สิน ภาระประจำ และประวัติซ่อมได้ทีเดียว |
 
 ### เริ่มใช้งาน
 
@@ -75,6 +76,7 @@ MyAssets helps you never miss a recurring cost on anything you own: vehicle tax,
 | Maintenance log | Repairs, odometer, service provider, warranty dates and next appointment. |
 | Reports | 9 reports, including a multi-dimension pivot, payments due, payment statement and 12-month cash plan. Export to PDF (A4) or CSV. |
 | Data | Saved automatically on every change. Back up and restore with a file, optional PIN lock, Thai/English. |
+| Excel import | Download a protected template with only the input cells editable, then import accounts, assets, recurring costs and maintenance in one go. |
 
 ### Getting started
 
@@ -103,4 +105,4 @@ MyAssets is free software for personal use. It may not be sold, or modified and 
 
 ---
 
-**Create by Nattapol P. @2026 · Version 1.03**
+**Create by Nattapol P. @2026 · Version 1.04**
